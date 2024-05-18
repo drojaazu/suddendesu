@@ -1,0 +1,33 @@
+@mixin pad($h, $v) {
+	padding: $v $h;
+}
+
+@mixin pad-h($h) {
+	padding-left: $h;
+	padding-right: $h;
+}
+
+@mixin pad-v($v) {
+	padding-top: $v;
+	padding-bottom: $v;
+}
+
+@mixin margin($h, $v) {
+	margin: $v $h;
+}
+
+@mixin margin-h($h) {
+	margin-left: $h;
+	margin-right: $h;
+}
+
+@mixin margin-v($v) {
+	margin-top: $v;
+	margin-bottom: $v;
+}
+
+@mixin margin-auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+

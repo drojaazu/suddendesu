@@ -1,0 +1,18 @@
+baseURL: 'http://sudden-desu.net/'
+languageCode: 'en-us'
+title: 'SUDDEN DESU'
+theme: 'suddendesu_mk6'
+
+markup:
+  goldmark:
+    parser:
+      wrapStandAloneImageWithinParagraph: false
+    renderer:
+      unsafe: true
+
+Params:
+  subtitle: 'disassemblies・digital archaeology・data preservation'
+
+services:
+  googleAnalytics:
+    ID: G-K69STSCE8D

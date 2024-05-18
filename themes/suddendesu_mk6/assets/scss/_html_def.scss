@@ -1,0 +1,89 @@
+p,pre,table,blockquote,h1,h2,h3,h4,h5,span,div {
+	cursor: default;
+}
+
+:root {
+	font-size: $font-size-base;
+}
+
+html {
+	font-family: $font-family-base;
+	letter-spacing: 0.05em;
+}
+
+a {
+	cursor: pointer !important;
+	text-decoration: none;
+	color: unset;
+
+	* {
+		cursor: pointer !important;
+	}
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+body {
+	color: $color-text;
+	background: #3c3c42 url($path-img+'body_bg.png');
+	@include pad-v(2rem);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: normal;
+	line-height: 1.2em;
+}
+
+h1 {
+	font-size: 2.5rem;
+}
+
+h2 {
+	font-size: 2.0rem;
+}
+
+h3,h4,h5 {
+	font-size: 1.5rem;
+}
+
+/* Buttons, forms and input */
+
+input,
+textarea {
+
+	cursor: text;
+	&:focus,
+	&:hover {
+		border: 1px solid $color-crt-theme;
+		outline: 0;
+		cursor: text;
+	}
+}
+
+textarea {
+	width: 100%;
+}
+
+textarea,
+select,
+input[type] {
+	color: $color-text;
+	background: $color-black url($path-img+'rgb2.png');
+	box-shadow: none;
+	box-sizing: border-box;
+}
+
+label,
+legend,
+fieldset {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 600;
+}

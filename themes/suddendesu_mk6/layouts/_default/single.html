@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{ $dateMachine := "2006-01-02T15:04:05-07:00" }}
+{{ $dateHuman := "2006-01-02" }}
+<article class='crt-bg crt-edges-h record-entry'>
+  <header class='callout record-header'>
+    <h1><a href='{{ .RelPermalink }}'>{{ .Title }}</a></h1>
+  </header>
+  <div class='record-body'>
+    {{ if (.Param "images") }}
+    <figure><img src='{{ index (.Param "images") 0 }}'></figure>
+    {{ end }}
+    {{ .Content }}
+  </div>
+  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+  <footer class='crt-text record-footer hover-hilite'>
+    <div>🖉<time datetime="{{ .Date | time.Format $dateMachine }}">{{ .Date | time.Format $dateHuman }}</time> by {{
+      .Param "author" }}
+    </div>
+  </footer>
+</article>
+{{ end }}
