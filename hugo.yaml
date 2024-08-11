@@ -1,7 +1,31 @@
 baseURL: 'http://sudden-desu.net/'
 languageCode: 'en-us'
 title: 'SUDDEN DESU'
-theme: 'suddendesu_mk6'
+theme: 'suddendesu_mk5'
+
+taxonomies:
+  category: categories
+  tag: tags
+
+Params:
+  subtitle: 'disassemblies・digital archaeology・data preservation'
+  color-dev: '#ff0000'
+
+menus:
+  main:
+  - name: Home
+    pageRef: /
+    weight: 10
+  - name: About
+    pageRef: /page/about
+    weight: 20
+  - name: Tags
+    pageRef: /tags
+    weight: 30
+
+services:
+  googleAnalytics:
+    ID: G-K69STSCE8D
 
 markup:
   goldmark:
@@ -9,10 +33,3 @@ markup:
       wrapStandAloneImageWithinParagraph: false
     renderer:
       unsafe: true
-
-Params:
-  subtitle: 'disassemblies・digital archaeology・data preservation'
-
-services:
-  googleAnalytics:
-    ID: G-K69STSCE8D

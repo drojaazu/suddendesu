@@ -1,0 +1,148 @@
+/*
+-------------------------------------------------------------------------------
+	ID_DEF
+	Definitions for ID'ed elements
+-------------------------------------------------------------------------------
+*/
+
+#maincol {
+	@include margin-auto;
+	max-width: 1024px;
+	@include pad-h(0);
+	@include pad-v(0);
+	min-height: 100%;
+	background-color: $color-grey;
+	background-color: $color-black;
+	background-clip: padding-box;
+	// TODO make the outline color browser specific
+	border: 1.5rem inset rgba(215, 215, 215, 0.15);
+	border-radius: 2rem;
+
+	& > header {
+		line-height: 1;
+		padding-top: 1rem;
+	
+		& > span
+		{
+			@include pad-h(1rem);
+			font-size: 3.5rem;
+			letter-spacing: 0.25em;
+			color: #bdbdbd;
+			text-shadow: $shadow-large;
+			letter-spacing: 0.5rem;
+		}
+	
+		& > p[role="doc-subtitle"]
+		{
+			@include pad-h(1.5rem);
+			line-height: 1.5em;
+			font-size: 1.1rem;
+			color: $color-crt-white;
+			margin-bottom: 0.5rem;
+		}
+	
+		nav {
+			flex-wrap: wrap;
+			line-height: 1.5em;
+			font-size: 1.2rem;
+			padding: 0;
+			@include pad-h(1rem);
+	
+			form {
+				margin-left: auto;
+			}
+
+			a {
+				width: 100%;
+				height: 100%;
+				@include pad-h(0.5em);
+		
+				&:hover {
+					background-color: transparentize($color-crt-white, 0.4);
+				}
+			}
+	
+		}
+	}
+	
+}
+
+#maincol > footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 1.5rem;
+}
+
+#badge {
+	display:flex;
+	max-width: 1024px;
+	@include margin-auto;
+	align-items: center;
+	margin-top: 2rem;
+	justify-content: flex-end;
+	@include pad-h(2%);
+
+	.badge {
+		margin-right: auto;
+		@include pad-h(0.5rem);
+		border: 1px solid rgba(0, 0, 0, 0.25);
+		box-shadow: 1px 1px rgba(60, 60, 60, 0.5);
+		border-radius: 2px;
+		background: rgb(105,105,105);
+		background: linear-gradient(339deg, rgba(105,105,105,1) 0%, rgba(135,135,135,1) 53%, rgba(179,179,179,1) 100%);
+
+
+		& > span {
+			text-shadow: 1px 1px rgb(60, 60, 60), -1px -1px #bdbdbd;
+			color: #a39e9e;
+		}
+
+		& > span:first-child {
+			font-size: 1.5rem;
+			padding-right: 0.25rem;
+			letter-spacing: -2px;
+		}
+
+		& *:hover {
+			text-decoration: none;
+		}
+	}
+
+	.led {
+		font-size:2rem;
+		margin-left: auto;
+		color: #27c027a8;
+		margin-right: 1rem;
+		text-shadow: 0 0 15px currentcolor;
+	}
+
+	.button {
+		width: 4rem;
+		padding: 0.2rem;
+		border: 2px solid rgba(0, 0, 0, 0.5);
+		box-shadow: 1px 1px rgba(60, 60, 60, 0.9);
+		border-radius: 0.25rem;
+		background-color: rgba(0, 0, 0, 0.2);
+		text-align: center;
+		color: rgba(255, 255, 255, 0.5);
+
+	}
+}
+
+#tag-list {
+
+	ul {
+		display: flex;
+		flex-flow: wrap;
+		align-items: flex-start;
+		gap: 1rem;
+		justify-content: space-around;
+	}
+	li {
+		display:inline-block;
+		font-family: $font-pixel;
+		font-size: 1.6rem;
+	}
+}

@@ -1,10 +1,13 @@
 ---
 title: 'Rezon - ASCII art and Usage Dhugo isplay'
 date: 2015-07-27T22:00:00+09:00
-draft: false
 author: Ryou
 images:
 - img/rezon_title.png
+category: Disassembly / Analysis
+tags:
+- unused content
+draft: false
 ---
 
 Rezon is a fun little shooter with a couple interesting leftovers (maybe one is an easter egg?). Sadly, neither finds are as [amazing as the game's ending](https://twitter.com/suddendesu/status/620807610342584320).

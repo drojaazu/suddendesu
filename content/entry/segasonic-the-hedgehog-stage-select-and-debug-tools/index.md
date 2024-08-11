@@ -1,10 +1,16 @@
 ---
 title: 'Segasonic the Hedgehog - Debug Tools and So Much More'
-author: Ryou
 date: 2020-11-06T23:35:00+09:00
-draft: false
+author: Ryou
 images:
 - img/sonic_title.png
+category: Disassembly / Analysis
+tags:
+- sega
+- debug tool
+- unused content
+- multiple revisions
+draft: false
 ---
 
 The game responsible for bringing Mighty and Ray into the world also has a bunch of debugging tools, a ton of cut content, and an interesting development history tucked away.
@@ -37,7 +43,7 @@ The table on the top half of the page is a list of the stages and their theme al
 
 ## Revision B
 
-Of course, the presence of a Rev. A and a Rev. C implies the existence of a Rev. B. Aside from the the logic of version increments, there's no definitive evidence that such a version existed.
+The presence of a Revision A and a Revision C implies the existence of a Revision B. Aside from the the logic of version increments, there's no definitive evidence that such a version existed.
 
 However, there was a music CD produced in 1995 with a remix of tracks from a variety of Sega arcade games, *Sega Arcade Selection D-RAM Remix*. One of those tracks is a megamix of SegaSonic the Hedgehog music. The game's logo is actually featured on the album cover.
 
@@ -930,18 +936,18 @@ Normally when we write cheats, we save the original values of what we're changin
 
 There are a couple things to note regarding the English language patch in particular.
 
-Though there is evidence that they were considering dynamic text (there are blank text bubbles and a full font, neither of which are used), all the messages in the game, Japanese and English, are composed of hardcoded graphics. This means we're stuck with whatever English lines were provided. The translation is good enough as is, though. For the most part, Eggman just antagonizes the player with lines like "Take this!" and "You'll never escape!" Many of the English lines are not direct translations of the Japanese, but convey the same general idea. And that's fine, but it does make it difficult to pair the English messages with the Japanese messages. Moreover, the dialogue graphics are scattered a bit internally, so we can't match them up by order.
+Though there is evidence that they were considering dynamic text (there are blank text bubbles and a full font, neither of which are used), all the messages in the game, Japanese and English, are composed of hardcoded graphics. This means we're stuck with whatever English lines were provided. The translation is good enough as is, though. For the most part, Eggman just antagonizes the player with lines like "Take this!" and "You'll never escape!" Many of the English lines are not direct translations of the Japanese, but convey the same general idea. And that's fine, but it does make it difficult to accurately pair the English lines with the Japanese lines. Moreover, the dialogue graphics are scattered a bit internally, so we can't match them up by order.
 
 So, there's a bit of "artistic license" in choosing which English lines to use. All of them convey, at least in part, the same message of the Japanese, if not the same words. The biggest difference would be the ending, however. In Japanese, it's the only remaining mention of Eggman's tower. (In an older version, there was a whole expository scene where Eggman spoke about his Almighty Tower, which we'll talk about later). In English, there's no mention of the tower at all. In fact, it's hard to say which of the English lines we have are meant for the ending scene as they're all pretty generic. The cheat has comments on which lines were chosen to be replaced.
 
-The other point to cover with the English patch is the choice between Eggman or Robotnik. Earlier I mentioned that there is evidence for both a World and a US release. The US release is obvious, with all the Robotnik artwork. However, there is one interesting bit of English:
+The other point to cover with the English patch is the presence of both Eggman and Robotnik in the dialogue, e.g.:
 
 ```
 Can you escape from Robotnik's island of traps?
 Can you escape from Eggman's island of traps?
 ```
 
-It's the same line, but with different names. This hints that there may have been a World release, one with the English translation but with the original Japanese Eggman graphics, while the US release would have gone full Robotnik.
+This is the primary evidence for the suposition that there would have been separate World and US releases: a World version with English text but use of Eggman name and Japanese character graphics, and a US verison that would have gone full Robotnik.
 
 As such, in the English patch above, you can choose which of these lines you wish to use. Assuming most people will play with Robotnik graphics, the default is set to that name. There are instructions within the cheat on how to change it to Eggman.
 

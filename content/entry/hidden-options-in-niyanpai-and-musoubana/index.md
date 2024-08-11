@@ -1,17 +1,21 @@
 ---
-title: 'Hidden Options in Niyanpai and Musoubana'
+title: 'Hidden Options in Niyanpai and Musōbana'
 date: 2015-02-07T03:35:00+09:00
-draft: false
-author: Ryou
+author: Name
 images:
 - img/niyanpai_title.png
+category: Disassembly / Analysis
+tags:
+- nichibutsu
+- debug tool
+draft: false
 ---
 
-More Mahjong Menus! Next up we have Nyanpai and Musoubana, two games that run on the same Nichibutsu hardware and share most of the same artwork. They also share a hidden option test.
+More Mahjong Menus! Next up we have Nyanpai and Musōbana, two games that run on the same Nichibutsu hardware and share most of the same artwork. They also share a hidden option test.
 
 <!--more-->
 
-Nyanpai (officially (mis-)transliterated as Niyanpai) is a twist on the tile-matching form of mahjong that most Westerners are familiar with, and Musoubana is a standard version of the hanafuda game Koi-koi. The art is pretty decent, and the Nyanpai gameplay is pretty easy to figure out for most people, making it one of the more playable porn games in MAME.
+Nyanpai (officially mis-transliterated as Niyanpai) is a twist on the tile-matching form of mahjong that most Westerners are familiar with, and Musōbana is a standard version of the hanafuda game Koi-koi. The art is pretty decent, and the Nyanpai gameplay is pretty easy to figure out for most people, making it one of the more playable porn games in MAME.
 
 # Nyanpai
 
@@ -19,9 +23,9 @@ Nyanpai (officially (mis-)transliterated as Niyanpai) is a twist on the tile-mat
 
 ![](img/niyanpai_options.png)
 
-First off we have a pretty standard options test. Get Checksum, interestingly, does nothing. The rest is pretty self-explanatory - Sexy Gal allows you to select one of the girls and go through each of their images. Continue, Ranking and Ending display those screens. Event allows you to select the pre-level cutscene for each level.
+First off we have a pretty standard options test. Get Checksum, interestingly, does nothing. The rest is pretty self-explanatory: Sexy Gal allows you to select one of the girls and go through each of their images. Continue, Ranking and Ending display those screens. Event allows you to select the pre-level cutscene for each level.
 
-Now, most Nichibutsu mahjong games have such a pretty similar menu already available in the dip switches. At first I thought that perhaps MAME wasn't emulating some of the switches, assuming they were unused. However, in doing some research, I came across [this blog](http://gfront.sblo.jp/archives/201501-1.html), with some beautiful photos of PCBs and flyers. The DIP layout in the image matches what's in MAME, so even if this menu was at one time DIP enabled, it is clearly not meant to be in the final version.
+Now, most Nichibutsu mahjong games have such a pretty similar menu already available in the dip switches. At first I thought that perhaps MAME wasn't emulating some of the switches, assuming they were unused. However, in doing some research, I came across [this guy's site](http://gfront.sblo.jp/archives/201501-1.html), with some beautiful photos of PCBs and flyers. The DIP layout in the image matches what's in MAME, so even if this menu was at one time DIP enabled, it is clearly not meant to be in the final version.
 
 I did spend some time disassembling, trying to find how it was normally enabled, and I did see some hints towards DIP settings, but I couldn't find anything definitive. For now, here's a MAME cheat to enable it:
 
@@ -44,9 +48,9 @@ As a bit of technical background, it checks the value at 0x404D3 for the 'mode' 
 
 ## Level Select
 
-![](img/niyanpai_mapselect.png)
+![](img/niyanpai_map_select.png.png)
 
-Now this is something I haven't seen in many mahjong games - an actual level select. Activating it by hacking was easy; trying to find out how it was naturally activated proved much more difficult, and several hours in I just gave up. It may have something to do with some bit of unknown/unemulated/developer hardware.
+Now this is something I haven't seen in many mahjong games: an actual level select. Activating it by hacking was easy; trying to find out how it was naturally activated proved much more difficult, and several hours in I just gave up. It may have something to do with some bit of unknown/unemulated/developer hardware.
 
 Anyway, it's a level select. Here's the MAME cheat for it:
 
@@ -71,7 +75,7 @@ Anyway, it's a level select. Here's the MAME cheat for it:
 
 Like the comment says, it loads during the level initialization, so you'll need to wait after the first cut scene for the menu to appear.
 
-# Musoubana
+# Musōbana
 
 ## Options Menu
 
@@ -79,20 +83,19 @@ Like the comment says, it loads during the level initialization, so you'll need 
 
 Like Nyanpai, and unlike most other Nichibutsu adult games, the test mode menu is not normally accessible, although it remains in the game fully working. Going through the menu we have:
 
- - Sound - A pretty standard sound test
- - Continue - Displays the CONTINUE? screen
- - Shoukai - Japanese for introduction; shows the screen when first meeting a girl
- - Nude - Mm-hmm.
- - Gan-men - Japanese for face; runs through the various faces displayed by the girls in a round
- - Item - Shows the card being laid out. Not sure if there's supposed to be more to it..
- - Sub Game - Screen goes blank for a second then returns to this menu. Interesting.
- - Bet - Runs through the stages of undress on the Bet screen
- - W. Up - Distributes the cards like it's about to start a game, then just sits there...
- - Makeoshimi - Japanese for sore loser; shows the screen after defeating one of the girls
- - Ending - Shows the ending.
+A - Sound: A pretty standard sound test<br />
+B - Continue: Displays the CONTINUE? screen<br />
+C - Shoukai: Japanese for introduction; shows the screen when first meeting a girl<br />
+D - Nude: Mm-hmm.<br />
+E - Gan-men: Japanese for face; runs through the various faces displayed by the girls in a round<br />
+F - Item: Shows the card being laid out. Not sure if there's supposed to be more to it..<br />
+G - Sub Game: Screen goes blank for a second then returns to this menu. Interesting.<br />
+H - Bet: Runs through the stages of undress on the Bet screen<br />
+I - W. Up: Distributes the cards like it's about to start a game, then just sits there...<br />
+J - Makeoshimi: Japanese for sore loser; shows the screen after defeating one of the girls<br />
+K - Ending: Shows the ending.
 
 I can't find the proper way to access this menu either, but I may just need to spend more time with it. For now, here's a MAME cheat to access it:
-
 
 ```
   <cheat desc="Options menu">

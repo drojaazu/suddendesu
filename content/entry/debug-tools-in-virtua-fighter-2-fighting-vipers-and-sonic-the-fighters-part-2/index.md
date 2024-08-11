@@ -1,9 +1,12 @@
 ---
 title: 'Debug tools in Virtua Fighter 2, Fighting Vipers and Sonic the Fighters - PART 2'
-author: Name
 date: 2019-12-10T21:48:00+09:00
+author: Ryou
 images:
 - img/vf2_games.jpg
+category: Disassembly / Analysis
+tags:
+- sega
 draft: false
 ---
 

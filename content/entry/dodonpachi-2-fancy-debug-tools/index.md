@@ -1,9 +1,12 @@
 ---
 title: 'DoDonPachi 2 - Fancy Debug Tools'
-author: Ryou
 date: 2022-02-14T20:15:00+09:00
+author: Ryou
 images:
 - img/ddp2_title.png
+category: Disassembly / Analysis
+tags:
+- cave
 draft: false
 ---
 

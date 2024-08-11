@@ -1,10 +1,15 @@
 ---
 title: 'Nebulas Ray Developer Credits and Enabling All Namco Nb 1 Test Options'
 date: 2015-07-20T00:00:00+09:00
-draft: false
 author: Ryou
 images:
 - img/nebulrayj_title.png
+category: Disassembly / Analysis
+tags:
+- namco
+- debug tool
+- hidden credits
+draft: false
 ---
 
 I seem to be running into this a lot lately, where standard test mode options are disabled or missing from test menus. Honestly, while it's always gratifying to dig out unused code and make it dance, these finds are kind of boring. But at least this game has some hidden developer credits. Those are always interesting!

@@ -1,9 +1,13 @@
 ---
 title: 'Namco Classics Collection - Dev messages and debug tools galore'
-author: Ryou
 date: 2018-04-04T20:24:00+09:00
+author: Ryou
 images:
 - img/ncv1j2_title.png
+category: Disassembly / Analysis
+tags:
+- debug tool
+- hidden credits
 draft: false
 ---
 

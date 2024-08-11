@@ -1,10 +1,14 @@
 ---
 title: 'Pocket Fighter / Super Gem Fighter - Secret Menu (finally) re-enabled!'
 date: 2015-07-08T01:27:00+09:00
-draft: false
 author: Ryou
 images:
 - img/pfghtj_title.png
+category: Disassembly / Analysis
+tags:
+- capcom
+- debug tool
+draft: false
 ---
 
 Oh man, I am EXCITED! Pocket Fighter was one of the first games I tried picking at when I started hacking old arcade games around the end of last year. I could clearly see from the raw dump alone that there was something hidden away here (it doesn't get more blatant than a string reading "SECRET TEST"). I [tweeted](https://twitter.com/suddendesu/status/567551981410340866) when I found the the entry routine early on, but I could [never quite coax the game](https://twitter.com/suddendesu/status/568217371355299840) into loading it properly. Until now...*\*suspenseful music\**

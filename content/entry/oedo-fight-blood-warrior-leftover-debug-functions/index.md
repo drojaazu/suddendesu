@@ -1,9 +1,13 @@
 ---
 title: 'Oedo Fight (Blood Warrior) - Leftover debug tools and more'
-author: Ryou
 date: 2017-03-03T22:08:00+09:00
+author: Ryou
 images:
 - img/oedfight_title.png
+category: Disassembly / Analysis
+tags:
+- debug tool
+- unused content
 draft: false
 ---
 

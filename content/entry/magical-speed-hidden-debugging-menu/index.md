@@ -1,10 +1,14 @@
 ---
 title: 'Magical Speed Hidden Debugging Menu'
 date: 2019-09-23T09:55:00+09:00
-draft: false
 author: Ryou
 images:
 - img/magspeed_title.png
+category: Disassembly / Analysis
+tags:
+- debug tool
+- unused content
+draft: false
 ---
 
 Today we look at Magical Speed, a simple but surprisingly fun Allumer game based on the [card game Speed](https://en.wikipedia.org/wiki/Speed_(card_game)). Turns out there's a hidden debug menu in the code that's super simple to re-enable, and lots (LOTS) of unused graphics.

@@ -1,19 +1,24 @@
 ---
 title: 'Akuu/Air Gallet - Stage select, invincibility, region select and more'
 date: 2015-10-28T23:03:00+09:00
-draft: true
 author: Ryou
 images:
 - img/agallet_title.png
+category: Disassembly / Analysis
+tags:
+- debug tool
+- input code
+draft: false
 ---
 
-If there's one constant we can rely on, it's shooting games having leftover menus.
+If there's one constant we can rely on, it's STGs having leftover menus.
 
 <!--more-->
 
 I loaded up Air Gallet (pronounced 'Air Garret' according to the title screen announcer, who also emphatically states that this game 'blows your socks off'), a vertical shooter by Bandai running on the Cave hardware and gave it a quick look. Right away, it was clear there was some juicy bits to dig out:
 
 ![](img/agallet_strings.png)
+
 ![](img/agallet_menu1.png)
 
 Unlisted options in the test mode menu? Oh boy! Looks like invincibility, pause, game reset and a stage select. I started poking around, but found that (unfortunately) the menu code doesn't use any reference tables. All the pointers for strings and functions are hard-coded for the standard nine options, which means there was no clear way to find these extra functions. So what to do in a situation like this? Well, there are some strings above that seem to be a part of the stage select menu:
@@ -42,7 +47,7 @@ There it is, although the palette is clearly incorrect. I can cycle through the 
 
 It looks like it's testing bit 0 of the word (2 bytes) at 0x100094 and will branch to the subroutine return if it's not set. But if it is set it will branch to our stage select. So if we set 0x100095 (since it's only testing the lowest bit of the word) to 1...
 
-## Stage Select
+# STAGE SELECT
 
 ![](img/agallet_roundsel2.png)
 
@@ -96,7 +101,7 @@ Here are the MAME cheats to enable these settings:
   </cheat>
 ```
 
-## Country Setting
+# COUNTRY SETTING
 
 ![](img/agallet_region.png)
 
@@ -115,4 +120,4 @@ From the DIPSW menu, highlight Factory Settings and press P1 Right + P1 Button 2
 
 Note that you need to choose the exit option on both test mode menus for the country setting to be saved. Apparently it saves it to the NVRAM, as the country is saved between restarts.
 
-That's it for Air Gallet for now. More coming soon!
+More stuff to come! Be sure to [follow my twitter feed](https://twitter.com/suddendesu), as I tend to post previews of my findings there before they appear on the site.

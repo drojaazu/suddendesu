@@ -1,10 +1,13 @@
 ---
 title: 'Hidden Menu in Miyasu Nonki No Quiz 18kin'
 date: 2015-02-27T20:00:00+09:00
-draft: false
 author: Ryou
 images:
 - img/quiz18k_title.png
+category: Disassembly / Analysis
+tags:
+- debug tool
+draft: false
 ---
 
 Yet another adult arcade quiz game, but this one has some pretty well-drawn and amusing artwork by [eromanga artist Miyasu Nonki](https://www.mangaupdates.com/authors.html?id=4951)! A while back I found the text for an alternate test menu, with object and background checks. I could never really track it down properly with the standard MAME disassembly. Maybe I just wasn't trying hard enough, because when I gave it another go yesterday, this time in IDA, I was finally able to find the routine as well as the non-hacked method for activating it.

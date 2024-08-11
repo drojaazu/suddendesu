@@ -1,0 +1,13 @@
+{{- $page := .page }}
+
+{{- with $page.GetTerms "tags" }}
+{{- $label := (index . 0).Parent.LinkTitle }}
+<div class="callout crt-text record-tags">
+  <div>🏷</div>
+  <ul>
+    {{- range . }}
+    <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+    {{- end }}
+  </ul>
+</div>
+{{- end }}

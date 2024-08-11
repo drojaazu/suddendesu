@@ -1,13 +1,16 @@
 ---
 title: 'Debug Leftovers in Dark Seal 2 / Wizard Fire'
-author: Ryou
 date: 2015-07-04T02:19:00+09:00
+author: Ryou
 images:
 - img/darkseal2_title.png
+category: Disassembly / Analysis
+tags:
+- data east
 draft: false
 ---
 
-I'm still alive! It's the busy season at my job, so between that and working on other projects, I haven't been doing much digital archaeology. Tonight I spent some time doing just that.
+I'm still alive! It's the busy season at work, so between that and working on other projects, I haven't been doing much digital archaeology research. Tonight I spent some time doing just that.
 
 So! Dark Seal 2 (known as Wizard Fire in the west) is a fantasy themed beat-em-up. And apparently it is a variety of debug functions remaining...
 

@@ -1,9 +1,15 @@
 ---
 title: "Tee'd Off - A Saucy Secret and Hidden Dev Credits (NSFW)"
-author: Ryou
 date: 2022-11-16T20:40:00+09:00
+author: Ryou
 images:
 - img/teedoffj_title.png
+category: Disassembly / Analysis
+tags:
+- tecmo
+- nsfw
+- easter egg
+- hidden message
 draft: false
 ---
 

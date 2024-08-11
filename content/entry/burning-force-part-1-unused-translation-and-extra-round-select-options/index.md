@@ -1,9 +1,15 @@
 ---
 title: 'Burning Force, Part 1 - Unused translation and extra round select options'
-author: Ryou
 date: 2015-12-19T01:10:00+09:00
+author: Ryou
 images:
 - img/burnforc_title.png
+category: Disassembly / Analysis
+tags:
+- namco
+- stage select
+- multiple revisions
+- easter egg
 draft: false
 ---
 

@@ -1,10 +1,13 @@
 ---
 title: 'Hidden Developer Credits in Two Mahjong Games'
 date: 2015-02-04T00:38:00+09:00
-draft: false
 author: Ryou
 images:
 - img/ojankoy_title.png
+category: Disassembly / Analysis
+tags:
+- easter egg
+draft: false
 ---
 
 Still hacking around with MAME games, and I'm lovin' it! This time I opened up Ojanko Yakata (roughly translated as Jong Girl Mansion), one of the many, many adult mahjong games to grace game centers. I spotted some ASCII in the memory dump that looked like a hidden developer credits screen and investigated...

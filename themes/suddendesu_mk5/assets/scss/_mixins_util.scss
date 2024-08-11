@@ -1,0 +1,33 @@
+/*
+	general utility mixins
+*/
+
+@mixin pad($h, $v) {
+	padding-inline: $h;
+	padding-block: $v;
+}
+
+@mixin pad-h($h-start, $h-end:$h-start) {
+	padding-inline: $h-start $h-end;
+}
+
+@mixin pad-v($v-start, $v-end:$v-start) {
+	padding-block: $v-start $v-end;
+}
+
+@mixin margin($h, $v) {
+	margin-inline: $h;
+	margin-block: $v;
+}
+
+@mixin margin-h($h-start, $h-end:$h-start) {
+	margin-inline: $h-start $h-end;
+}
+
+@mixin margin-v($v-start, $v-end:$v-start) {
+	margin-block: $v-start $v-end;
+}
+
+@mixin margin-auto {
+	margin-inline: auto;
+}

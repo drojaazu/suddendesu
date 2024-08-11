@@ -1,9 +1,14 @@
 ---
 title: 'Original Strider Hiryuu arcade title screen'
-author: Ryou
 date: 2019-11-27T19:43:00+09:00
+author: Ryou
 images:
 - img/striderj_title.png
+category: Disassembly / Analysis
+tags:
+- capcom
+- prototype
+- unused content
 draft: false
 ---
 

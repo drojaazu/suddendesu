@@ -1,9 +1,14 @@
 ---
 title: 'Raimais: Pause, level select, invulnerability... and unseen endings!'
-author: Ryou
 date: 2017-07-31T12:34:00+09:00
+author: Ryou
 images:
 - img/raimais_title.png
+category: Disassembly / Analysis
+tags:
+- taito
+- debug tool
+- unused content
 draft: false
 ---
 

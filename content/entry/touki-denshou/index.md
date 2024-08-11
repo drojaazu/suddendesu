@@ -1,9 +1,14 @@
 ---
 title: 'Tōki Denshō - Disabled Test Options, Unused Strings and a Cut Character'
-author: Ryou
 date: 2018-11-28T20:04:00+09:00
+author: Ryou
 images:
 - img/tkdenshoa_title.png
+category: Disassembly / Analysis
+tags:
+- tecmo
+- debug tools
+- unused content
 draft: false
 ---
 

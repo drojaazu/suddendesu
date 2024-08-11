@@ -1,10 +1,16 @@
 ---
 title: ' Panel & Variety Akamaru Q - All sorts of test options!'
-author: Ryou
 date: 2015-04-15T00:15:00+09:00
-draft: false
+author: Ryou
 images:
 - img/akamaru_title.png
+category: Disassembly / Analysis
+tags:
+- dynax
+- easter egg
+- debug tool
+- input code
+draft: false
 ---
 
 Life is finally returning to normalcy (whatever that is) after moving into my new house. And that means back to hacking old games in my spare time! Today we'll look at Akamaru Q Joushou, a game you probably haven't bothered with unless your Japanese is pretty good. At its heart, it's a quiz game but has a variety of simple action and word games as well to make things interesting. It has a heck of a set of debugging tools... and a very interesting developer easter egg!

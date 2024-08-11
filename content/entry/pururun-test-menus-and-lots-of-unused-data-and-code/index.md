@@ -1,9 +1,14 @@
 ---
 title: 'Pururun - Test Menus, Unused Data, and Prototype Versions'
-author: Ryou
 date: 2019-05-02T22:19:00+09:00
+author: Ryou
 images:
 - img/pururun_title.png
+category: Disassembly / Analysis
+tags:
+- unused content
+- prototype
+- debug tool
 draft: false
 ---
 

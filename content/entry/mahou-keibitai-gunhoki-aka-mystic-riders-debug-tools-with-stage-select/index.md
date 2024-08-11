@@ -1,9 +1,12 @@
 ---
 title: 'Mahou Keibitai Gunhōki (aka Mystic Riders) - Debug Tools with Stage Select'
-author: Ryou
 date: 2019-10-30T23:00:00+09:00
+author: Ryou
 images:
 - img/gunhohki_title.png
+category: Disassembly / Analysis
+tags:
+- debug tool
 draft: false
 ---
 

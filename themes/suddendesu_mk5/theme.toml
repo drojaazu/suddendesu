@@ -1,0 +1,8 @@
+name = 'Theme name'
+license = 'MIT'
+description = 'suddendesu Mk5b'
+
+# If the theme has a single author
+[author]
+  name = 'Damian R'
+  homepage = 'http://sudden-desu.net'

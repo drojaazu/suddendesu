@@ -1,10 +1,14 @@
 ---
 title: 'Another SECRET MENU! - Dungeons & Dragons: Shadow Over Mystara'
 date: 2015-10-01T19:52:00+09:00
-draft: false
 author: Ryou
 images:
 - img/ddmyst_title.png
+category: Disassembly / Analysis
+tags:
+- capcom
+- debug tool
+draft: false
 ---
 
 Still alive, just been busy with life and other hobbies in the meantime. Data hacking has been on my mind though, and it's about time to get back to that. For now, I still have a handful of things in my queue to post about, including Shadow Over Mystara for the CPS-2 system!

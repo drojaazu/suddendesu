@@ -1,0 +1,15 @@
+{{ define "main" }}
+<h1 class="callout record-header">{{ .Title }}</h1>
+{{ .Content }}
+{{ range .Pages }}
+{{ partial "article_head.html" . -}}
+<div class='record-body'>
+	{{ if (.Param "images") }}
+	<figure><a href='{{ .RelPermalink }}'><img src='{{ printf "%s" (index (.Param "images") 0) | printf "%s%s" .RelPermalink }}'></a></figure>
+	{{ end }}
+	{{ .Summary }}
+</div>
+{{ partial "article_foot.html" . -}}
+{{ end }}
+{{ partial "pagination" . }}
+{{ end }}

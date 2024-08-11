@@ -1,0 +1,14 @@
+{{ define "main" }}
+{{ $entries := where site.RegularPages "Type" "entry" }}
+{{ range (.Paginate $entries 5).Pages.ByDate.Reverse }}
+{{ partial "article_head.html" . -}}
+<div class='record-body'>
+	{{ if (.Param "images") }}
+	<figure><a href='{{ .RelPermalink }}'><img src='{{ printf "%s" (index (.Param "images") 0) | printf "%s%s" .RelPermalink }}'></a></figure>
+	{{ end }}
+	{{ .Summary }}
+</div>
+{{ partial "article_foot.html" . -}}
+{{ end }}
+{{ partial "pagination" . }}
+{{ end }}

@@ -1,9 +1,14 @@
 ---
 title: 'Aurail - Invincibility and level select'
-author: Ryou
 date: 2020-04-05T02:12:00+09:00
+author: Ryou
 images:
 - img/aurailjd_title.png
+category: Disassembly / Analysis
+tags:
+- sega
+- westone
+- debug tool
 draft: false
 ---
 

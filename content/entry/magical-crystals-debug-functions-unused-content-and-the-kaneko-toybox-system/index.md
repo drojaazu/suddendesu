@@ -1,9 +1,14 @@
 ---
 title: 'Magical Crystals - Debug functions, unused content and the Kaneko ToyBox system'
-author: Ryou
 date: 2022-01-12T00:00:00+09:00
+author: Ryou
 images:
 - img/mgcrystlj_title.png
+category: Disassembly / Analysis
+tags:
+- kaneko
+- unused content
+- prototype
 draft: false
 ---
 
@@ -23,9 +28,9 @@ There are currently three dumps of the game, differentiated by region and build 
 
 The two later revisions are almost entirely identical, but the code for the earlier one is notably different. The differences are not simple bug fixes or other mostly "invisible" changes as you may expect from an incremental version. Instead, the earlier revision lacks a couple of important gameplay aspects and a bunch of refinements found in the later revisions.
 
-## Revision Differences
+# Revision Differences
 
-### Gameplay Features
+## Gameplay Features
 
 There are two major features missing in the older version.
 
@@ -58,7 +63,7 @@ The second missing feature is also related to attacks. In the later revision, fa
 
 We'll revisit both of these missing features later in the article.
 
-### Content Differences
+## Content Differences
 
 This list is certainly not exhaustive. These are just some of the changes I noticed while researching.
 
@@ -107,7 +112,7 @@ In the earlier version, cannons do not leave behind craters after being destroye
 
 The later version has a solid background and a shadow for dialogue boxes.
 
-## Regional Differences
+# Region Differences
 
 All of the regional differences are language based.
 
@@ -140,7 +145,7 @@ The staff roll has Japanese section headers.
 
 And of course, the dialogue boxes are in their respective languages, with the English version being a bit awkward with its wording. The Japanese version has a couple extra text boxes which do not appear in English, but we'll discuss them and all of the dialogue text further in one go, in the Unused Content section below.
 
-## Location Test?
+# Possible Location Test
 
 Given that a couple of fundamental gameplay features are not present and that multiple elements are unfinished or changed drastically, it does not seem that revisions are incremental fixes to address glitches. Instead, it appears that the later revision is the final version while the 1991-12-10 dump is a location test or some other kind of prototype.
 
@@ -166,7 +171,7 @@ Of note here is the region indication of "H" on the ROMs, which does not match t
 
 If this were an internal prototype, we would expect to see handwritten labels and risers, like on [the Wing Force prototype](http://www.lucaelia.com/mame.php/2016/Saving-Wing-Force). Instead, this looks like a production board. To me, an unfinished but nearly complete game on production hardware indicates a location test.
 
-## Additional Revisions?
+# Possible Additional Versions
 
 The MAME driver says that there is a "known undumped older Japan set" and links to this image:
 

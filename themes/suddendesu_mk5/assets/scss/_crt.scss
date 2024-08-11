@@ -1,0 +1,116 @@
+/*
+  CRT Effects
+*/
+
+$crt-font: $font-condensed;
+
+// size of shadow for blur on text
+$crt-text-blur: 2px;
+
+$crt-edge-color: rgba(0,0,0,0.9);
+
+// size of shadows on the edges of the "screen"
+$crt-edge-shadow-size: 1.3rem;
+
+
+@mixin crt-bg {
+	background-image: url($path-img+'rgb2.png');
+}
+
+.crt-bg {
+	@include crt-bg;
+}
+
+@mixin crt-text {
+	font-family: $crt-font;
+	letter-spacing: 0.1em;
+	text-shadow: 0 0 $crt-text-blur currentcolor;
+
+	svg {
+		fill: currentcolor;
+		filter: drop-shadow(0 0 $crt-text-blur currentcolor);
+	}
+}
+
+.crt-text {
+	@include crt-text;
+}
+
+@mixin crt-edges {
+	box-shadow: inset 0 0 $crt-edge-shadow-size $crt-edge-color;
+}
+
+.crt-edges {
+	@include crt-edges;
+}
+
+@mixin crt-edges-v {
+	box-shadow: inset 0 $crt-edge-shadow-size $crt-edge-shadow-size (-$crt-edge-shadow-size) $crt-edge-color,
+		inset 0 (-$crt-edge-shadow-size) $crt-edge-shadow-size (-$crt-edge-shadow-size) $crt-edge-color;
+}
+
+.crt-edges-v {
+	@include crt-edges-v;
+}
+
+@mixin crt-edges-h {
+	box-shadow: inset $crt-edge-shadow-size 0 $crt-edge-shadow-size (-$crt-edge-shadow-size) $crt-edge-color,
+		inset (-$crt-edge-shadow-size) 0 $crt-edge-shadow-size (-$crt-edge-shadow-size) $crt-edge-color;
+}
+
+.crt-edges-h {
+	@include crt-edges-h;
+}
+
+// command line prompt effect
+$crt-prompt-content: '>';
+
+$crt-cursor-content: '█';
+
+@keyframes cursor {
+	0% {
+		opacity: 0.5;
+	}
+	15% {
+		opacity: 0;
+	}
+	49% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	99% {
+		opacity: 1;
+	}
+}
+
+.crt-prompt {
+	&:before {
+		content: $crt-prompt-content;
+	}
+
+	&:after {
+		content: $crt-cursor-content;
+		animation: cursor 1.1s infinite;
+		font-size: 0.9em;
+		vertical-align: text-top;
+	}
+}
+
+@keyframes fizzle {
+	$steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      clip: rect(random(100)+px, 9999px, random(100)+px, 0);
+			transform: skew((random(150) / 100) + deg);
+			opacity: 0.91 + (random() * (1.00 - 0.91))
+    }
+  }
+
+}
+
+.crt-fizzle {
+	display:block;
+	animation: fizzle 900ms infinite;
+}

@@ -1,10 +1,14 @@
 ---
 title: 'Naname de Magic - Debug Tools and Graphics Viewer'
 date: 2019-10-30T23:00:00+09:00
-draft: false
 author: Ryou
 images:
 - img/naname_title.png
+category: Disassembly / Analysis
+tags:
+- atlus
+- debug tool
+draft: false
 ---
 
 A cute falling blocks style puzzle game with a spellcasting twist and a surprisingly detailed CPU Player debugging tool.

@@ -1,10 +1,13 @@
 ---
 title: 'Unused Ending in Momoko 120%'
 date: 2015-01-25T00:57:00+09:00
-draft: false
 author: Ryou
 images:
 - img/momoko_title.png
+category: Disassembly / Analysis
+tags:
+- unused content
+draft: false
 ---
 
 The MAME hacking continues! [Momoko 120%](http://www.mamedb.com/game/momoko) is a platform shooter with an [interesting history](http://en.wikipedia.org/wiki/Momoko_120%25). I've always enjoyed it and I've begun doing a full disassembly of the code, partially to learn Z80 assembly and also, as always, to look for any bits of leftovers or unused data. And find something I did!

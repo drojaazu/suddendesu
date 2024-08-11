@@ -4,6 +4,16 @@
 hugo new content posts/new-post-name-here
 ```
 
+# tags
+
+- debug tool
+- prototype
+- unused content
+- easter egg
+- copy warning
+- hidden credits
+- input code
+
 # CSS styles
 
 ## imgtrans
@@ -22,4 +32,45 @@ needs raw HTML to implement properly
 	</div>
 </div>
 ```
-ryou	
+
+# Dev status
+
+## imgtrans
+
+the imgtrans thing used on the tinkle pit article is kind of silly, find an alternate solution
+
+## Meta description
+
+we want a meta description tag on each page, this should be set in the document header
+
+https://developer.chrome.com/docs/lighthouse/seo/meta-description/?utm_source=lighthouse&utm_medium=devtools
+
+## DRY
+
+unify html for home/list/single so that article entries look the samem
+
+## mobile
+
+testing needed
+
+## top bar
+
+what do we want up there?
+
+Home - listing of all entries by date
+
+About
+
+Tags
+
+Search
+
+## tables not centered
+
+## remove indentation from example xml (cheats)
+
+## fix broken tables
+
+for example in the Segasonic Arcade article
+
+

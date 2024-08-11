@@ -9,6 +9,7 @@ categories:
 - Disassembly / Analysis
 tags:
 - namco
+- debug tool
 ---
 
 I've been playing around with the MAME debugger recently. I loaded up Tinkle Pit, a cute, simple (at first...) maze game recently and started playing around with altering memory values. I found what appeared to be the value for the current game mode, and began messing with it, and then came across an odd screen...
@@ -227,7 +228,7 @@ Simply the names and roles, as well as a hint to 1CC the game. If you manage to 
 
 Aside from the different credits, it looks like that final spanking image is not used in the normal ending.
 
-This is another one of those things like <a href="/entry/mouja-unused-test-menu-debug-functions-easter-eggs-and-more">the bonus shooting game in Mouja</a> or <a href="/entry/raimais-pause-and-level-select">the hidden ending in Raimais</a> where it's possible that someone has seen this before but the requirements to get to it are hard enough that such people are pretty rare. In any case, I didn't see it documented anywhere in my cursory google searches (though [this site](https://strategywiki.org/wiki/Tinkle_Pit/Final_Battle) has the special credits listed out, but doesn't mention the 1cc requirement, which makes me think it was beaten using savestates and the author didn't realized it was a special ending). Another obscure easter egg brought to light!
+This is another one of those things like [the bonus shooting game in Mouja](/entry/mouja-unused-test-menu-debug-functions-easter-eggs-and-more) or [the hidden ending in Raimais](/entry/raimais-pause-and-level-select) where it's possible that someone has seen this before but the requirements to get to it are hard enough that such people are pretty rare. In any case, I didn't see it documented anywhere in my cursory google searches (though [this site](https://strategywiki.org/wiki/Tinkle_Pit/Final_Battle) has the special credits listed out, but doesn't mention the 1cc requirement, which makes me think it was beaten using savestates and the author didn't realized it was a special ending). Another obscure easter egg brought to light!
 
 # Alternate Copyright
 
@@ -245,6 +246,6 @@ I would love to know more about why this is here and what Mitsuji's relationship
 
 # Name Entry Substitutions
 
-There are a bunch of text substitutions for the name entry screen when you get a high score, which <a href="/entry/tinkle-pit-name-substitutions">I wrote about in a later post.</a>
+There are a bunch of text substitutions for the name entry screen when you get a high score, which [I wrote about in a later post.](/entry/tinkle-pit-name-substitutions)
 
 I think that finally wraps up Tinkle Pit, three years after I started with it!

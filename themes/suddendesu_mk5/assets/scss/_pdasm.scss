@@ -1,0 +1,86 @@
+/*
+	prettydasm styling
+*/
+
+// pdasm specific colors
+$pdasm-opcode: #81a2be;
+$pdasm-register: #f0c674;
+$pdasm-hex-value: #8abeb7;
+$pdasm-symbol: #de935f;
+
+table.pdasm {
+
+	background: $color-bg-for-light-text;
+
+	& > tr td {
+		@include pad-h(0.5em);
+		border: none;
+	}
+
+	& > tr td:first-child {
+		color: $color-crt-white;
+	}
+
+	& > tr td:nth-child(2) {
+		color: $pdasm-opcode;
+		border-left: 2px dotted #000;
+	}
+
+	caption {
+		font-family: $font-sans;
+		color: $color-crt-white;
+		@include pad-h(1em);
+
+		font-size: 0.8rem;
+		text-align: right;
+
+		&::before {
+			vertical-align: text-top;
+			content: url(#{$path-img}chip.svg);
+			display: inline-block;
+			height: 1em;
+			width: 1em;
+			fill: currentcolor;
+			margin-right: 0.2em;
+		}
+	}
+}
+
+.pdasm-size {
+	color: inherit;
+}
+
+.pdasm-plain {
+	color: $color-white !important;
+}
+
+.pdasm-comment svg {
+	fill: $color-text;
+}
+
+.pdasm-hex-value {
+	color: $pdasm-hex-value;
+}
+
+.pdasm-hex-notation {
+	color: lighten($pdasm-hex-value, 10);
+}
+
+.pdasm-reg {
+	color: $pdasm-register;
+}
+
+.pdasm-symbol {
+	color: $pdasm-symbol;
+}
+
+#pdasm-symbolbox,
+#pdasm-commentbox {
+	border: 1px solid $color-white;
+	border-radius: $radius-quarter;
+	background: $color-black;
+	padding: 0.5em;
+	color: $color-text;
+	max-width: 600px;
+	transition: opacity 0.15s ease-in-out;
+}

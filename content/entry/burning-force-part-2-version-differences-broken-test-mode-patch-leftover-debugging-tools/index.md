@@ -1,9 +1,15 @@
 ---
 title: 'Burning Force, Part 2 - Version differences, Broken test mode patch, Leftover debugging tools'
-author: Ryou
 date: 2016-01-17T20:39:00+09:00
+author: Ryou
 images:
 - img/burnforc_ending.png
+category: Disassembly / Analysis
+tags:
+- namco
+- stage select
+- multiple revisions
+- easter egg
 draft: false
 ---
 

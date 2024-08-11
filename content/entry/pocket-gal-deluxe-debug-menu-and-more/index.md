@@ -1,10 +1,15 @@
 ---
 title: 'Pocket Gal Deluxe - Debug Menu and more'
 date: 2015-01-31T05:30:00+09:00
-draft: false
 author: Ryou
 images:
 - img/pktgaldxj_cover.png
+category: Disassembly / Analysis
+tags:
+- data east
+- debug tools
+- copy warning
+draft: false
 ---
 
 There's a [request on mamecheat](http://www.mamecheat.co.uk/forums/viewtopic.php?f=1&t=11547) for Pocket Gal Deluxe, and I figured I'd give it a go. I played around for a bit, then discovered a nice, juicy string table with some intriguing bits of text. After a few hours of working backwards through the disassembly, I've discovered a number of interesting bits in the game!

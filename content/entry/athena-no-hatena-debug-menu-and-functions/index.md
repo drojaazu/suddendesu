@@ -1,10 +1,12 @@
 ---
 title: 'Athena no Hatena - Debug menu and functions'
 date: 2019-08-12T08:45:00+09:00
-draft: false
+category: Disassembly/Analysis
 author: Ryou
 images:
 - img/atehate_title.png
+description: An analysis of the debugging functions within Athena no Hatena
+draft: false
 ---
 
 Getting back to our roots of hacking on obscure Japanese quiz/mahjong games that no one else cares about, we're taking apart Athena no Hatena today!

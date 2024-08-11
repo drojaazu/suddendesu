@@ -1,9 +1,12 @@
 ---
 title: 'Quiz Sailor Moon - Disabled data viewers and Game pause/reset'
-author: Ryou
 date: 2017-04-10T00:00:00+09:00
+author: Ryou
 images:
 - img/quizmoon_title.png
+category: Disassembly / Analysis
+tags:
+- debug tool
 draft: false
 ---
 
@@ -114,7 +117,9 @@ The code for this viewer begins at 0x63DF8.
 
 Cycles through all 8,860 (!) questions in the game. There is a genre number table to the left, though I haven't been able to figure out what it matches up with. The pink text in the bar above the answers is the text name of the genre of questions. Question 0 and 1 appear to be either test questions or broken (the genre for them is 外字1 - non-standard kanji or foreign characters).
 
-P1 Left and Right cycle the questions by one, while P1 Up/Down cycles by 100. The code for this viewer begins at 0x651AA.
+P1 Left and Right cycle the questions by one, while P1 Up/Down cycles by 100.
+
+The code for this viewer begins at 0x651AA.
 
 ## Picture Viewer 2
 
@@ -124,7 +129,9 @@ P1 Left and Right cycle the questions by one, while P1 Up/Down cycles by 100. Th
 
 There is another image viewer, though not as well put-together as the others. There are only a handful of pictures, several of which are repeats and not positioned correctly.
 
-P1 Up or Right to scroll up and P1 Down or Left to scroll down through the images. The code for this viewer begins at 0x65040.
+P1 Up or Right to scroll up and P1 Down or Left to scroll down through the images.
+
+The code for this viewer begins at 0x65040.
 
 # Broken data viewers
 

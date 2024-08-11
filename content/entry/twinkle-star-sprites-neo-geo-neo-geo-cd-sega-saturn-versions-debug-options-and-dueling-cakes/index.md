@@ -1,10 +1,15 @@
 ---
 title: 'Twinkle Star Sprites - Debug Options and Dueling Cakes'
 date: 2019-12-06T11:00:00+09:00
-draft: false
 author: Ryou
 images:
 - img/twinspri_title.png
+category: Disassembly / Analysis
+tags:
+- adk
+- debug tool
+- easter egg
+draft: false
 ---
 
 One of the most loved games by fans of the legendary Neo-Geo has a boatload of debug tools and a hidden mini game...

@@ -1,9 +1,12 @@
 ---
 title: 'Object menu, debug tools and more in Kyukyoku Sentai Dadandaan (Monster Maulers)! - Part 2'
-author: Ryou
 date: 2015-03-15T12:11:00+09:00
+author: Ryou
 images:
 - img/dadandrn_ed.png
+category: Disassembly / Analysis
+tags:
+- konami
 draft: false
 ---
 

@@ -1,5 +1,0 @@
-{{ if .IsBlock }}<figure class="{{ .Attributes.class }}">
-	<img src="{{ .Destination | safeURL }}" {{with .Title }}alt="{{ . }}" {{ end }} />
-	{{ with .Text }}<figcaption>{{ . }}</figcaption>{{ end }}
-</figure>
-{{ else }}<img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" />{{ end }}

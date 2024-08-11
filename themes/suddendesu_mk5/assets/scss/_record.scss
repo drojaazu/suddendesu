@@ -1,0 +1,306 @@
+
+.record-entry {
+	@include pad-v(1.5rem);
+	
+}
+
+.record-header {
+	@include header-text;
+	color: $color-grey;
+	//background-color: $color-off-white;
+	background-color: $color-crt-theme;
+	font-size: 2rem;
+	@include pad-v(0.25em);
+	font-weight: normal;
+	line-height: 1.25em;
+	
+	&	:hover {
+		text-decoration: none;
+	}
+
+}
+
+.record-body {
+
+	& *:focus-visible {
+		outline: 2px solid $color-crt-theme;
+	}
+
+	& > * {
+		@include margin-v(1.25rem);
+		@include margin-h(auto);
+	}
+
+	pre, blockquote, table, code, hr {
+		max-width: 90%;
+	}
+
+	// ensure all non-centered items (except things like h1/h2 headers) have a bit of margin
+	p, div {
+		@include margin-h(2.2rem);
+	}
+
+	ul, ol {
+		@include margin-h(5rem);
+	}
+
+	p {
+		text-align: justify;
+		text-indent: 1em;
+	}
+
+	a {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+		color: $color-link;
+
+		&:hover {
+			text-decoration-style: solid;
+		}
+	}
+
+	hr {
+		width: 80%;
+		border: none;
+		border-top: 2px dashed $color-white;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@include header-text;
+		@include indent;
+	}
+
+	h1 {
+		@include callout;
+		@include pad-v(0.25em);
+	}
+
+	img, table, blockquote, pre {
+		border: 2px solid $color-black;
+		border-radius: $radius-half;
+	}
+
+	img {
+		object-fit: cover;
+	}
+
+	a img {
+		width: 100%;
+	}
+
+	p img, & > figure {
+		width: 70%;
+		
+	}
+
+	p:has(img) {
+		text-align: center;
+		display:flex;
+		flex-flow:row;
+		justify-content: space-evenly;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	figure {
+		display:flex;
+		flex-flow: column;
+		@include margin-auto;
+		
+
+		& > figcaption {
+			@include margin-h(1rem);
+		}
+	}
+	
+	figure.imgbar, div.imgbar {
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		flex-wrap: wrap;
+	}
+
+	figcaption, caption {
+		text-align: left;
+		caption-side: bottom;
+		font-style: italic;
+		font-size: 1.0rem;
+	}
+
+
+	table {
+		border-collapse: separate;
+		border-spacing: 0;
+		font-family: monospace;
+		@include margin-h(auto);
+
+		th,
+		td {
+			padding: 0.25em 1em;
+			text-align: left;
+			vertical-align: top;
+			border-left: 2px dotted #000;
+		}
+
+		th:first-child, td:first-child {
+			border:none;
+		}
+
+		tr {
+			display: table-row;
+			vertical-align: inherit;
+		}
+
+		th:first-child {
+			border-radius: $radius-half 0 0 0;
+		}
+		th:last-child {
+			border-radius: 0 $radius-half 0 0;
+		}
+		tr:last-child {
+			td:first-child {
+				border-radius: 0 0 0 $radius-half;
+			}
+			td:last-child {
+				border-radius: 0 0 $radius-half 0;
+			}
+		}
+
+		thead {
+			display: table-header-group;
+			vertical-align: middle;
+			@include invert-bar;
+			font-weight: bold;
+			font-size: 1.1rem;
+		}
+
+		tbody {
+			tr:nth-child(odd) {
+				background: lighten($color-darken, 6);
+			}
+			tr:nth-child(even) {
+				background: $color-darken;
+			}
+		}
+	}
+
+	pre,
+	blockquote {
+		width: fit-content;
+		min-width: 50%;
+		padding: 1rem;
+		@include margin-auto;
+		overflow: auto;
+		background: $color-bg-for-light-text;
+		tab-size: 2;
+		p {
+			text-indent: 0;
+		}
+	}
+
+	pre, code {
+		font-family: $font-monospace;
+		white-space: pre-wrap;
+	}
+
+	blockquote {
+		font-style: italic;
+	}
+}
+
+.record-footer {
+	//color: $color-off-white;
+	display: flex;
+	flex-wrap: wrap;
+	@include pad-v(0.25em);
+
+	div:last-child {
+		margin-left: auto;
+	}
+}
+
+.record-tags {
+	@include pad-v(0.25em);
+
+	a {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+
+		&:hover {
+			text-decoration-style: solid;
+		}
+	}
+}
+
+.pagination {
+	display: flex;
+	justify-content: right;
+	gap: 0.1em;
+
+
+	color: $color-grey;
+	//background-color: $color-off-white;
+	background-color: $color-crt-theme;
+	font-size: 2rem;
+	line-height: 1em;
+	
+	li {
+		padding: 0.25em;
+		min-width: 1.25em;
+		text-align: center;
+		&:hover {
+			background: $color-grey;
+			color: $color-crt-amber;
+    }
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	[aria-disabled="true"] {
+		display:none;
+	}
+
+	.active  {
+		background: $color-grey;
+		color: $color-crt-amber;
+	}
+}
+
+.tinyimg {
+	
+	img {
+		border: none !important;
+		border-radius: 0 !important;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		// transform: scale(4);
+	}
+}
+
+img.zoom {
+	transition: transform 0.2s, background-color 0.2s;
+	cursor: zoom-in;
+	border: none !important;
+	border-radius: 0 !important;
+	image-rendering: pixelated;
+	image-rendering: -moz-crisp-edges;
+
+	&:active {
+		border: 2px solid $color-black !important;
+		border-radius: 2px;
+		background: $color-white url($path-img+'body_bg.png');;
+		transform: scale(2);
+		cursor: zoom-out;
+		padding: 0.25rem;
+
+		backface-visibility: hidden;
+	}
+
+}

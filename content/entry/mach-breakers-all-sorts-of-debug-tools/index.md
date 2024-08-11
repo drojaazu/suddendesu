@@ -320,9 +320,9 @@ This doesn't have any interactivity as far as I can tell. It may have been an ov
 
 ## Heap Tree Monitor
 
-![](img/machbrkj_debug_hreaptree01.png)
+![](img/machbrkj_debug_heaptree01.png)
 
-![](img/machbrkj_debug_hreaptree02.png)
+![](img/machbrkj_debug_heaptree02.png)
 
 We saw this briefly when working with the tools menu in the first section. This monitor displays all the currently running tasks in a hierarchal list. P2 Up/Down scrolls through the list of tasks, and P2 Left displays task details. Within the details view, values can be changed with P2 Start and P2 Left/Right. P2 Right returns to the list view.
 

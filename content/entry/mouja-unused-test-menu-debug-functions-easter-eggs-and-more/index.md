@@ -1,10 +1,15 @@
 ---
 title: 'Mouja - Unused Test Menu, Debug Functions, Easter Eggs, and More...'
 date: 2015-11-09T17:41:00+09:00
-draft: false
 author: Ryou
 images:
 - img/mouja_title.png
+category: Disassembly / Analysis
+tags:
+- easter egg
+- unused code
+- debug tool
+draft: false
 ---
 
 Whoa! The website (in its current form) just passed its one year anniversary! I figured after a year it was FINALLY time to give the design a little refresher with better support for mobile devices, so I spent some time redoing the layout with Bootstrap as well as fixing up some of the design. I think it came out pretty well. Aside from that, I've also been hacking on a new game...

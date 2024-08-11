@@ -1,9 +1,14 @@
 ---
 title: 'A bunch of debug tools in Rayforce / Gunlock'
-author: Ryou
 date: 2020-07-18T22:11:00+09:00
+author: Ryou
 images:
 - img/rayforce_title.png
+category: Disassembly / Analysis
+tags:
+- taito
+- debug tool
+- unused content
 draft: false
 ---
 

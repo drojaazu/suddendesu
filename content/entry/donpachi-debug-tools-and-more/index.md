@@ -1,9 +1,13 @@
 ---
 title: 'Donpachi - Debug Tools and More'
-author: Ryou
 date: 2017-01-09T21:47:00+09:00
+author: Ryou
 images:
-- img/cover.png
+- img/donpachij_title.png
+category: Disassembly / Analysis
+tags:
+- cave
+- debug tool
 draft: false
 ---
 
@@ -25,7 +29,7 @@ The version and build date run together: Ver 1.01, 1995-05-11. While not wildly 
 
 # Sound Test Auto-play Code
 
-![](img/donpachij-autosoundtest.png)
+![](img/donpachij_autosoundtest.png)
 
 This is interesting. There is a code that will automatically cycle through the sound effects and play each once. I've checked the manual, and there's no mention of the code. Seems to be a useful as a way of checking for bad data, so I'm not sure why it's a hidden code instead of an obvious feature.
 
@@ -97,9 +101,9 @@ The existence of this text is still promising, though. It at least confirms that
 
 As the text above hinted at, there are indeed debugging functions remaining in the game. They are located in two different chunks of code, so I will group them into two sections. The first debug tools we'll look are the pause and stage explore functions.
 
-![](img/donpachij-stgadv1.png)
+![](img/donpachij_stgadv1.png)
 
-![](img/donpachij-stgadv2.png)
+![](img/donpachij_stgadv2.png)
 
 With this re-enabled code, the game can be paused with P2 Start. While paused, hold P1 Button 3 and press P1 Up or Down to scroll forward or backward through the stage. This works as a level select as well, as you can scroll into the next stage with no problem. P1 Start will unpause the game. It can also work as a slow motion function by holding P1 Start and P2 Start at the same time, though I'm not certain if this was intentional or a side effect. Here's the MAME cheat (for all regions):
 
@@ -122,9 +126,9 @@ With this re-enabled code, the game can be paused with P2 Start. While paused, h
 
 # Debug Tools - Palette and Memory Editor, Object Spawner, Stage Select
 
-![](img/donpachij-paleditor.png)
+![](img/donpachij_paleditor.png)
 
-![](img/donpachij-rameditor.png)
+![](img/donpachij_rameditor.png)
 
 In the other chunk of debug code, we have several tools crammed together: a RAM editor, a palette editor, an object spawner and a stage select function. I've split the RAM editor out into its own code so it is easier to work with:
 
@@ -195,9 +199,9 @@ The object spawner described above is a powerful tool and useful for finding unu
 
 ## Object 0x30 - REAL_L display
 
-![](img/donpachi-reall1.png)
+![](img/donpachij_reall1.png)
 
-![](img/donpachi-reall2.png)
+![](img/donpachij_reall2.png)
 
 This one remains a mystery to me. When spawned, it displays the text REAL_L= and a value in the lower left corner, as well as some smaller text on the upper right side. It also creates a broken tile in the middle of the screen. This tile moves slowly on its own, but can also be moved by the P2 joystick. Holding P2 Button 1 and pressing P2 Joystick will resize the tile, and we can start to see that it is actually some graphics (see the red building object in the first screenshot above).
 
@@ -224,19 +228,19 @@ The display glitches and weird behavior may be due to not knowing how it was ori
 0x1F99 CAVE
 ```
 
-Aside from the unfortunate yet comical engrish, 'Congulatulations, All Stages Clear' is strange because it is not used in the [game ending of the final version](http://www.vgmuseum.com/end/arcade/d/donparun.htm). Right after that line we have the mysterious REAL_L text, followed by ten blank lines and 'Presented by Cave.' Though that line DOES appear in the final version, the ending credits use a seperate string table at 0x3E2CA, far away from the other game text. It's interesting that the REAL_L string appears in the middle of what appears to be an old version of the game cleared sequence. That proximity suggests that this debugging function was intended for older code.
+Aside from the comically unfortunate engrish, 'Congulatulations, All Stages Clear' is strange because it is not used in the [game ending of the final version](http://www.vgmuseum.com/end/arcade/d/donparun.htm). Right after that line we have the mysterious REAL_L text, followed by ten blank lines and 'Presented by Cave.' Though that line DOES appear in the final version, the ending credits use a seperate string table at 0x3E2CA, far away from the other game text. It's interesting that the REAL_L string appears in the middle of what appears to be an old version of the game cleared sequence. That proximity suggests that this debugging function was intended for older code.
 
 By the way, though the two end-of-game lines above are not used in the code, the string table still has their meta data. Here's how they appear rendered in-game:
 
-![](img/donpachi-unused-clear.png)
+![](img/donpachij_unused_clear.png)
 
-![](img/donpachi-unused-cave.png)
+![](img/donpachij_unused_cave.png)
 
 ## Object 0xA0 - Flames display
 
-![](img/donpachi-flames1.png)
+![](img/donpachij_flames1.png)
 
-![](img/1484015685_donpachi-flames2.png)
+![](img/1484015685_donpachij_flames2.png)
 
 Here we have another strange debugging tool, but this one is not nearly as insane as object 0x30 above. It appears as a cursor, which can be moved around with the P2 joystick. There are three number displays in the lower left. The top two indicate the cursor X/Y position, while the bottom one indicates an offset. Pressing P2 Button 2 increases the offset value; P2 Button 3 decreases it. P2 Button 1 will make a flame animation appear at the cursor. The offset determines which flame animation is spawned.
 

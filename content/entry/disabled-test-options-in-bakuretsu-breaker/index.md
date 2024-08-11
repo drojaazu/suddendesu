@@ -1,10 +1,13 @@
 ---
 title: 'Disabled Test Options in Bakuretsu Breaker / Explosive Breaker'
 date: 2015-07-14T17:30:00+09:00
-draft: false
 author: Ryou
 images:
 - img/bakubrkr_title.png
+category: Disassembly / Analysis
+tags:
+- kaneko
+draft: false
 ---
 
 Disabled options in the test mode menu? We'll see about that...
