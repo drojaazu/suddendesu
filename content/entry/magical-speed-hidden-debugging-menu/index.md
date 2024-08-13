@@ -1,5 +1,5 @@
 ---
-title: 'Magical Speed Hidden Debugging Menu'
+title: 'Magical Speed - Hidden Debugging Menu & Unused Graphics'
 date: 2019-09-23T09:55:00+09:00
 author: Ryou
 images:
