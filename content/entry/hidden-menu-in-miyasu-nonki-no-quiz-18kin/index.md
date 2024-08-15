@@ -10,7 +10,7 @@ tags:
 draft: false
 ---
 
-Yet another adult arcade quiz game, but this one has some pretty well-drawn and amusing artwork by [eromanga artist Miyasu Nonki](https://www.mangaupdates.com/authors.html?id=4951)! A while back I found the text for an alternate test menu, with object and background checks. I could never really track it down properly with the standard MAME disassembly. Maybe I just wasn't trying hard enough, because when I gave it another go yesterday, this time in IDA, I was finally able to find the routine as well as the non-hacked method for activating it.
+Yet another adult arcade quiz game, this time with some pretty well-drawn and amusing artwork by [eromanga artist Miyasu Nonki](https://www.mangaupdates.com/authors.html?id=4951)! A while back I found the text for an alternate test menu, with object and background checks. I could never really track it down properly with the standard MAME disassembly. Maybe I just wasn't trying hard enough, because when I gave it another go yesterday, this time in IDA, I was finally able to find the routine as well as the non-hacked method for activating it.
 
 <!--more-->
 
@@ -59,13 +59,13 @@ Similar to the object viewer, this is for viewing the static artwork in the game
 
 ![](img/quiz18k_dump2.png)
 
-Basically, the raw tile versions of the objects and artwork.
+Basically, the raw tile graphics.
 
 ## String Check
 
 ![](img/quiz18k_string.png)
 
-This is obviously meant to be a text string check, but it appears to not work. When you first choose String Check from the menu, the screen will clear as if it has locked up. However, the code is looping at 0xA3A3 looking for a value of 1 at 0xFF80DE. If you manually set that memory location to 01, this quiz screen pops up. You can scroll through the list with up and down, but that's all; nothing shows up. It may be an emulation issue with graphic priority... or it may just be broken.
+This is obviously meant to be a text string check, but it appears to not work. When you first choose String Check from the menu, the screen will clear as if it has locked up. However, the code is looping at 0xA3A3 looking for a value of 1 at 0xFF80DE. If you manually set that memory location to 01, this quiz screen pops up. You can scroll through the list with up and down, but that's all; nothing shows up. It may be an emulation issue... or it may just be broken.
 
 ## Bitmap Check
 
@@ -88,7 +88,7 @@ Among the Back Char art are four title screens for the game, two of which are no
  - ギャルズシティを救え！ (Rescue Girls City!)
  - クイズ１８禁　１８歳未満は禁止なの！ (Quiz 18-kin - Under 18 Prohibited!)
 
-Interesting. And to make things even more interesting, [there's a photo of the manual which uses the second 'unused' screen](http://gfront.sblo.jp/article/61475851.html):
+Interesting. And to make things even more interesting, [there's a photo of the manual which uses a version of the second unused screen](http://gfront.sblo.jp/article/61475851.html):
 
 ![](img/quiz18k_ad.jpg)
 

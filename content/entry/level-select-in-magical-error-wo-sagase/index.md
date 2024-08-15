@@ -1,10 +1,14 @@
 ---
 title: 'Level Select and More in Magical Error wo Sagase'
 date: 2015-02-14T22:11:00+09:00
-draft: false
 author: Ryou
 images:
 - img/magerror_title.png
+category: Disassembly / Analysis
+tags:
+- techno soft
+- debug tool
+draft: false
 ---
 
 I noticed this menu a while back in Magical Error wo Sagase, a puzzle game where you search for differences between two images. In the past I was able to load the routine, but I guess the stack wasn't set up properly, and it would reset the game immediately after the text appeared. I took a second look at the disassembly tonight and had much better success.
@@ -99,7 +103,11 @@ There is also a simple demo editor tool leftover. Note the 'Demo Make' text in t
 
 Another pretty big find is the discovery of other languages/regions in the code. Besides the default Japanese, we have USA, China, and Korea! As far as I can tell from internet research, there wasn't a release of the game outside Japan. Or if there was, it was obscure enough that it's been forgotten. The game is fully translated, with the exception of the end credits, which remain in Japanese.
 
-![](img/magerror-trans1.png)![](img/magerror-trans2.png)![](img/magerror-trans3.png)
+![](img/magerror-trans1.png)
+
+![](img/magerror-trans2.png)
+
+![](img/magerror-trans3.png)
 
 This is controlled by the word value at 0xC0E29A, with four possble values: 0 for Japan, 1 for USA, 2 for China and 3 for Korea. Note that I use 'USA' instead of 'World' for English. This is because a big ol' ugly FBI "Winner's Don't Do Drugs" screen is present when set to 1, indicating it was for 'Murica. Here's the cheat to select the region:
 
@@ -121,7 +129,9 @@ This is controlled by the word value at 0xC0E29A, with four possble values: 0 fo
 
 So now let's move on to some of the boring stuff. Oh boy!
 
-![](img/magerror-exception.png)![](img/magerror-exceptioncount.png)
+![](img/magerror-exception.png)
+
+![](img/magerror-exceptioncount.png)
 
 There is an unused exception handler in the game. Nothing special here: it's similar to many other games, dumping the CPU register values to the screen. It was probably disabled so such nonsense wasn't displayed to the player in the off-chance that the game or hardware glitched.
 
@@ -157,7 +167,7 @@ But in our final version, before the warning screen and early in the initial pro
   </cheat>
 ```
 
-The chances that you'll actually see a crash during normal gameplay are pretty slim, though. If you really want to see it, use the debugger and point the PC register to any random location. Exciting stuff. Woo.
+The chances that you'll actually see a crash during normal gameplay are pretty slim, though. If you really want to see it, use the emulator debugger and point the PC register to a random location. Exciting stuff. Woo.
 
 # Test Mode Extras
 
@@ -188,11 +198,11 @@ So, we need a MAME cheat to enable Bookkeeping, and then we can use the input co
 
 ## Alternate Sound Test
 
-![](img/magerror-soundtest.png)
+![Normal Version](img/magerror-soundtest.png)
 
-![](img/magerror-soundtest-alt.png)
+![Alternate Version](img/magerror-soundtest-alt.png)
 
-There is also an alternate sound test available, with seperate controls for sound effect and BGM selection. The normal version (the left screenshot above) uses Service/Test buttons (9 and 0 in MAME) to select the item to play while the alternate version (right) uses player inputs. Player 1 controls BGM; Player 2 controls SFX. Joystick Up/Down changes the value by 1, while Left/Right changes by 10. Button 1 starts playback; button 2 stops; button 3 fades out.
+There is also an alternate sound test available, with seperate controls for sound effect and BGM selection. The normal version uses Service/Test buttons (9 and 0 in MAME) to select the item to play while the alternate version uses player inputs. Player 1 controls BGM; Player 2 controls SFX. Joystick Up/Down changes the value by 1, while Left/Right changes by 10. Button 1 starts playback; button 2 stops; button 3 fades out.
 
 This alternate version is enabled, once again, with a simple RAM value, making a MAME cheat extraordinarily easy:
 

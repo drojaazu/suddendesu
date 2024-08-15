@@ -10,20 +10,20 @@ categories:
 tags:
 - namco
 - debug tool
+- easter egg
 ---
 
-I've been playing around with the MAME debugger recently. I loaded up Tinkle Pit, a cute, simple (at first...) maze game recently and started playing around with altering memory values. I found what appeared to be the value for the current game mode, and began messing with it, and then came across an odd screen...
-
+I've been playing around with the MAME debugger recently. I loaded up Tinkle Pit, a cute, simple (at first...) maze game and started playing around with altering memory values. I found what appeared to be the value for the current game mode, and after poking it for a bit, I came across an odd screen...
 
 <!--more-->
 
-**THREE YEARS LATER UPDATE:** This was the first "real" post I made on this site and was the impetus for everything else I've done here since. My discoveries here were very much a product of trial and error and a bit of luck. In the three years since this was posted (almost to the day!), my understanding of the M68k processor and reverse engineering disassemblies in general has improved tremendously, so I've been going back over some of my older posts to make corrections and improvements. And there were definitely many improvements to make here. The article has been entirely rewritten with a bunch of new stuff found. Enjoy!
+**THREE YEARS LATER UPDATE:** This was the first "real" post I made on this site and was the impetus for what this site has since become. My discoveries here were very much a product of trial and error (and a bit of luck). In the three years since this was posted (almost to the day!), my understanding of the M68000 processor and reverse engineering disassemblies in general has improved tremendously, so I've been going back over some of my older posts to make corrections and improvements. And there were definitely many improvements to make here. The article has been entirely rewritten with a bunch of new stuff found. Enjoy!
 
 # Unused Game Modes
 
-The basic structure of the Tinkle Pit code consists of a main loop with a jump to the code for the game's current "mode." The game mode can be things like the Namco logo in the beginning, or the Title Screen, or Attract Mode, or the Ranking Screen, or actual Gameplay, etc. The pointer table for the modes begins at 0xC00786, with 0x2B entries.
+The basic structure of the Tinkle Pit code consists of a main loop with a jump to the code for the game's current "mode of operation." The mode can be things like the Namco logo in the beginning, or the Title Screen, or Attract Mode, or the Ranking Screen, or actual Gameplay, etc. The pointer table for the modes begins at 0xC00786, containing 0x2B entries.
 
-The current mode is stored in RAM at 0x310A . Rather than pointing to the index of the pointer table, this value holds the offset of the entry in the table. Since every offset in the table is a long (4 bytes), this means we need to multiply the index we want by 0x4 to get the correct value. For example, if we want to see the game ending, which is the point at index 0x24, we'll need to set 0x310A to (0x24 x 0x4) = 0x90. Most of the games modes actually consist of a pair of entries containing initialization code and loop code. Using the game ending example again, 0x24 is the init code, while 0x25 is the loop code; mode 0x25 is set at the end of 0x24 automatically. As such, while these are two seperate indices in the pointer table, they are functionally the same game mode. It's important to call the init code first so things works properly.
+The current mode is stored in RAM at 0x310A. Rather than pointing to the index of the pointer table, this value holds the offset of the entry in the table. Since every offset in the table is a long (4 bytes), this means we need to multiply the index we want by 0x4 to get the correct value. For example, if we want to see the game ending, which is the pointer at index 0x24, we'll need to set 0x310A to 0x90 (0x24 x 0x4). Most of the games modes actually consist of a pair of entries containing initialization code and loop code. Using the game ending example again, 0x24 is the init code, while 0x25 is the loop code; mode 0x25 is set at the end of 0x24 automatically. As such, while these are two seperate indices in the pointer table, they are functionally the same game mode. It's important to call the init code first so things works properly.
 
 All but three game modes are used. Indices 0x4 and 0x5 were probably an init/loop pair, but now both point to RTS's. Whatever code they once had has been removed. Nothing to be done about that.
 
@@ -36,6 +36,7 @@ But there are a couple more unused modes that have code present...
 Mode 0xC is actually a fully working stage select!
 
 ![](img/tinklpit_stageselect.png)
+
 ![](img/tinklpit_collision.png)
 
 P1 Up/Down scrolls through the available stages, and any player button starts the game. You can scroll past the Final Stage and select later levels, but these look broken and are probably junk rather than older/unused maps. Pressing P1 Left shows a text overlay using dashes/hashes, apparently outlining the stage's collision. P1 Right returns to the main view.
@@ -73,7 +74,7 @@ It first loads the map for Stage 4-5 (left), though without any enemies or items
 >
 >"This is as far as you can go for now in this event version! Thank you for playing!"
 
-Quite interesting. It seems there was once an "event version" of the game which ended at Stage 4-5. What that event was remains a mystery, however. My guess it was a trade show of some sort, such as [AOU](https://segaretro.org/AOU_Show).
+Quite interesting. It seems there was once an "event version" of the game which ended at Stage 4-5. What that event was remains a mystery, however. Perhaps a trade show of some sort, such as [AOU](https://segaretro.org/AOU_Show).
 
 We can access this easily in a MAME cheat using the same method as the stage select:
 
@@ -93,142 +94,108 @@ As a protip to anyone else looking to do MAME cheats on Namco NA-1 hardware: the
 
 # 1CC Special Credits
 
-If you clear the game on one coin, you'll get special messages from the devs in the credits. To start with, here are the normal credits:
-
-![](img/tinklpit_credits01.png)
-
-![](img/tinklpit_credits02.png)
-
-![](img/tinklpit_credits03.png)
-
-![](img/tinklpit_credits04.png)
-
-![](img/tinklpit_credits05.png)
+The normal end credits has this message at the end:
 
 ![](img/tinklpit_credits06.png)
 
-Simply the names and roles, as well as a hint to 1CC the game. If you manage to do so, the credits change drastically. Each of the staff listed above gets their own screen and a short message. Here they are, with translations:
+If you manage to meet this requirements, the credits change to personal messages from the staff. Here's what it looks like, along with translations.
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits01.png'>
-<div>
-<p>Game Design - <a href='https://en.wikipedia.org/wiki/Noise_(company)'>Kenjou Kouji</a></p>
-<p>Congrats on the 1 coin clear!!! And thank you! Until we meet again!</p>
-</div>
-</div>
+![](img/tinklpit_speccredits01.png)
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits02.png'>
-<div>
-<p>Program - Nimura Kaeru</p>
-<p>If you clear your mind, you can overcome anything.</p>
-<p>[This is a quote attributed to the Zen monk <a href="https://ja.wikipedia.org/wiki/%E5%BF%AB%E5%B7%9D%E7%B4%B9%E5%96%9C" target="_blank">Kaisen Jouki</a>. More literlly, it's "If you clear your mind, even fire is cool to the touch."]</p>
-</div>
-</div>
+>Game Design - [Kenjou Kouji](https://en.wikipedia.org/wiki/Noise_(company))
+>
+>Congrats on the 1 coin clear!!! And thank you! Until we meet again!
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits03.png'>
-<div>
-<p>Visual - Kankan</p>
-<p>Hello to the elder-- ...Oh wait, he's not coming this time! Wahaha!</p>
-</div>
-</div>
+![](img/tinklpit_speccredits02.png)
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits04.png'>
-<div>
-<p>Visual - Wasabi Nakajima</p>
-<p>I'm so happy that I was able to draw <a href="http://pacman.wikia.com/wiki/Pooka" target="_blank">Pooka</a> that I've loved for so long.</p>
-</div>
-</div>
+>Program - Nimura Kaeru
+>
+>If you clear your mind, you can overcome anything.
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits05.png'>
-<div>
-<p>Visual - Angel Misaki</p>
-<p>Thank you for everything, Miyuki-chan ❤️</p>
-</div>
-</div>
+(This is a famous Buddhist proverb attributed to the Zen monk [Kaisen Jouki](https://ja.wikipedia.org/wiki/%E5%BF%AB%E5%B7%9D%E7%B4%B9%E5%96%9C).)
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits06.png'>
-<div>
-<p>Visual - Perorincho Shunin</p>
-<p>See you in Nebulas Ray as well.</p>
-</div>
-</div>
+![](img/tinklpit_speccredits03.png)
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits07.png'>
-<div>
-<p>Visual - Tenkomoriyan</p>
-<p>Praying that my precious Kintoto-kun grows up big</p>
-</div>
-</div>
+>Visual - Kankan
+>
+>Hello to the elder-- ...Oh wait, he's not coming this time! Wahaha!
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits08.png'>
-<div>
-<p>Visual - Enokeso</p>
-<p>Now that you've 1cc'ed the game, someone should treat you to a meal or something. Wouldn't that be nice?</p>
-</div>
-</div>
+![](img/tinklpit_speccredits04.png)
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits09.png'>
-<div>
-<p>Visual - Ecchi Daio</p>
-<p>Yo. I'm doing the backgrounds in Nebulas Ray, so take a look! It builds my self-confidence.</p>
-</div>
-</div>
+>Visual - Wasabi Nakajima
+>
+>I'm so happy that I was able to draw [Pooka](http://pacman.wikia.com/wiki/Pooka) that I've loved for so long.
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits10.png'>
-<div>
-<p>Graphics - Hideaki</p>
-<p>If you do nothing but play games, you'll turn stupid! Go study!</p>
-</div>
-</div>
+![](img/tinklpit_speccredits05.png)
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits11.png'>
-<div>
-<p>Graphics - Piropiro</p>
-<p>Shoutout to K, Pyonkichi, Chaamii, and Ken-chan!</p>
-</div>
-</div>
+>Visual - Angel Misaki
+>
+>Thank you for everything, Miyuki-chan ❤️
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits12.png'>
-<div>
-<p>Sound - Strong Yoshie</p>
-<p>Please do something about the static electricity</p>
-</div>
-</div>
+![](img/tinklpit_speccredits06.png)
+
+>Visual - Perorincho Shunin
+>
+>See you in Nebulas Ray as well.
+
+![](img/tinklpit_speccredits07.png)
+
+>Visual - Tenkomoriyan
+>
+>Praying that my precious Kintoto-kun grows up to be a big boy.
+
+![](img/tinklpit_speccredits08.png)
+
+>Visual - Enokeso
+>
+>Now that you've 1cc'ed the game, someone should treat you to a meal or something. Wouldn't that be nice?
+
+![](img/tinklpit_speccredits09.png)
+
+>Visual - Ecchi Daio
+>
+>Yo. I'm doing the backgrounds in Nebulas Ray, so take a look! It builds my self-confidence.
+
+![](img/tinklpit_speccredits10.png)
+
+>Graphics - Hideaki
+>
+>If you do nothing but play games, you'll turn stupid! Go study!
+
+![](img/tinklpit_speccredits11.png)
+
+>Graphics - Piropiro
+>
+>Shoutout to K, Pyonkichi, Chaamii, and Ken-chan!
+
+![](img/tinklpit_speccredits12.png)
+
+>Sound - Strong Yoshie
+>
+>Could we do something about the static electricity?
 
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits13.png'>
-<div>
-<p>Special Thanks!</p>
-<p>YOU who played through!</p>
-<p>VS Development Department Staff</p>
-<p>Future Namco games</p>
-<p>[This is mostly the same as the normal credits above, but the first line is different. It normally reads "Everyone who played" instead of specifying you directly.]</p>
-</div>
-</div>
+![](img/tinklpit_speccredits13.png)
 
-<div class='imgtrans'>
-<img src='img/tinklpit_speccredits14.png'>
-<div>
-<p>You've Done It!</p>
-<p>Now go put in a High Score Application to <a href="https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%B3%E3%83%B3BASIC%E3%83%9E%E3%82%AC%E3%82%B8%E3%83%B3" target="_blank">BaMaga</a> and <a href="https://en.wikipedia.org/wiki/Gamest" target="_blank">Gamest</a>!</p>
-</div>
-</div>
+>Special Thanks!
+>
+>YOU, the player!
+>
+>VS Development Department Staff
+>
+>All future Namco games
 
-Aside from the different credits, it looks like that final spanking image is not used in the normal ending.
+(This is mostly the same as the normal credits, but the first line is different. It normally reads "Everyone who played" instead of specifying you directly.)
 
-This is another one of those things like [the bonus shooting game in Mouja](/entry/mouja-unused-test-menu-debug-functions-easter-eggs-and-more) or [the hidden ending in Raimais](/entry/raimais-pause-and-level-select) where it's possible that someone has seen this before but the requirements to get to it are hard enough that such people are pretty rare. In any case, I didn't see it documented anywhere in my cursory google searches (though [this site](https://strategywiki.org/wiki/Tinkle_Pit/Final_Battle) has the special credits listed out, but doesn't mention the 1cc requirement, which makes me think it was beaten using savestates and the author didn't realized it was a special ending). Another obscure easter egg brought to light!
+![](img/tinklpit_speccredits14.png)
+
+>You've Done It!
+>
+>Now go put in a High Score Application to [BaMaga](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%B3%E3%83%B3BASIC%E3%83%9E%E3%82%AC%E3%82%B8%E3%83%B3) and [Gamest](https://en.wikipedia.org/wiki/Gamest)!
+
+The image of the spanking in the last two screens is only present in this special 1CC version.
+
+This is another one of those things like [the bonus shooting game in Mouja](/entry/mouja-unused-test-menu-debug-functions-easter-eggs-and-more) or [the hidden ending in Raimais](/entry/raimais-pause-and-level-select) where it's possible that someone has seen this before but the requirements to get to it are hard enough that such people are pretty rare. In any case, I didn't see it documented anywhere in my cursory google searches (though [this site](https://strategywiki.org/wiki/Tinkle_Pit/Final_Battle) has the special credits listed out, but doesn't mention the 1CC requirement, which makes me think it was beaten using savestates and the author didn't realize it was a special ending). Another obscure easter egg brought to light!
 
 # Alternate Copyright
 
@@ -238,14 +205,16 @@ If you set the word value at 0x3642 to non-zero, then here will be an extra copy
 
 >©MTJ/TENGEN LTD
 
-MTJ is [Mitsuji Fukio](https://en.wikipedia.org/wiki/Fukio_Mitsuji), creator of Bubble Bobble, who had also worked with Tengen. It's unclear what his role is in Tinkle Pit as his name doesn't appear in the credits, though [according to this page](http://gdri.smspower.org/wiki/index.php/Blog:RIP_Fukio_Mitsuji) it wouldn't be the first time he was uncredited. It's also worth noting that his initials MTJ are one of the ranking name substitutions, changing to Sylvalion, another game he worked on.
+MTJ is [Mitsuji Fukio](https://en.wikipedia.org/wiki/Fukio_Mitsuji), creator of Bubble Bobble, who had also worked with Tengen. It's unclear what his role is in Tinkle Pit as his name doesn't appear in the credits, though [according to this page](http://gdri.smspower.org/wiki/index.php/Blog:RIP_Fukio_Mitsuji) it wouldn't be the first time he was uncredited.
+
+It's also worth noting that his initials MTJ are one of the ranking [name substitutions](/entry/tinkle-pit-name-substitutions), changing to Sylvalion, another game he worked on.
 
 The memory location affecting this is set to 0 early in the game's startup code and never changes to anything else, making it seem like a build constant.
-
-I would love to know more about why this is here and what Mitsuji's relationship to the game is, but there's not much to go on...
 
 # Name Entry Substitutions
 
 There are a bunch of text substitutions for the name entry screen when you get a high score, which [I wrote about in a later post.](/entry/tinkle-pit-name-substitutions)
+
+---
 
 I think that finally wraps up Tinkle Pit, three years after I started with it!

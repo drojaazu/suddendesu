@@ -9,10 +9,11 @@ tags:
 - data east
 - debug tools
 - copy warning
+- hidden credits
 draft: false
 ---
 
-There's a [request on mamecheat](http://www.mamecheat.co.uk/forums/viewtopic.php?f=1&t=11547) for Pocket Gal Deluxe, and I figured I'd give it a go. I played around for a bit, then discovered a nice, juicy string table with some intriguing bits of text. After a few hours of working backwards through the disassembly, I've discovered a number of interesting bits in the game!
+There's a [request on mamecheat](http://www.mamecheat.co.uk/forums/viewtopic.php?f=1&t=11547) for Pocket Gal Deluxe, and I figured I'd give it a go. I played around for a bit, then discovered a nice, juicy string table with some intriguing bits of text. After a few hours of working backwards through the disassembly, I discovered a number of interesting tidbits in the data!
 
 <!--more-->
 
@@ -40,9 +41,9 @@ I've only included three screenshots of the text, since it's pretty bland. The f
 
 ![](img/pktgaldxj_copy.png)
 
-There are a handful of security check routines in the game. First, there are two checks involves reads from the security device and comparing the value returned. If either are not as expected, it jumps to code that displays the snarky message above, obviously parodying the ugly FBI 'Winners Don't Do Drugs' screen of arcade games from the 90's.
+There are a handful of security check routines in the game. First, there are two checks that involve reads from the security device and comparing the value returned. If either are not as expected, it jumps to code that displays the snarky message above. It's obviously a parody of the ugly FBI 'Winners Don't Do Drugs' screen of arcade games from the 90's.
 
-After that, there is a secondary, more interesting check: it checks the *actual byte values of the code from the first security check* for expected values. So if the first security check against the protection device was removed or altered, it would still fail.
+After that, there is a secondary, more interesting check: it tests the *actual bytes of the code from the first security check* for expected values. So if the first security check against the protection device was removed or altered, it would still fail.
 
 Here's the code to illustrate. First, the initial check:
 
@@ -76,11 +77,11 @@ subSecurityCheck1:
 
 Of course, a skilled code hacker could remove this secondary check too, but it certainly would have given them a headache.
 
-# 'Data East' Input Codes
+# Input Codes
 
 ![](img/pktgaldx_dataeast.png)
 
-There are two input codes hidden on the Data East logo screen, both of which should be accessible by the production hardware without any hacking. As a prerequisite, **switches 6 and 7 (marked as Free Play and Unused) need to be enabled on DIP switch 2. For the input code itself, it needs to be entered relatively quickly, before the Data East logo fades.**
+There are two input codes hidden on the Data East logo screen, both of which should be accessible on production hardware without any hacking. As a prerequisite, **switches 6 and 7 (marked as Free Play and Unused) need to be enabled on DIP switch 2. For the input code itself, it needs to be entered relatively quickly, before the Data East logo fades.**
 
 Note that the Data East logo is not present in the Japanese version of the game. As such, the codes are only available on the European version. However, all the code is still present in the Japanese version; more on that below.
 
@@ -90,7 +91,9 @@ Here are the codes:
 
 ![](img/pktgaldx_devcredits.png)
 
-> P1 Up Down Right Right B1 B1 B2 B1
+```
+P1 UP DOWN RIGHT RIGHT B1 B1 B2 B1
+```
 
 A simple dev credits screen, dug out of the code after all these years. It will remain on the screen for a few seconds or until you hit a button, then moves on to the title screen. The final line at the bottom translates to "Don't Copy [this game]!!" in a commanding tone.
 
@@ -104,15 +107,17 @@ A simple dev credits screen, dug out of the code after all these years. It will 
 
 ![](img/pktgaldxj_debug04.png)
 
-> [Player 2] Down Up Left Left B2 B2 B1 Start
+```
+P2 DOWN UP LEFT LEFT B2 B2 B1 START
+```
 
-Here's the big find of the game: a fully functional dev tools menu. Game Mode brings you back to the game. Debug Mode is kind of a let down: it's simply a test of all the images in the game. There's a Sound Mode which is pretty self explanatory, and a Trick Mode, which lets you select the trick stages.
+Here's the big find of the game: a fully functional set of developer tools. Game Mode brings you back to the game. Debug Mode is kind of a let down: it's simply a test of all the images in the game. There's a Sound Mode which is pretty self explanatory, and a Trick Mode, which lets you select the trick stages.
 
-Now, if you don't want to bother with input codes and DIP switches, we can access both of these pieces of code with MAME cheats. This will also allow you to access the dev tools in the Japanese version, which cannot normally be done since the Data East logo is never referenced. You cannot, however, access the hidden dev credits in the Japanese version with this code since it is unreferenced in that version as well. (We could write a cheat to re-link it, but it's kind of pointless since it doesn't have any use and can be viewed easily in the European version...)
+Now, if you don't want to bother with input codes and DIP switches, we can access both of these pieces of code with MAME cheats. This will also allow you to access the dev tools in the Japanese version, which cannot normally be done since the Data East logo is never displayed. You cannot, however, access the hidden dev credits in the Japanese version with this code since it is unreferenced in that version as well. (We could write a cheat to re-link it, but it's kind of pointless since it doesn't have any use and can be viewed easily in the European version...)
 
 Here's the MAME cheat shortcuts:
 
-~~~
+```
   <cheat desc="Debug menu">
     <comment>Displayed after starting game from title screen</comment>
     <script state="run">
@@ -126,11 +131,11 @@ Here's the MAME cheat shortcuts:
       <action>maincpu.pb@174101=(maincpu.pb@174101 | 02)</action>
     </script>
   </cheat>
-~~~
+```
 
 # Unused Girl Pictures
 
-In the 'Debug Mode,' we see there are seven pictures per girl. However, there are only five stages per girl in the game! Indeed, two of the pictures are not normally used. It looks like there was a planned or removed (or present in another, undumped version?) non-nude version.
+In the 'Debug Mode,' we see there are seven pictures per girl. However, there are only five stages per girl in the game! Indeed, two of the pictures are not normally used. It looks like there was a planned or removed (or present in another, undumped ROM set?) non-nude version.
 
 The pointer tables for the pictures start at 0x362C for the Japanese version, 0x3632 for Euro. The very first table with four pointers (one for each girl) is unreferenced by the code; immediately following it is another table with four entries, which IS referenced. The second set is, of course, the one actually used in the game. The entries in each of these tables point to another pointer table, which then link to the code to display each picture. The unused lists seem to be more 'safe,' with no references to the last couple, nude images. The picture lists that ARE used in the game are lacking two of the more conservative images, which makes them unused in our dumps.
 
@@ -138,7 +143,7 @@ If you want to use the safe/unused lists, here's a MAME cheat:
 
 Japanese:
 
-~~~
+```
   <cheat desc="Use 'safe' images">
     <comment>Enable the unused picture list, which lacks nudity</comment>
     <script state="on">
@@ -149,11 +154,11 @@ Japanese:
       <action>maincpu.ow@35f2=temp0</action>
     </script>
   </cheat>
-~~~
+```
 
 Euro:
 
-~~~
+```
   <cheat desc="Use 'safe' images">
     <comment>Enable the unused picture list, which lacks nudity</comment>
     <script state="on">
@@ -164,4 +169,4 @@ Euro:
       <action>maincpu.ow@35f8=temp0</action>
     </script>
   </cheat>
-~~~
+```

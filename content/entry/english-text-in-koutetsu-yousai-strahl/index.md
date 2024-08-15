@@ -13,27 +13,25 @@ draft: false
 
 I'm pretty burnt out on tackling Super Gem Fighter / Pocket Fighter right now. I took a little break and did some more research on something quite interesting I had found a while back: English text in Koutetsu Yousai Strahl, a horizontal shooter and a favorite among shmup fans.
 
+**EDIT 2018-11-28: As of MAME 0.203, there is a world region dump of Strahl. It contains the English text that was found in the Japanese version, making this article relatively useless. Oh well.**
+
 <!--more-->
-
-**EDIT 2018-11-28: As of MAME 0.203, there is a world region dump of Strahl. It contains the English text that was found in the Japanese version, making this article relatively useless. Oh well. I'm just glad we have another piece of software preserved!**
-
----
 
 I've searched as much as I can and from what I can gather from the internet, Strahl only had a Japanese release and no multi-language option. But there's are several fully implemented screens of English text in the game that suggests they were planning for an overseas release.
 
-![](imgstrahl_eng1.png)
+![](img/strahl_eng1.png)
 
-![](imgstrahl_eng2.png)
+![](img/strahl_eng2.png)
 
 First off, there is a translation of the introduction text, which is normally in Japanese. This is interesting as it provides the 'proper' transliteration of the German names Eisern Geist and Gegeben von Funkeln, which were previously not known (at least, [not known to the people who updated the Strahl Wikipedia page](http://en.wikipedia.org/wiki/Koutetsu_Yousai_Strahl)).
 
 While the Japanese text scrolls up for the intro, the English text routine fades in the text and doesn't move. It is divided into two routines: the first consists of the fade in call and displaying the first page of strings; the second just displays strings with no fade-in. There is also a third routine that displays the same amount of lines, but with blank strings. One can assume that the original progression consisted of the first routine the fade in the text, the third routine to clear it momentarily, and then the second routine the display the second page of text.
 
-![](imgstrahl_inst1.png)
+![](img/strahl_inst1.png)
 
-![](imgstrahl_inst2.png)
+![](img/strahl_inst2.png)
 
-![](imgstrahl_inst3.png)
+![](img/strahl_inst3.png)
 
 Moreover, there are translations of the gameplay instructions text that are displayed during the attract mode, which exactly match the three Japanese screens. As above, there is also a routine to display blank lines, probably to clear the text between phrases. (Note that the original Japanese phrases slide in from the right to left.)
 
@@ -43,35 +41,13 @@ To make things even more interesting, there are two sets of Strahl dumps, labele
 
 I may spend some time hacking in support for the English text, but for now, here are the locations of the routines so you can manually see them via the MAME debugger:
 
-<table>
-	<tbody>
-		<tr>
-			<td>English Introduction Page 1</td>
-			<td>0x015A30</td>
-		</tr>
-		<tr>
-			<td>English Introduction Page 2</td>
-			<td>0x015CC6</td>
-		</tr>
-		<tr>
-			<td>English Introduction Blank</td>
-			<td>0x015F56</td>
-		</tr>
-		<tr>
-			<td>English Gameplay 1</td>
-			<td>0x016072</td>
-		</tr>
-		<tr>
-			<td>English Gameplay 2</td>
-			<td>0x016118</td>
-		</tr>
-		<tr>
-			<td>English Gameplay 3</td>
-			<td>0x0161BE</td>
-		</tr>
-		<tr>
-			<td>English Gameplay Blank</td>
-			<td>0x016264</td>
-		</tr>
-	</tbody>
-</table>
+|Routine|Offset|
+|--- |--- |
+|English Introduction Page 1|0x015A30|
+|English Introduction Page 2|0x015CC6|
+|English Introduction Blank|0x015F56|
+|English Gameplay 1|0x016072|
+|English Gameplay 2|0x016118|
+|English Gameplay 3|0x0161BE|
+|English Gameplay Blank|0x016264|
+

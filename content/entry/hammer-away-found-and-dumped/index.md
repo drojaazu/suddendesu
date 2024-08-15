@@ -11,7 +11,7 @@ tags:
 draft: false
 ---
 
-News was posted today of the finding and dumping of an unreleased vertical shooter by Sega and Santos for the System 18 arcade hardware, called 'Hammer Away'
+News was posted today of the finding and dumping of an unreleased vertical shooter by Sega and Santos for the System 18 arcade hardware, called *Hammer Away*.
 
 <!--more-->
 

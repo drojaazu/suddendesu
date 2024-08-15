@@ -7,10 +7,11 @@ images:
 category: Disassembly / Analysis
 tags:
 - konami
+- debug tool
 draft: false
 ---
 
-[In Part 1](/entry/debug-tools-and-more-in-monster-maulers-1) we took a look at the removed Tool Menu, and now we'll look at the variety of debugging tools left in and a couple mysteries. And then I'll finally be done with this game... for now.
+[In Part 1](/entry/debug-tools-and-more-in-monster-maulers-1) we examined the disabled Tool Menu, and now we'll look at the variety of debugging tools left in, plus a couple mysteries. And then I'll finally be done with this game... for now.
 
 <!--more-->
 
@@ -175,7 +176,9 @@ This one is a little bit interesting at least, and actually deals with the playe
 ![](img/dadandrn_continued.png)
 
 
-The routine at 0xB1D6 will display this TO BE CONTINUED text which, as far as I can tell, is not used in the final version. In fact, there's a whole mess of strings starting at 0x2140 (table at 0x208C), most of which are probably no longer used. Some of them appear in the debug displays we've already discussed, but others are clearly part of debug displays I haven't found yet. For example, at 0x2384:
+The routine at 0xB1D6 will display this TO BE CONTINUED text which, as far as I can tell, is not used in the final version. Perhaps a remnant from a location test version?
+
+In fact, there's a whole mess of strings starting at 0x2140 (table at 0x208C), most of which are probably no longer used. Some of them appear in the debug displays we've already discussed, but others are clearly part of debug displays I haven't found yet. For example, at 0x2384:
 
 ```
 2P STATUS
@@ -246,4 +249,4 @@ It also changes the lives counter to A2 and A1, and the players are no longer co
 
 I'm not going to bother with a MAME cheat for this; it can be set very easily at the locations I've listed.
 
-That's it for Kyukyoku Sentai Dadandarn. I actually have a short backlog of games to post about, but I really wanted to get this beast out of the way before moving on. And man am I happy it's over...
+That's it for Kyukyoku Sentai Dadandarn. I actually have a short backlog of games to post about, but I really wanted to get this beast out of the way before moving on. Happy to move on to something new...

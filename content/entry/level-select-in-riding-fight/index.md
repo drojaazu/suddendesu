@@ -1,17 +1,21 @@
 ---
 title: 'Level Select in Riding Fight'
 date: 2015-02-07T23:41:00+09:00
-draft: false
 author: Ryou
 images:
 - img/ridingfight_title.png
+category: Disassembly / Analysis
+tags:
+- taito
+- debug tool
+draft: false
 ---
 
-Well, that's enough mahjong for now... Let's try something a little more exciting! Like the title screen implies, Riding Fight is a FRONT VIEW SPEED ACTION GAME featuring a couple of hoverboard riding radical dudes from the future who punch everything in their path. And it turns out it has a level select screen!
+Well, that's enough mahjong for now... Let's try something a little more exciting! Like the title screen implies, Riding Fight is a FRONT VIEW SPEED ACTION GAME featuring a couple of hoverboard-mounted radical dudes from the future who punch everything in their path. And it turns out it has a level select screen!
 
 <!--more-->
 
-A few hours into following the disassembly around and testing with the debugger, I found how the code is activated: while the game is turning on, hold the service button until the SERVICE SW ERROR text appears.
+A few hours into following the disassembly around and testing with the debugger, I found that the level select is activated by an input code: while the game is turning on, hold the service button until the SERVICE SW ERROR text appears.
 
 ![](img/ridingfight_service.png)
 
@@ -35,13 +39,15 @@ After the Taito logo, you'll be greeted with this lovely menu:
 
 ![](img/ridingfight_menu1.png)
 
-You'll probably notice the empty slot right away; I know I did. And when you select it...
+You'll probably notice that empty slot right away; I know I did. And when you select it...
 
 ![](img/ridingfight_menu2.png)
 
 This is had not program yet! Oh.. okay...
 
-The rest of the entries bring you to their respective levels, of course. After picking an entry, you'll be brought to the character select spring, then brought to your choice. There's also the Object Style Checker at the top. Let's check that out.
+The rest of the entries bring you to their respective levels, of course. After choosing one, you'll be brought to the character select screen, then to your stage.
+
+There's also the Object Style Checker at the top. Let's check that out.
 
 ![](img/ridingfight_obj1.png)
 

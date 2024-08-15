@@ -4,6 +4,10 @@ author: Ryou
 date: 2015-02-14T12:22:00+09:00
 images:
 - img/landmakr_title.png
+category: Disassembly / Analysis
+tags:
+- taito
+- debug tool
 draft: false
 ---
 
@@ -13,16 +17,15 @@ I was pretty unhappy that Land Maker, one of my favorite arcade puzzle games, wa
 
 # Check Menu
 
-There is a hidden menu leftover in the game:
+There is a hidden menu left over in the game:
 
 ![](img/landmakr_menu1.png)
 
-
-And by 'leftover' I mean I can't find any references to the routine anywhere in the disassembly (unless there's some indirect addressing going on, but I doubt that: all of the other routines I played around with, such as the Test Mode menu, were directly addressed). I'm assuming it was used in development, and was disabled. It's fully functional in the prototype as well, but I don't see any references to it there either.
+And by 'left over' I mean I can't find any references to the routine anywhere in the disassembly (unless there's some indirect addressing going on, but I doubt that: all of the other routines I played around with, such as the Test Mode menu, were directly addressed). I'm assuming it was used in development then disabled. It's fully functional in the prototype as well, but I don't see any references to it there either.
 
 Currently, I have it implemented as a MAME cheat to patch the code so it calls this routine after inserting a coin.
 
-# Object Check
+## Object Check
 
 As its name implies, this allows you to cycle through all sprites in the game:
 
@@ -36,7 +39,7 @@ As its name implies, this allows you to cycle through all sprites in the game:
 
 P1 Button 1 and Button 2 cycle through each 'section', while P1 Left and Right cycle through each frame. P1 Up/Down cycle quickly. If you've ever wanted to rip sprites from this game, now's your chance!
 
-# SCP Check
+## SCP Check
 
 ![](img/landmakr_scp1.png)
 
@@ -48,7 +51,7 @@ P1 Button 1 and Button 2 cycle through each 'section', while P1 Left and Right c
 
 I'm not sure what SCP stands for, but this is clearly a viewer for all the non-sprite artwork in the game. Perhaps SCP is the art format? As in the object viewer, P1 Left/Right cycles one by one, while P1 Up/Down cycle quickly.
 
-# Mask Check
+## Mask Check
 
 ![](img/landmakr_mask1.png)
 
@@ -104,7 +107,7 @@ However, it seems that at one time there was a more intricate menu for configuri
 
 ![](img/landmakr_diff2.png)
 
-Navigating the menu and setting values all seem to be functional. You can set the standard difficulty at the top. It loads this from and saves this to the NVRAM properly: if you switch back to the standard configuration menu, you'll see that your setting was saved. It's not clear what the numbering represents, although it's logical to assume that a higher number means more difficult. I gave it a couple quick gameplay tests with different values for Round 1, but I didn't notice any thing drastically different. It's certainly worth further testing, though.
+Navigating the menu and setting values all seem to be functional. You can set the standard difficulty at the top. It loads from/saves to the NVRAM properly: if you switch back to the standard configuration menu, you'll see that your setting was saved. It's not clear what the numbering represents, although it's logical to assume that a higher number means more difficult. I gave it a couple quick gameplay tests with different values for Round 1, but I didn't notice any thing drastically different. It's worth further testing, though.
 
 This menu too appears to be wholly unused. The list of menu options for the Test Menu is stored in ASCII starting at 0x10324D, with the address for each entry's subroutine stored as a long in front of the text. 'Difficulty' is not listed there as a menu option in either the final or prototype; there's no sign of normal access for our difficulty menu anywhere.
 
