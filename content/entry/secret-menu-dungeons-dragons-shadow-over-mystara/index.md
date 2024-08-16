@@ -53,7 +53,9 @@ To select one of the menu options, press P1 Start; the cursor will turn blue. So
 
 ![](img/ddmyst_blk3.png)
 
-A graphics/stage viewer. There is some really nice art in this game... Anyway! There are four modes: Scroll 2 Test, Scroll 3 Test and two Double Test modes. Scroll 2 is the foremost plane, and Scroll 3 is the background. In either of these modes, use these inputs:
+A graphics/stage viewer. There is some really nice art in this game...
+
+There are four modes: Scroll 2 Test, Scroll 3 Test and two Double Test modes. Scroll 2 is the foremost plane, and Scroll 3 is the background. In either of these modes, use these inputs:
 
  - P1 Up/Down - Move image up or down
  - P1 Left/Right - Cycle through images

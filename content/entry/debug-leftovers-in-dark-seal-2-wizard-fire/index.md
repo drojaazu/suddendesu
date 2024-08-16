@@ -7,12 +7,13 @@ images:
 category: Disassembly / Analysis
 tags:
 - data east
+- debug tool
 draft: false
 ---
 
 I'm still alive! It's the busy season at work, so between that and working on other projects, I haven't been doing much digital archaeology research. Tonight I spent some time doing just that.
 
-So! Dark Seal 2 (known as Wizard Fire in the west) is a fantasy themed beat-em-up. And apparently it is a variety of debug functions remaining...
+So! Dark Seal 2 (known as Wizard Fire in the west) is a fantasy themed beat-em-up. And apparently it has a variety of debug functions remaining...
 
 <!--more-->
 
@@ -49,7 +50,7 @@ Interestingly, this routine is called during every update in the game loop, but 
 
 # Pause Game
 
-This is clearly another debug leftover, and it only half works in the final version. Like the debug text above, this function was disabled in the code by an RTS at the beginning of the subroutine, which is at 0x1E0B0. It simply pauses the game and displays some debugging number:
+The next debug function is at 0x1E0B0, though it only half works in the final version. It simply pauses the game and displays some debugging number:
 
 ![](img/darkseal2_pause.png)
 
@@ -84,7 +85,7 @@ So by this point I was just looking searching for consecutive RTS commands to re
 
 ![](img/darkseal2_box.png)
 
-Pretty obvious what this is. This too is called during the game loop (thankfully), and interestingly, it checks for bit 6 to be set at 0xFE4494. This value cannot normally be written to; the MAME source indicates that it's part of the hardware protection device. So I find it pretty odd that it's looking for a value there. But whatever.
+Pretty obvious what this is. This tool is called during the game loop (thankfully), and interestingly, it checks for bit 6 to be set at 0xFE4494. This value cannot normally be written to; the MAME source indicates that it's part of the hardware protection device. So I find it pretty odd that it's looking for a value there. But whatever.
 
 Bit 6 is not set there, and since we can't write to it, we'll have to change up the code like above. Bit 7 is set instead, so we'll just patch that in:
 

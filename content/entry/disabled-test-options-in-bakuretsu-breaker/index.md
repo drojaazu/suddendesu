@@ -7,16 +7,17 @@ images:
 category: Disassembly / Analysis
 tags:
 - kaneko
+- debug tool
 draft: false
 ---
 
-Disabled options in the test mode menu? We'll see about that...
+Oh, you disabled your debugging options in the test mode menu? We'll see about that...
 
 <!--more-->
 
 # Hidden Test Mode Options
 
-The normal Test Mode menu for Bakuretsu Breaker, a vertical space shmup produced by Kaneko in 1992, looks like this:
+The normal Test Mode menu for Bakuretsu Breaker looks like this:
 
 ![](img/bakubrkr_menu1.png)
 
@@ -24,7 +25,9 @@ But there are actually three more options available:
 
 ![](img/bakubrkr_menu2.png)
 
-These removed options are still fully functional; they were just manually removed from the menu. Like we're going to let something like that stop us! (Pressing 1P start will return to the main menu in any of these modes.)
+These removed options are still fully functional; they were just manually removed from the menu. Like we're going to let something like that stop us!
+
+(Pressing P1 Start will return to the main menu in any of these modes.)
 
 ## CHARACTER CHECK
 

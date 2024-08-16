@@ -36,7 +36,7 @@ UARTs are hardware for managing serial communication, while RS-232C is a standar
 
 The most bland and rigid object test I've seen so far, bordering on useless. The screen is initially blank; P1 Button 1 will cycle through each frame. That's it. No bank selection, no going reverse through the frames, no palette options. Bleh. P1 Button 2 to go to back to the main menu.
 
-I actually had a bit of trouble with the game at first (indirect addressing can be a real pain in the ass), but in the end I found that the menu references a table of booleans right before the string table which indicate which options in the menu to enable or disable, with each byte corresponding to each items in the list. In the JP version, this table of 16 bytes (yes, 16, there's room for more options; and yes, bytes, I'm somewhat surprised they didn't pack it into bits) is located at 0x20ACC and at 0x20A8C in the World version. All we have to do then is set those values to 1
+I actually had a bit of trouble with the game at first (indirect addressing can be a real pain in the ass), but in the end I found that the menu references a table of booleans right before the string table which indicate which options in the menu to enable or disable, with each byte corresponding to each items in the list. In the JP version, this table of 16 bytes (yes, 16, there's room for more options; and yes, bytes, I'm somewhat surprised they didn't pack it into bits) is located at 0x20ACC and at 0x20A8C in the World version. All we have to do then is set those values to 1.
 
 **Japan:**
 

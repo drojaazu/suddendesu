@@ -51,7 +51,7 @@ It looks like it's testing bit 0 of the word (2 bytes) at 0x100094 and will bran
 
 ![](img/agallet_roundsel2.png)
 
-GOT 'EM. The menu appears after pressing start on the title screen. It's straightforward: P1 Up/Down to cycle and any P1 button to go.
+Got 'em. The menu appears after pressing start on the title screen. It's straightforward: P1 Up/Down to cycle and any P1 button to go.
 
 So what about the other unavailable options that were listed in the string table? Things like invincibility and game pause probably won't have text associated with them, so how can we find them? Well, we could really dig into the disassembly, step through it and try to follow the game loop, identifying all the routines... That's a lot of work and would require some serious time investment. The other method is Luck and Guesswork!
 

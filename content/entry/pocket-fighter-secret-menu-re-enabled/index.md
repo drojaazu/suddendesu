@@ -98,19 +98,19 @@ This is neat! It shows each stage, fully assembled with all the blocks from the 
 
 ... is also broken. But that's okay, it's available in the standard test menu.
 
-So! You may be wondering, how can I access all these great functions? To start, know that CPS-2 games are encrypted and, unfortunately, MAME doesn't apply ROM cheats to the un-encrypted, running code. So we'll need to use the un-encrypted Phoenix version of the Super Gem Fighter ROM set. Once that is running, this cheat should do the trick:
+Finally, here is the MAME cheat to access this menu, replacing the standard test menu:
 
 ```
   <cheat desc="Enable Secret Test Menu">
     <comment>Replaces the standard test menu</comment>
     <script state="on">
-      <action>temp0=maincpu.mw@20864</action>
-      <action>maincpu.mw@20864=29b6</action>
+      <action>temp0=maincpu.ow@20864</action>
+      <action>maincpu.ow@20864=29b6</action>
     </script>
     <script state="off">
-      <action>maincpu.mw@20864=temp0</action>
+      <action>maincpu.ow@20864=temp0</action>
     </script>
   </cheat>
 ```
 
-This replaces the standard test menu, so hit F2 once you're past the Phoenix loader and enjoy!
+Enjoy!
