@@ -21,48 +21,21 @@ But for as much as I was able to translate, there was still plenty of text that 
 
 Then, [@felineki](https://twitter.com/felineki) surprised me [on twitter a few weeks back](https://twitter.com/felineki/status/623451985107234817) with an announcement that he/she had some new entries for Table B! I plugged in the new kanji and the everything looks good. This patches up many sentences in the early Millennial Fair scene so that they are now readable. Some examples:
 
-<table>
-	<tbody>
-		<tr>
-			<td>(ルッカ)「　キライじゃないわよ、<br />
-			　　わたしも、お祭りは。</td>
-			<td>Lucca 'It's not that I hate fairs.</td>
-		</tr>
-		<tr>
-			<td>　　でも、もっと　いろんな[発][明][品]とか<br />
-			　　出てると　うれしいんだけどな。</td>
-			<td>I'd just be happier if there were some exhibits on new inventions.</td>
-		</tr>
-	</tbody>
-</table>
+|||
+|--- |--- |
+|(ルッカ)「キライじゃないわよ、わたしも、お祭りは。|Lucca 'It's not that I hate fairs.|
+|でも、もっといろんな[発][明][品]とか出てるとうれしいんだけどな。|I just wish there were some exhibits on new inventions.|
 
-<table>
-	<tbody>
-		<tr>
-			<td>男「　若いうちから　[酒]なんか[飲]んでると、<br />
-			ろくな人間に　なりゃせんぞ!<br />
-			うひょひょひょ……、ヒヤック!</td>
-			<td>Man 'I've been drinking since I was young,<br />
-			I just can't be a decent person!<br />
-			Uhohoho... *hick!*</td>
-		</tr>
-	</tbody>
-</table>
 
-<table>
-	<tbody>
-		<tr>
-			<td>少女「　あら、(クロノ)。<br />
-			また　(ルッカ)の　ヘンな[発][明]の<br />
-			じっけんだいに　されたんですって?<br />
-			あなたも　たいへんねー。</td>
-			<td>Girl 'Hey, Crono.<br />
-			Is it true that Lucca's down in her<br />
-			weird invention lab again?<br />
-			You're in trouble.</td>
-		</tr>
-	</tbody>
-</table>
+|||
+|--- |--- |
+|男「若いうちから[酒]なんか[飲]んでると、ろくな人間になりゃせんぞ!うひょひょひょ……、ヒヤック!|Man I've been drinking since I was young, I just can't be a decent person! Uhohoho... *hick!*|
+
+
+|||
+|--- |--- |
+|少女「あら、(クロノ)。また　(ルッカ)のヘンな[発][明]のじっけんだいにされたんですって?あなたもたいへんねー。|Girl 'Hey, Crono. Is it true that Lucca's down in her weird invention lab again? You're in trouble.|
+
 
 Judging from their twitter, [@felineki](https://twitter.com/felineki) is either a native Japanese speaker, or at least much more familiar with it than me, so I trust the work they've done. Unfortunately, there are no amazing discoveries beyond what we already had, but it's still nice to have a more complete translation.
 

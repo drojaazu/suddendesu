@@ -13,22 +13,32 @@
 	fill: $color-crt-white;
 }
 
-.imgtrans {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	max-width: 90%;
-
-	div {
-		font-family: $font-monospace;
-		p {
-			text-indent: 0;
-		}
-	}
-
-}
-
 .embed {
 	text-align: center;
 }
 
+.error
+{
+	text-align: center;
+	strong {
+		font-size: 4em;
+	}
+	p {
+		margin-bottom: 1rem;
+	}
+	margin-bottom: 1rem;
+}
+
+.kyoutai {
+	padding: 0;
+	display: inline-block;
+	border: 8px solid #161616;
+	border-radius: 12px;
+	border-collapse: separate;
+	background-clip: padding-box;
+	overflow: hidden;
+
+	img {
+		display:block;
+	}
+}

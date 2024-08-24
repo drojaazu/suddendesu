@@ -1,76 +1,35 @@
-# basic reference
+# sudden-desu.net Website
 
-```
-hugo new content posts/new-post-name-here
-```
+This is the source for the blog at sudden-desu.net.
 
-# tags
+# Building
 
-- debug tool
-- prototype
-- unused content
-- easter egg
-- copy warning
-- hidden credits
-- input code
+Requires at least [Hugo](https://gohugo.io/) 0.133. Run `hugo` from the root of the project to generate the site in the public subdirectory.
 
-# CSS styles
+# Content
 
-## imgtrans
+## Entries
 
-useful for providing translations of images
+These are the main entries for the site. To generate a new entry:
 
-needs raw HTML to implement properly
+`hugo new entry/new-entry-title`
 
+## Pages
 
-```
-<div class='imgtrans'>
-	<img src='img/tinklpit_speccredits14.png'>
-	<div>
-		<p>You've Done It!</p>
-		<p>Now go put in a High Score Application to <a href="https://ja.wikipedia.org/wiki/%E3%83%9E%E3%82%A4%E3%82%B3%E3%83%B3BASIC%E3%83%9E%E3%82%AC%E3%82%B8%E3%83%B3" target="_blank">BaMaga</a> and <a href="https://en.wikipedia.org/wiki/Gamest" target="_blank">Gamest</a>!</p>
-	</div>
-</div>
-```
+These are used for any content that is closely related to the site itself. Currently there is only one page, the About section.
 
-# Dev status
+To generate a new page:
 
-## imgtrans
+`hugo new page/new-page-title`
 
-the imgtrans thing used on the tinkle pit article is kind of silly, find an alternate solution
+## Shortcodes
 
-## Meta description
+### zoomimg
 
-we want a meta description tag on each page, this should be set in the document header
+Used for images that are quite small. When used, images can be clicked and held to zoom in to their content.
 
-https://developer.chrome.com/docs/lighthouse/seo/meta-description/?utm_source=lighthouse&utm_medium=devtools
+### large-image
 
-## DRY
+# Contributing
 
-unify html for home/list/single so that article entries look the samem
-
-## mobile
-
-testing needed
-
-## top bar
-
-what do we want up there?
-
-Home - listing of all entries by date
-
-About
-
-Tags
-
-Search
-
-## tables not centered
-
-## remove indentation from example xml (cheats)
-
-## fix broken tables
-
-for example in the Segasonic Arcade article
-
-
+We welcome original articles that relate to the site's topics: digital archaeology, software and game disassemblies and analysis, emulation, data preservation, Japanese gaming culture and history, and so on. Please create a new entry as outlined above and submit a PR for review.

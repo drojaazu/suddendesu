@@ -151,37 +151,13 @@ The game uses those values and this logic to choose the ending:
 
 With this logic, we have a path for Standard endings and a path for Special endings. The Special path is used when there is a no miss + <17 stages cleared combination from the player; the Standard path is used when either or both of those requirements are not met. On both paths, the final determinant is the presence of the Light Mirror. So, we have four endings:
 
-<table>
-	<thead>
-		<tr>
-			<th>Ending ID</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>2</td>
-			<td>Special + Mirror</td>
-			<td>Makoto was the bad guy all along!</td>
-		</tr>
-		<tr>
-			<td>3</td>
-			<td>Special</td>
-			<td>Molto with gun (alternate dialogue), Makoto dies</td>
-		</tr>
-		<tr>
-			<td>4</td>
-			<td>Standard</td>
-			<td>Molto with gun, Makoto dies</td>
-		</tr>
-		<tr>
-			<td>5</td>
-			<td>Standard + Mirror</td>
-			<td>Molto with gun, use mirror and rescue Makoto</td>
-		</tr>
-	</tbody>
-</table>
+|Ending ID|Type|Description|
+|--- |--- |--- |
+|2|Special + Mirror|Makoto was the bad guy all along!|
+|3|Special|Molto with gun (alternate dialogue), Makoto dies|
+|4|Standard|Molto with gun, Makoto dies|
+|5|Standard + Mirror|Molto with gun, use mirror and rescue Makoto|
+
 
 While the dramatic surprise ending is exciting, the other Special ending is woefully lacking. It's the same as the mirror-less Standard ending, save for one different line of speech from Molto. Kind of a rip-off when you consider how difficult it is to get on the Special path.
 

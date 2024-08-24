@@ -87,31 +87,16 @@ This is the basis for the program flow through the game, with the subroutines in
 
 But with the idea of 0x09EE/0x0AC8 and 0x0D22 being called on every loop, let's return to the Debug Monitor and look at its address in relation to these core subroutines:
 
-<table>
-	<tbody>
-		<tr>
-			<td>0x09EE - Render graphics (normal gameplay)</td>
-		</tr>
-		<tr>
-			<td>0x0AC8 - Render graphics (paused game)</td>
-		</tr>
-		<tr>
-			<td>0x0B5A - Debugging monitor</td>
-		</tr>
-		<tr>
-			<td>0x0C42 - Debug monitor x/y text pos values</td>
-		</tr>
-		<tr>
-			<td>0x0C82 - Pause screen strings</td>
-		</tr>
-		<tr>
-			<td>0x0CFA - Debugging monitor strings</td>
-		</tr>
-		<tr>
-			<td>0x0D22 - Loop cleanup</td>
-		</tr>
-	</tbody>
-</table>
+|Offset|Effect|
+|--- |--- |
+|0x09EE|Render graphics (normal gameplay)|
+|0x0AC8|Render graphics (paused game)|
+|0x0B5A|Debugging monitor|
+|0x0C42|Debug monitor x/y text pos values|
+|0x0C82|Pause screen strings|
+|0x0CFA|Debugging monitor strings|
+|0x0D22|Loop cleanup|
+
 
 It's interesting that the code for the Debug Monitor is sandwiched between these constantly called subroutines. It's also interesting that the debug text strings come after the pause text strings. While I wouldn't count this as hard evidence, I call it coincidental enough to conclude that the Debug Monitor was meant to be called during the main game loop, specifically during the render subroutines. The code for the monitor lends itself to this: like similar RAM viewers I've seen in other games, it is meant to be called continually to work properly, checking button state and updating the screen once per call.
 

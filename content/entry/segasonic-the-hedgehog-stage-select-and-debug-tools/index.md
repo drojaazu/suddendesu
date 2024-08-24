@@ -123,255 +123,39 @@ Perhaps you notice that there's some text coming through from the sheet behind i
 
 ソニックサウンド？？書
 
-<table>
-	<tbody>
-		<tr>
-			<td>
-			Prologue
-			</td>
-			<td>
-			外
-			</td>
-			<td>
-			エッグマン独占領域
+|||||
+|--- |--- |--- |--- |
+|Prologue|外|エッグマン独占領域
+		明るいエイジス|ソニック？|
+|Stage 1-1||エッグマン独占領域
+		（急？）流、？？|？ンボを変える|
+|Stage 1-2|内|第一の塔|前半（歯？）車に追いかけられる　後半？？|
+|Stage 2-1|外|（崩？）、岩？|前方？？が？れる　後半火山及び？？連？|
+|Stage 2-2|内|第二の塔||
+|Stage 3-1|外|砂（浜？）||
+|Stage 3-2|内|第三の塔||
+|Stage 4-1|外|？の世界||
+|Final|内|全能の塔||
 
-			明るいエイジス
-			</td>
-			<td>
-			ソニック？
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 1-1
-			</td>
-			<td></td>
-			<td>
-			エッグマン独占領域
-
-			（急？）流、？？
-			</td>
-			<td>
-			？ンボを変える
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 1-2
-			</td>
-			<td>
-			内
-			</td>
-			<td>
-			第一の塔
-			</td>
-			<td>
-			前半（歯？）車に追いかけられる　後半？？
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 2-1
-			</td>
-			<td>
-			外
-			</td>
-			<td>
-			（崩？）、岩？
-			</td>
-			<td>
-			前方？？が？れる　後半火山及び？？連？
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 2-2
-			</td>
-			<td>
-			内
-			</td>
-			<td>
-			第二の塔
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Stage 3-1
-			</td>
-			<td>
-			外
-			</td>
-			<td>
-			砂（浜？）
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Stage 3-2
-			</td>
-			<td>
-			内
-			</td>
-			<td>
-			第三の塔
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Stage 4-1
-			</td>
-			<td>
-			外
-			</td>
-			<td>
-			？の世界
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Final
-			</td>
-			<td>
-			内
-			</td>
-			<td>
-			全能の塔
-			</td>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
 
 Translation:
 
 Sonic Sound ?? Document
 
-<table>
-	<tbody>
-		<tr>
-			<td>
-			Prologue
-			</td>
-			<td>
-			Outside
-			</td>
-			<td>
-			Eggman’s Private Domain
+|||||
+|--- |--- |--- |--- |
+|Prologue|Outside|Eggman’s Private Domain
+		Bright Aegis|Sonic ???|
+|Stage 1-1||Eggman’s Private Domain
+		（急？）流、？？|??? change into ??mbo|
+|Stage 1-2|Inside|First Tower|First half, chased by (gear?) vehicle, second half ??|
+|Stage 2-1|Outside|(Crumbling?), Rocks ??|The front ?? (verb), second half is volcano or ???|
+|Stage 2-2|Inside|Second Tower||
+|Stage 3-1|Outside|Sand (Beach?)||
+|Stage 3-2|Inside|Third Tower||
+|Stage 4-1|Outside|World of ?||
+|Final|Inside|Omnipotent Tower||
 
-			Bright Aegis
-			</td>
-			<td>
-			Sonic ???
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 1-1
-			</td>
-			<td></td>
-			<td>
-			Eggman’s Private Domain
-
-			（急？）流、？？
-			</td>
-			<td>
-			??? change into ??mbo
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 1-2
-			</td>
-			<td>
-			Inside
-			</td>
-			<td>
-			First Tower
-			</td>
-			<td>
-			First half, chased by (gear?) vehicle, second half ??
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 2-1
-			</td>
-			<td>
-			Outside
-			</td>
-			<td>
-			(Crumbling?), Rocks ??
-			</td>
-			<td>
-			The front ?? (verb), second half is volcano or ???
-			</td>
-		</tr>
-		<tr>
-			<td>
-			Stage 2-2
-			</td>
-			<td>
-			Inside
-			</td>
-			<td>
-			Second Tower
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Stage 3-1
-			</td>
-			<td>
-			Outside
-			</td>
-			<td>
-			Sand (Beach?)
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Stage 3-2
-			</td>
-			<td>
-			Inside
-			</td>
-			<td>
-			Third Tower
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Stage 4-1
-			</td>
-			<td>
-			Outside
-			</td>
-			<td>
-			World of ?
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-			Final
-			</td>
-			<td>
-			Inside
-			</td>
-			<td>
-			Omnipotent Tower
-			</td>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
 
 Certainly, the most intriguing thing here is right near the, the "Bright [Aegis](https://www.merriam-webster.com/dictionary/aegis)." It certainly sounds like an Eggman device.
 
@@ -405,84 +189,26 @@ What defines a "stage" isn't straightforward. The tutorial is a stage, for examp
 
 The stage IDs (i.e. the ones listed in the stage select tool) do not coincide with the order of gameplay. The order of stages can be found as a list of 16-bit values at 0x1AC4 in the loc. test and at 0x2639 in the final:
 
-<table style="width: 25%;">
-	<thead>
-		<tr>
-			<th>Loc. Test</th>
-			<th>Final</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>0x07</td>
-			<td>0x07</td>
-		</tr>
-		<tr>
-			<td>0x06</td>
-			<td>0x06</td>
-		</tr>
-		<tr>
-			<td>0x05</td>
-			<td>0x05</td>
-		</tr>
-		<tr>
-			<td>0x08</td>
-			<td>0x08</td>
-		</tr>
-		<tr>
-			<td>0x03</td>
-			<td>0x09</td>
-		</tr>
-		<tr>
-			<td>0x04</td>
-			<td>0x0A</td>
-		</tr>
-		<tr>
-			<td>0x09</td>
-			<td>0x03</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x04</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x10</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x0C</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x0D</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x0E</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x0F</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x0B</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x11</td>
-		</tr>
-		<tr>
-			<td>0x0A</td>
-			<td>0x0A</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>0x0A</td>
-		</tr>
-	</tbody>
-</table>
+|Loc. Test|Final|
+|--- |--- |
+|0x07|0x07|
+|0x06|0x06|
+|0x05|0x05|
+|0x08|0x08|
+|0x03|0x09|
+|0x04|0x0A|
+|0x09|0x03|
+|0x0A|0x04|
+|0x0A|0x10|
+|0x0A|0x0C|
+|0x0A|0x0D|
+|0x0A|0x0E|
+|0x0A|0x0F|
+|0x0A|0x0B|
+|0x0A|0x11|
+|0x0A|0x0A|
+||0x0A|
+
 
 As you can see, stage ID 1 and 2 are not used in either version, though both are just copies of the layout/graphics of the tutorial (stage ID 7), which is in turn based on stage ID 3 (Trap Tower). Though not listed in the order here, the later stages are still present in Rev. A, though they lack objects and events. 
 
@@ -633,64 +359,21 @@ This is an unused and rather over-engineered graphics viewer within the code for
 
 When enabled, it displays a crosshair that acts as a cursor which is controlled by P2 Trackball and P2 Button 1 acting as the select button. This is used to select from the options listed at the bottom of the screen.
 
-<table>
-	<thead>
-		<tr>
-			<th>Option</th>
-			<th>Effect</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>OBJECT</td>
-			<td>Locks the cursor; P2 Trackball Y-axis will change the ID of the current object; P1 Trackball will move the object around the screen; P2 B1 unlocks the cursor</td>
-		</tr>
-		<tr>
-			<td>CLEAR</td>
-			<td>Removes all existing objects and spawns new one with default settings</td>
-		</tr>
-		<tr>
-			<td>COLOR BANK</td>
-			<td>Locks the cursor; P2 Trackball Y-axis will change the palette of the current object; P2 B1 unlocks the cursor</td>
-		</tr>
-		<tr>
-			<td>BASE POINT</td>
-			<td>This changes the relative location of the current sprite. It is indicated by the 3x3 small gray grid in the upper left; the red dot indicates the current position</td>
-		</tr>
-		<tr>
-			<td>ZPOS</td>
-			<td>Changes the Z position (the "layer") of the current object; P2 B1 increases, P1 B1 decreases</td>
-		</tr>
-		<tr>
-			<td>16 - 256</td>
-			<td>Changes the tile color depth - 4 bit (16 colors) or 8 bit (256 colors)</td>
-		</tr>
-		<tr>
-			<td>SAVE</td>
-			<td>Presumably writes the data to a certain address for use by external hardware or directly by the devs; TODO - needs more research</td>
-		</tr>
-		<tr>
-			<td>H-V FLIP</td>
-			<td>Sets or clears horizontal or vertical flip flags on the current object</td>
-		</tr>
-		<tr>
-			<td>ZOOM</td>
-			<td>Locks the cursor; P2 Trackball Y-axis resizes the current object; P2 B1 unlocks the cursor</td>
-		</tr>
-		<tr>
-			<td>EXIT</td>
-			<td>Quits the viewer</td>
-		</tr>
-		<tr>
-			<td>END FLAG</td>
-			<td>Sets or clears the end flag on the current object; this will fix the graphics on objects that have random horizontal lines</td>
-		</tr>
-		<tr>
-			<td>NEW OBJECT</td>
-			<td>Spawns a new object, using the current object's settings</td>
-		</tr>
-	</tbody>
-</table>
+|Option|Effect|
+|--- |--- |
+|OBJECT|Locks the cursor; P2 Trackball Y-axis will change the ID of the current object; P1 Trackball will move the object around the screen; P2 B1 unlocks the cursor|
+|CLEAR|Removes all existing objects and spawns new one with default settings|
+|COLOR BANK|Locks the cursor; P2 Trackball Y-axis will change the palette of the current object; P2 B1 unlocks the cursor|
+|BASE POINT|This changes the relative location of the current sprite. It is indicated by the 3x3 small gray grid in the upper left; the red dot indicates the current position|
+|ZPOS|Changes the Z position (the "layer") of the current object; P2 B1 increases, P1 B1 decreases|
+|16 - 256|Changes the tile color depth - 4 bit (16 colors) or 8 bit (256 colors)|
+|SAVE|Presumably writes the data to a certain address for use by external hardware or directly by the devs; TODO - needs more research|
+|H-V FLIP|Sets or clears horizontal or vertical flip flags on the current object|
+|ZOOM|Locks the cursor; P2 Trackball Y-axis resizes the current object; P2 B1 unlocks the cursor|
+|EXIT|Quits the viewer|
+|END FLAG|Sets or clears the end flag on the current object; this will fix the graphics on objects that have random horizontal lines|
+|NEW OBJECT|Spawns a new object, using the current object's settings|
+
 
 As you may have guess from the use of "object" above, the tool can create multiple instances of a graphic, each of which can be uniquely modified. The current object will blink, and P1/P2 Start can be used to cycle through all the objects on the screen.
 

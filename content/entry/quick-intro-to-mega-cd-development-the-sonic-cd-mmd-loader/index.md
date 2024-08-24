@@ -137,47 +137,15 @@ As we said, an MMD is just a big binary with all the program code and resources 
 
 The header is the first 0x100 bytes of the MMD file (though most of this is empty space). It is made up of pointers and data lengths that describe where the MMD Data section should be placed as well as interrupt vectors. The layout looks like this:
 
-<table>
-	<thead>
-		<tr>
-			<th>Offset</th>
-			<th>Size</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>0</td>
-			<td>word</td>
-			<td>Word RAM ownership</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>long</td>
-			<td>MMD Data section destination</td>
-		</tr>
-		<tr>
-			<td>6</td>
-			<td>word</td>
-			<td>MMD Data section size</td>
-		</tr>
-		<tr>
-			<td>8</td>
-			<td>long</td>
-			<td>Code entry point (absolute)</td>
-		</tr>
-		<tr>
-			<td>0xC</td>
-			<td>long</td>
-			<td>HINT vector</td>
-		</tr>
-		<tr>
-			<td>0x10</td>
-			<td>long</td>
-			<td>VINT vector</td>
-		</tr>
-	</tbody>
-</table>
+|Offset|Size|Description|
+|--- |--- |--- |
+|0|word|Word RAM ownership|
+|2|long|MMD Data section destination|
+|6|word|MMD Data section size|
+|8|long|Code entry point (absolute)|
+|0xC|long|HINT vector|
+|0x10|long|VINT vector|
+
 
 Word RAM ownership - If bit 6 is set on the upper byte, then Word RAM will be given to the Sub CPU. This is done in MDINIT.MMD. Unsure if there is other functionality associated with this value.
 

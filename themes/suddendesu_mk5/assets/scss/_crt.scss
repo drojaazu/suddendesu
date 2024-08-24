@@ -110,7 +110,21 @@ $crt-cursor-content: '█';
 
 }
 
+@keyframes bloom {
+	$steps: 8;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+			opacity: 0.96 + (random() * (1.00 - 0.96))
+    }
+  }
+}
+
 .crt-fizzle {
 	display:block;
 	animation: fizzle 900ms infinite;
+}
+
+.crt-bloom {
+	display:block;
+	animation: bloom 1100ms infinite;
 }

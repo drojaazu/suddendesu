@@ -36,72 +36,18 @@ Tucked away at the end of the exception strings, starting at 0x600, is a hidden 
 
 C.P. BRAIN is the development group, and 1990 is the year. The rest is the names of the development team members, in their original Japanese kanji. Unfortunately, since name kanji can be quite variable, it can be difficult to ascertain the readings of the names. I've also attempted to pair some of the real names with the nicknames in the credits:
 
-<table>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Reading</th>
-			<th>Credits Name</th>
-			<th>Credits Role</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>竹森得泰</td>
-			<td>Takemori Tokuhiro</td>
-			<td>TOKU</td>
-			<td>TOTAL PLANNER</td>
-		</tr>
-		<tr>
-			<td>幸田英一郎</td>
-			<td>Kouta Eiichirou</td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>飯塚　均</td>
-			<td>Iizuka Hitoshi</td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>橋本茂徳</td>
-			<td>Hashimoto Shigenori</td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>野口みゆき</td>
-			<td>Noguchi Miyuki</td>
-			<td>MIYUKI-CHAN</td>
-			<td>SPECIAL THANKS</td>
-		</tr>
-		<tr>
-			<td>長富成夫</td>
-			<td>Nagatomi Shigeo</td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>堀越　衛</td>
-			<td>Horikoshi Mamoru</td>
-			<td>H.MAMORU</td>
-			<td>DESIGNER</td>
-		</tr>
-		<tr>
-			<td>阿部貴佳史</td>
-			<td>Abe Takashi</td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>林　高志</td>
-			<td>Rin Takashi</td>
-			<td></td>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
+|Name|Reading|Credits Name|Credits Role|
+|--- |--- |--- |--- |
+|竹森得泰|Takemori Tokuhiro|TOKU|TOTAL PLANNER|
+|幸田英一郎|Kouta Eiichirou|||
+|飯塚　均|Iizuka Hitoshi|||
+|橋本茂徳|Hashimoto Shigenori|||
+|野口みゆき|Noguchi Miyuki|MIYUKI-CHAN|SPECIAL THANKS|
+|長富成夫|Nagatomi Shigeo|||
+|堀越　衛|Horikoshi Mamoru|H.MAMORU|DESIGNER|
+|阿部貴佳史|Abe Takashi|||
+|林　高志|Rin Takashi|||
+
 
 There you go, Phantasm devs, the world now knows of your work!
 

@@ -22,6 +22,12 @@ menus:
   - name: Tags
     pageRef: /tags
     weight: 30
+  - name: Twitter
+    url: http://twitter.com/suddendesu
+    weight: 40
+  - name: Support us on Ko-Fi
+    url: https://ko-fi.com/suddendesu
+    weight: 50
 
 services:
   googleAnalytics:

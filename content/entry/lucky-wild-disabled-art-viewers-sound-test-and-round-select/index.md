@@ -124,65 +124,27 @@ As mentioned above, a couple of the test mode functions (and debug tools, which 
 
 More precisely, the code is checking bits on the inputs on the Player 1 digital input. This input is partially used: bits 4 and 7 act as the Gun Trigger and Start button, respectively. Bits 0 to 3 would correspond to Up/Down/Left/Right. Bit 5 is also referenced in a way that suggests it was a button (see the Memory Viewer section below). With bit 7 as Start, it's a safe bet that bit 6 was also a button, which gives us a pretty standard joystick bit map:
 
-<table>
-	<tbody>
-		<tr>
-			<td>Bit 0</td>
-			<td>Right</td>
-		</tr>
-		<tr>
-			<td>Bit 1</td>
-			<td>Left</td>
-		</tr>
-		<tr>
-			<td>Bit 2</td>
-			<td>Down</td>
-		</tr>
-		<tr>
-			<td>Bit 3</td>
-			<td>Up</td>
-		</tr>
-		<tr>
-			<td>Bit 4</td>
-			<td>Gun Trigger</td>
-		</tr>
-		<tr>
-			<td>Bit 5</td>
-			<td>Button 2</td>
-		</tr>
-		<tr>
-			<td>Bit 6</td>
-			<td>Button 3</td>
-		</tr>
-		<tr>
-			<td>Bit 7</td>
-			<td>Start</td>
-		</tr>
-	</tbody>
-</table>
+|Bit|Effect|
+|--- |--- |
+|Bit 0|Right|
+|Bit 1|Left|
+|Bit 2|Down|
+|Bit 3|Up|
+|Bit 4|Gun Trigger|
+|Bit 5|Button 2|
+|Bit 6|Button 3|
+|Bit 7|Start|
+
 
 We can manually set these bits using the MAME debugger on any of the input vectors that are used by the MCU, which I've provided here for reference. All are word-sized values.
 
-<table>
-	<tbody>
-		<tr>
-			<td>0x460000</td>
-			<td>P1 (const)</td>
-		</tr>
-		<tr>
-			<td>0x460002</td>
-			<td>P2 (const)</td>
-		</tr>
-		<tr>
-			<td>0x460006</td>
-			<td>P1 (single)</td>
-		</tr>
-		<tr>
-			<td>0x460008</td>
-			<td>P2 (single)</td>
-		</tr>
-	</tbody>
-</table>
+|Offset|Variable|
+|--- |--- |
+|0x460000|P1 (const)|
+|0x460002|P2 (const)|
+|0x460006|P1 (single)|
+|0x460008|P2 (single)|
+
 
 The Sound Test reads from P1 const while the Object Viewer reads from P1 single. (By const and single, I am referring to a constant or single button press, as was [discussed in the Namco Classics article](/entry/namco-classics-collection-dev-messages-and-debug-tools-galore)). Manually setting the bits on these addresses will cause the code to react as if input was made.
 

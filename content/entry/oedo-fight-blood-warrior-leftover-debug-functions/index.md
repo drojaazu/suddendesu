@@ -67,34 +67,15 @@ Somewhat interestingly, the Memory Switch Set Up (aka Blood Mode) menu from the 
 
 Of course, instead of using the debug menu, you can set the bit values directly in RAM at these locations:
 
-<table>
-	<tbody>
-		<tr>
-			<td>0x10688D</td>
-			<td>Debug Flag</td>
-		</tr>
-		<tr>
-			<td>0x10497B</td>
-			<td>Country Flag</td>
-		</tr>
-		<tr>
-			<td>0x10497C</td>
-			<td>Blood settings</td>
-		</tr>
-		<tr>
-			<td>0x10497D</td>
-			<td>DIP Switch 1 (Coin settings)</td>
-		</tr>
-		<tr>
-			<td>0x10497E</td>
-			<td>DIP Switch 2 (Hardware Dip)</td>
-		</tr>
-		<tr>
-			<td>0x10497F</td>
-			<td>DIP Switch 3 (Split coin slots)</td>
-		</tr>
-	</tbody>
-</table>
+|Offset|Effect|
+|--- |--- |
+|0x10688D|Debug Flag|
+|0x10497B|Country Flag|
+|0x10497C|Blood settings|
+|0x10497D|DIP Switch 1 (Coin settings)|
+|0x10497E|DIP Switch 2 (Hardware Dip)|
+|0x10497F|DIP Switch 3 (Split coin slots)|
+
 
 # Debug Menu - Technical
 

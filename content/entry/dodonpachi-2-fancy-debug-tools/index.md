@@ -10,7 +10,7 @@ tags:
 draft: false
 ---
 
-We've taken a look at [Donpachi](/entry/donpachi-debug_tools-and-more) and [Dodonpachi](/entry/dodonpachi-debug_tools-level-select-and-more) in the past, so of course DDP 2 was going to come up eventually!
+We've taken a look at [Donpachi](/entry/donpachi-debug-tools-and-more) and [Dodonpachi](/entry/dodonpachi-debug-tools-level-select-and-more) in the past, so of course DDP 2 was going to come up eventually!
 
 <!--more-->
 
@@ -24,52 +24,21 @@ Just a note that all the research was done on version 1.00. All the cheats shoul
 
 There is a full-featured debug menu located within the code, still referenced and relatively easily accessible (at least with a cheat). It's quite a luxurious set of tools, with many having multiple usage options within each test. Most tests also helpfully include a listing of the usage controls, which follow a key:
 
-<table style="width: 80%;">
-	<tbody>
-		<tr>
-			<td style="text-align: center;">[ ]</td>
-			<td>P1 Input</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">< ></td>
-			<td>P2 Input</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">A, B, C, D</td>
-			<td>Button 1, 2, 3, 4</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">J</td>
-			<td>Joystick</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">+</td>
-			<td>Joystick (any direction)</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">--</td>
-			<td>Joystick (Left/Right)</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">|</td>
-			<td>Joystick (Up/Down)</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">#</td>
-			<td>Button (single press)</td>
-		</tr>
-		<tr>
-			<td style="text-align: center;">*</td>
-			<td>Button (hold)</td>
-		</tr>
-	</tbody>
-</table>
-
-
+|Identifier|Input|
+|--- |--- |
+|[ ]|P1 Input|
+|< >|P2 Input|
+|A, B, C, D|Button 1, 2, 3, 4|
+|J|Joystick|
+|+|Joystick (any direction)|
+|--|Joystick (Left/Right)|
+|||Joystick (Up/Down)|
+|#|Button (single press)|
+|*|Button (hold)|
 
 Let's take a quick look at the options available. For each of these, P1 Start returns to the main menu.
 
-## `ASCII
+## ASCII
 
 ![](img/ddp2_debug_ascii.png)
 

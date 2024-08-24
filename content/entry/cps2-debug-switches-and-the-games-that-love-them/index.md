@@ -63,18 +63,18 @@ So, let's jump in and have a look at the array of Marvel games on the system. As
 
 In addition to their specific flags, all the debugging functions in the game are enabled by a "master" debug flag which must be set first. This was likely a compile-time constant indicating a debug build. It is stored at 0xC0 in ROM and should be non-zero for debug mode, so we'll make the modification there with this cheat:
 
-<pre>
-  &lt;cheat desc="Enable Debug Functions"&gt;
-    &lt;comment&gt;This must be enabled to use debug functions and switches&lt;/comment&gt;
-    &lt;script state="on"&gt;
-      &lt;action&gt;temp0=maincpu.mw@c0&lt;/action&gt;
-      &lt;action&gt;maincpu.mw@c0=ffff&lt;/action&gt;
-    &lt;/script&gt;
-    &lt;script state="off"&gt;
-      &lt;action&gt;maincpu.mw@c0=temp0&lt;/action&gt;
-    &lt;/script&gt;
-  &lt;/cheat&gt;
-</pre>
+```
+  <cheat desc="Enable Debug Functions">
+    <comment>This must be enabled to use debug functions and switches</comment>
+    <script state="on">
+      <action>temp0=maincpu.mw@c0</action>
+      <action>maincpu.mw@c0=ffff</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@c0=temp0</action>
+    </script>
+  </cheat>
+```
 
 Be sure to reset the game after the cheat has been set, and remember that **this must be enabled to use the tools in the next sections**!
 
@@ -82,40 +82,15 @@ Be sure to reset the game after the cheat has been set, and remember that **this
 
 With the main debug flag set, you can choose the region by holding a P1 button on startup. The best way to do this in MAME is to hold the button, then press F3 to do a reset.
 
-<table>
-	<thead>
-		<tr>
-			<th>Button</th>
-			<th>Region</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>P1 Button 1</td>
-			<td>Japan</td>
-		</tr>
-		<tr>
-			<td>P1 Button 2</td>
-			<td>USA</td>
-		</tr>
-		<tr>
-			<td>P1 Button 3</td>
-			<td>Europe</td>
-		</tr>
-		<tr>
-			<td>P1 Button 4</td>
-			<td>Asia</td>
-		</tr>
-		<tr>
-			<td>P1 Button 5</td>
-			<td>Hispanic</td>
-		</tr>
-		<tr>
-			<td>P1 Button 6</td>
-			<td>Brazil</td>
-		</tr>
-	</tbody>
-</table>
+|Button|Region|
+|--- |--- |
+|P1 Button 1|Japan|
+|P1 Button 2|USA|
+|P1 Button 3|Europe|
+|P1 Button 4|Asia|
+|P1 Button 5|Hispanic|
+|P1 Button 6|Brazil|
+
 
 ## Debug DIPs
 
@@ -125,71 +100,25 @@ With the main debug flag set, you can choose the region by holding a P1 button o
 
 This game makes use of the debug DIP switches during gameplay. You will first need to have the master Debug Flag mentioned above enabled.
 
-<table>
-	<thead>
-		<tr>
-			<th>Switch</th>
-			<th>Effect</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>SW 1:1</td>
-			<td>Display grid overlay and some values</td>
-		</tr>
-		<tr>
-			<td>SW 1:2</td>
-			<td>Flip the screen vertically</td>
-		</tr>
-		<tr>
-			<td>SW 2:6</td>
-			<td>Slow speed</td>
-		</tr>
-		<tr>
-			<td>SW 2:1</td>
-			<td>Invincibility</td>
-		</tr>
-		<tr>
-			<td>SW 2:2</td>
-			<td>Show hit boxes</td>
-		</tr>
-		<tr>
-			<td>SW 2:3</td>
-			<td>Disable countdown timer</td>
-		</tr>
-		<tr>
-			<td>SW 2:7</td>
-			<td>Slower speed</td>
-		</tr>
-		<tr>
-			<td>SW 2:8</td>
-			<td>Slowest speed</td>
-		</tr>
-		<tr>
-			<td>SW 3:1</td>
-			<td>Fast speed</td>
-		</tr>
-		<tr>
-			<td>SW 3:2</td>
-			<td>Partial invincibility<br />
-			(most attacks do no damage, but some do; unclear exactly how this works)</td>
-		</tr>
-		<tr>
-			<td>SW 3:4</td>
-			<td>Stop</td>
-		</tr>
-		<tr>
-			<td>SW 3:5</td>
-			<td>Monitor 1<br />
-			(only during gameplay, needs to be set before gameplay begins)</td>
-		</tr>
-		<tr>
-			<td>SW 3:7</td>
-			<td>Monitor 2<br />
-			(only during gameplay)</td>
-		</tr>
-	</tbody>
-</table>
+|Switch|Effect|
+|--- |--- |
+|SW 1:1|Display grid overlay and some values|
+|SW 1:2|Flip the screen vertically|
+|SW 2:6|Slow speed|
+|SW 2:1|Invincibility|
+|SW 2:2|Show hit boxes|
+|SW 2:3|Disable countdown timer|
+|SW 2:7|Slower speed|
+|SW 2:8|Slowest speed|
+|SW 3:1|Fast speed|
+|SW 3:2|Partial invincibility
+		(most attacks do no damage, but some do; unclear exactly how this works)|
+|SW 3:4|Stop|
+|SW 3:5|Monitor 1
+		(only during gameplay, needs to be set before gameplay begins)|
+|SW 3:7|Monitor 2
+		(only during gameplay)|
+
 
 ## Secret Test Menu
 
@@ -209,87 +138,31 @@ Displays and edits the animations for characters. There are two modes: Char Sele
 
 #### Char Select Mode
 
-<table>
-	<thead>
-		<tr>
-			<th>Input</th>
-			<th>Effect</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>P1 Up/Down</td>
-			<td>Change animation group</td>
-		</tr>
-		<tr>
-			<td>P1 Left/Right</td>
-			<td>Change animation within the current group</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B1</td>
-			<td>Play animation</td>
-		</tr>
-		<tr>
-			<td>P1 B2</td>
-			<td>Advance animation by one frame</td>
-		</tr>
-		<tr>
-			<td>P1 B3</td>
-			<td>Reset animation</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B4 + P1 Stick</td>
-			<td>Move character</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B5 + P1 Stick</td>
-			<td>Change H/V flip</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B6 + P1 Up/Down</td>
-			<td>Change character</td>
-		</tr>
-		<tr>
-			<td>P2 Stick</td>
-			<td>Change shadow position/size (see note below)</td>
-		</tr>
-	</tbody>
-</table>
+|Input|Effect|
+|--- |--- |
+|P1 Up/Down|Change animation group|
+|P1 Left/Right|Change animation within the current group|
+|Hold P1 B1|Play animation|
+|P1 B2|Advance animation by one frame|
+|P1 B3|Reset animation|
+|Hold P1 B4 + P1 Stick|Move character|
+|Hold P1 B5 + P1 Stick|Change H/V flip|
+|Hold P1 B6 + P1 Up/Down|Change character|
+|P2 Stick|Change shadow position/size (see note below)|
+
 
 In Char Select Mode, P2 Start will cycle the secondary object "mode." This will either be a player or an effect, and each has a visible and invisible mode. The controls for the secondary object are the same as listed above, but use the P2 side controls. Note that the P2 Stick will also control the shadow side regardless of the secondary mode.
 
 #### Hit Edit Mode
 
-<table>
-	<thead>
-		<tr>
-			<th>Input</th>
-			<th>Effect</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>P1 Up/Down</td>
-			<td>Select an entry in the "Hit" menu</td>
-		</tr>
-		<tr>
-			<td>P1 B1</td>
-			<td>Edit hit value, after which P1 Left/Right changes the value</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B4 + P1 Left/Right</td>
-			<td>Change animation (can lead to bad data/game crash)</td>
-		</tr>
-		<tr>
-			<td>P1 B5</td>
-			<td>Advance animation by one frame</td>
-		</tr>
-		<tr>
-			<td>P1 B6</td>
-			<td>Reset animation</td>
-		</tr>
-	</tbody>
-</table>
+|Input|Effect|
+|--- |--- |
+|P1 Up/Down|Select an entry in the "Hit" menu|
+|P1 B1|Edit hit value, after which P1 Left/Right changes the value|
+|Hold P1 B4 + P1 Left/Right|Change animation (can lead to bad data/game crash)|
+|P1 B5|Advance animation by one frame|
+|P1 B6|Reset animation|
+
 
 ### Catch Edit
 
@@ -299,52 +172,18 @@ In Char Select Mode, P2 Start will cycle the secondary object "mode." This will 
 
 Catch Edit is similar to Char Select in the previous tool, but is specifically for working with throw animations between two player.
 
-<table>
-	<thead>
-		<tr>
-			<th>Input</th>
-			<th>Effect</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>P1 Left/Right</td>
-			<td>Change catch anim</td>
-		</tr>
-		<tr>
-			<td>P2 Left/Right</td>
-			<td>Change hold anim</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B1</td>
-			<td>Play animation</td>
-		</tr>
-		<tr>
-			<td>P1 B2</td>
-			<td>Advance animation by one frame</td>
-		</tr>
-		<tr>
-			<td>P1 B3</td>
-			<td>Reset animation</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B4 + P1 Stick</td>
-			<td>Move character</td>
-		</tr>
-		<tr>
-			<td>Hold P1 B6 + P1 Up/Down</td>
-			<td>Change character</td>
-		</tr>
-		<tr>
-			<td>P2 B2</td>
-			<td>Exchange priority levels between characters</td>
-		</tr>
-		<tr>
-			<td>Hold P2 B5 + P2 Stick</td>
-			<td>Change H/V flip for throw character</td>
-		</tr>
-	</tbody>
-</table>
+|Input|Effect|
+|--- |--- |
+|P1 Left/Right|Change catch anim|
+|P2 Left/Right|Change hold anim|
+|Hold P1 B1|Play animation|
+|P1 B2|Advance animation by one frame|
+|P1 B3|Reset animation|
+|Hold P1 B4 + P1 Stick|Move character|
+|Hold P1 B6 + P1 Up/Down|Change character|
+|P2 B2|Exchange priority levels between characters|
+|Hold P2 B5 + P2 Stick|Change H/V flip for throw character|
+
 
 Also similar to the previous mode, the same inputs apply to the secondary character using the P2 side controls. Notably, the H/V flip is only available on the P2 side here.
 
@@ -360,7 +199,7 @@ It's unclear exactly what is going on here. When selecting the option from the m
 
 It could be checking the validitity of fight engine data, or perhaps copying that data to someplace in memory where it can be useful to devs. Among the strings for its subroutine are some possible errors that can occur as it runs:
 
-<pre>
+```
     DONT USE COMMAND    
       NOT COMMAND       
     NOT FOUND ENDIF     
@@ -369,7 +208,8 @@ It could be checking the validitity of fight engine data, or perhaps copying tha
  BAD PARAMETER (SP TYPE)
  BAD PARAMETER (SP KIND)
   BAD PARAMETER (SP SW) 
-    OVER LIBRARY NO     </pre>
+    OVER LIBRARY NO     
+```
 
 A deeper look into the disassembly could probably tell us more, but to be frank, there are too many other things to tackle, so I leave this to someone else to research.
 
@@ -493,18 +333,18 @@ This is the oldest of the Marvel games and the original engine from which later 
 
 Like its later games, CotA has a hardcoded debug build flag which must be set before any of the other tools can be used. Unlike those games, though, it is in a different location in the ROM, so we'll need a different cheat:
 
-<pre>
-  &lt;cheat desc="Enable Debug Functions"&gt;
-    &lt;comment&gt;This must be enabled to use other debug function cheats&lt;/comment&gt;
-    &lt;script state="on"&gt;
-      &lt;action&gt;temp0=maincpu.mw@d24&lt;/action&gt;
-      &lt;action&gt;maincpu.mw@d24=ffff&lt;/action&gt;
-    &lt;/script&gt;
-    &lt;script state="off"&gt;
-      &lt;action&gt;maincpu.mw@d24=temp0&lt;/action&gt;
-    &lt;/script&gt;
-  &lt;/cheat&gt;
-</pre>
+```
+  <cheat desc="Enable Debug Functions">
+    <comment>This must be enabled to use other debug function cheats</comment>
+    <script state="on">
+      <action>temp0=maincpu.mw@d24</action>
+      <action>maincpu.mw@d24=ffff</action>
+    </script>
+    <script state="off">
+      <action>maincpu.mw@d24=temp0</action>
+    </script>
+  </cheat>
+```
 
 ### Region Select
 
@@ -514,7 +354,7 @@ Same as above.
 
 ![](img/xmcota_secrettest.png)
 
-The secret menu has many of the same options, or at least versions of them, as later games. I won't go into detail on the controls of each one, as it looks like it <a href="https://tcrf.net/X-Men:_Children_of_the_Atom_(Arcade)#Debug_Menu" target="_blank">has been documented on TCRF already</a>, but we'll run through them quickly with screenshots.
+The secret menu has many of the same options, or at least versions of them, as later games. I won't go into detail on the controls of each one, as it looks like it [has been documented on TCRF already](https://tcrf.net/X-Men:_Children_of_the_Atom_(Arcade)#Debug_Menu), but we'll run through them quickly with screenshots.
 
 #### Hit Editor
 
@@ -522,15 +362,11 @@ The secret menu has many of the same options, or at least versions of them, as l
 
 ![](img/xmcota_hit02.png)
 
-
-
 #### Parts Editor
 
 ![](img/xmcota_parts01.png)
 
 ![](img/xmcota_parts02.png)
-
-
 
 #### Tsukami Editor
 
