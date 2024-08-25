@@ -30,6 +30,8 @@ Used for images that are quite small. When used, images can be clicked and held 
 
 ### large-image
 
+Useful for large, non-screenshot images (such as scans or photos).
+
 # Contributing
 
 We welcome original articles that relate to the site's topics: digital archaeology, software and game disassemblies and analysis, emulation, data preservation, Japanese gaming culture and history, and so on. Please create a new entry as outlined above and submit a PR for review.

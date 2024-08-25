@@ -1,0 +1,10 @@
+{{ define "main" }}
+<h1 class="callout record-title">{{ .Title }}</h1>
+<div class="callout crt-text record-tags-all">
+	<ul>
+		{{- range (sort .Pages "Title") }}
+		<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+		{{- end }}
+	</ul>
+</div>
+{{- end }}

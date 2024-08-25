@@ -235,6 +235,23 @@
 	}
 }
 
+.record-tags-all {
+	@include pad-v(1em);
+
+	li {
+		font-size: 1.5rem;
+		@include pad(0.2em,0.2em);
+	}
+	a {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+
+		&:hover {
+			text-decoration-style: solid;
+		}
+	}
+}
+
 .pagination {
 	display: flex;
 	justify-content: right;

@@ -2,23 +2,23 @@
 <html lang="en-us" dir="ltr">
 
 <head>
-  {{- partial "head.html" . -}}
+  {{- partial "html_head.html" . -}}
 </head>
 
 <body>
   {{ partial "icons.html" . -}}
   <div id="maincol" class="crt-bg crt-edges">
     <header>
-      {{ partial "header.html" . -}}
+      {{ partial "doc_header.html" . -}}
     </header>
     <main>
       {{ block "main" . -}}{{ end }}
     </main>
   </div>
   <footer id="badge">
-    {{ partial "footer.html" . }}
+    {{ partial "doc_footer.html" . }}
   </footer>
 </body>
-{{- partial "foot.html" . -}}
+{{- partial "html_foot.html" . -}}
 
 </html>

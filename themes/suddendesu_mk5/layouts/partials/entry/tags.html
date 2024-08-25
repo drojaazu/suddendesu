@@ -5,7 +5,7 @@
 <div class="callout crt-text record-tags">
   <div>🏷</div>
   <ul>
-    {{- range . }}
+    {{- range (sort . "Title") }}
     <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
     {{- end }}
   </ul>
