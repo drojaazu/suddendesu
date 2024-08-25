@@ -1,0 +1,6 @@
+{{ if (.Param "category") }}
+<div>┇{{ .Param "category" }}</div>
+{{ end }}
+<div>🖉 <time datetime="{{ .Date | time.Format site.Params.date_machine }}">{{ .Date | time.Format site.Params.date_human }}</time> by {{
+	.Param "author" }}
+</div>

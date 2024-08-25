@@ -406,6 +406,4 @@ The secret menu has many of the same options, or at least versions of them, as l
 
 The debug DIPs are used during gameplay here as well, with the same settings as in X-men vs Street Fighter listed above.
 
----
-
-And there we have it. Next time we'll take a look at more CPS 2 games that utilitize these DIP switches and the debug functions they have hidden away. See you then!
+And there we have it. We will eventually revisit the CPS-2 debug switches and the functions hidden away in the games that use them. See you then!

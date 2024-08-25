@@ -9,7 +9,8 @@ taxonomies:
 
 Params:
   subtitle: 'disassemblies・digital archaeology・data preservation'
-  color-dev: '#ff0000'
+  date_machine: '2006-01-02T15:04:05-07:00'
+  date_human: '2006-01-02'
 
 menus:
   main:

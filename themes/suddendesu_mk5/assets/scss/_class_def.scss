@@ -42,3 +42,35 @@
 		display:block;
 	}
 }
+
+.tinyimg {
+	
+	img {
+		border: none !important;
+		border-radius: 0 !important;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		// transform: scale(4);
+	}
+}
+
+img.zoom {
+	transition: transform 0.2s, background-color 0.2s;
+	cursor: zoom-in;
+	border: none !important;
+	border-radius: 0 !important;
+	image-rendering: pixelated;
+	image-rendering: -moz-crisp-edges;
+
+	&:active {
+		border: 2px solid $color-black !important;
+		border-radius: 2px;
+		background: $color-white url($path-img+'body_bg.png');;
+		transform: scale(2);
+		cursor: zoom-out;
+		padding: 0.25rem;
+
+		backface-visibility: hidden;
+	}
+
+}

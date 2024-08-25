@@ -1,0 +1,10 @@
+<article class='record-container'>
+	{{ partial "entry/list_header.html" . }}
+	<div class='record-body'>
+		{{ if (.Param "images") }}
+		<figure><a href='{{ .RelPermalink }}'><img src='{{ printf "%s" (index (.Param "images") 0) | printf "%s%s" .RelPermalink }}'></a></figure>
+		{{ end }}
+		{{ .Summary }}
+	</div>
+	{{ partial "entry/list_footer.html" . }}
+</article>

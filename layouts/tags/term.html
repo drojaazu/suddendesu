@@ -1,16 +1,9 @@
 {{ define "main" }}
 
-<h1 class="callout record-header">Articles with tag: {{ .Title }}</h1>
+<h1 class="callout record-title">Articles with tag `{{ .Title }}`</h1>
 
 {{ range .Pages }}
-{{ partial "article_head.html" . -}}
-<div class='record-body'>
-	{{ if (.Param "images") }}
-	<figure><a href='{{ .RelPermalink }}'><img src='{{ printf "%s" (index (.Param "images") 0) | printf "%s%s" .RelPermalink }}'></a></figure>
-	{{ end }}
-	{{ .Summary }}
-</div>
-{{ partial "article_foot.html" . -}}
+{{ partial "entry/listing.html" . -}}
 {{ end }}
 
 {{ partial "pagination" . }}

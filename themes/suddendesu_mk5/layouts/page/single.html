@@ -1,13 +1,13 @@
 {{ define "main" }}
-{{ $dateMachine := "2006-01-02T15:04:05-07:00" }}
-{{ $dateHuman := "2006-01-02" }}
-{{ partial "article_head.html" . -}}
-{{ partial "tags.html" (dict "page" .) }}
-<div class='record-body'>
-	{{ if (.Param "images") }}
-	<figure><img src='{{ index (.Param "images") 0 }}'></figure>
-	{{ end }}
-	{{ .Content }}
-</div>
+<article class='record-container'>
+	{{ partial "page/single_header.html" . }}
+
+	<div class='record-body'>
+		{{ if (.Param "images") }}
+		<figure><img src='{{ index (.Param "images") 0 }}'></figure>
+		{{ end }}
+		{{ .Content }}
+	</div>
+	{{ partial "page/single_footer.html" . }}
 </article>
 {{ end }}
