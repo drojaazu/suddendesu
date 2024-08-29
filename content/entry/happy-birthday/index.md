@@ -123,9 +123,9 @@ I'd love to [hear your thoughts on these ideas](https://twitter.com/suddendesu),
 
 I flirted with Google ads for a while early on in the site but they didn't stick around for more than a year or so. It's just not worth it. So the site is and will remain ad free.
 
-But there's an annual fee for hosting and domain upkeep. There are the pamphlets, flyers and other historical ephemera I purchase and scan for the community, many of which are expensive (some of them [exorbitatntly so](https://x.com/suddendesu/status/1577454033232879618)). There's the large A5 sized scanner I bought last year to support that project, which was a nice chunk of cash as well. And aside from that, there's the time it takes for the research and writing of articles, which is invaluable.
+But there's an annual fee for hosting and domain upkeep. There are the pamphlets, flyers and other historical ephemera I purchase and scan for the community, many of which are expensive (some of them [exorbitantly so](https://x.com/suddendesu/status/1577454033232879618)). There's the large A5 size scanner I bought last year to support the scanning, which was a nice chunk of cash as well. And aside from all that, there's the time it takes for the research and writing of articles, which is invaluable.
 
-I wouldn't do all of the above if I didn't have the means to do... but it does add up. If you've found our articles interesting and information, and if you're in a position to spare a couple dollars/euros/yen, [please consider donating to use via ko-fi](https://ko-fi.com/suddendesu). It's encouraging and it helps justify the effort.
+I wouldn't do all of the above if I didn't have the means to do... but it does add up. If you've found our articles interesting and informative, and if you're in a position to spare a couple dollars/euros/yen, [please consider donating via ko-fi](https://ko-fi.com/suddendesu). It's encouraging and it helps justify the effort.
 
 # Thank You!
 
