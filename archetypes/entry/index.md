@@ -6,7 +6,7 @@ images:
 - img/cover.png
 category: Disassembly / Analysis
 tags:
-- developer
+- [developer]
 - debug tool
 - prototype
 - unused content
