@@ -7,6 +7,7 @@ images:
 category: Disassembly / Analysis
 tags:
 - capcom
+- cave
 - debug tool
 - unused content
 draft: false
