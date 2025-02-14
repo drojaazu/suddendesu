@@ -17,9 +17,21 @@ tags:
 draft: true
 ---
 
-
+We can learn a lot from disassembling game data, but we learn *so much more* from source code. Source code, however, is extremely rare, especially for retro games, especially especially for Japanese games. So when we find source, it's a real treat to examine it. And today we're going to look at some source code for Keio Yugekitai for teh Sega Mega CD, known in the west as Keio Flying Squadron.
 
 <!--more-->
+
+We kind of buried the lede with that introduction, so let's start from the beginning. We do not have the complete source code for Keio Yugekitai, but there are relatively large chunks of it tucked away in the data of some files on the disc:
+
+![](img/keio_example_hex.jpg1)
+
+Moreover, the game was released in three regions, each one being a different build, so each version has different bits of source code. And! There were two demo versions, one for Japan and one for Europe, with their own different source code. So altogether we have five discs to look at!
+
+We'll take a look at the source code and other leftover text in the files on these discs while discussing some concepts relating to assembly language programming, and what it all means for fans of the game.
+
+
+
+
 
 It would be *awesome* to find some code with symbols/labels that we can compare to the actual binary and maybe find the name of one of those "forbidden" Mega CD library calls...
 
@@ -29,32 +41,7 @@ It would be *awesome* to find some code with symbols/labels that we can compare 
 
 # Source Code
 
-Japan Final - keio1.bin
-
-```
-0x000067a7  黷驛Tブルーチン			*
-0x000067bd *									*
-0x000067ca *************************************************************************
-0x00006818 *	In	d1.w	0 : ダメージ時
-0x00006832 *			1 : 死んだ時
-0x00006848 *************************************************************************
-0x00006893 *									*
-0x000068a0 *	敵キャラが死んだとき呼ばれるサブルーチン			*
-0x000068d0 *									*
-0x000068dd *************************************************************************
-0x0000692a DeadSubTab	equ	*
-0x0000693c 		dc.l	DeadKoya	; 1
-0x00006951 		dc.l	DeadBos		; 2
-0x00006966 		dc.l	DeadUshi	; 3
-0x0000697b 		dc.l	DeadOchya	; 4
-0x00006991 		dc.l	DeadSubMarine	; 
-```
-
-Here we have a pointer table to code, called `DeadSubTab`. The description text reads, "Subroutine called when an enemy character dies," and above it it indicated that these subroutines take D1 as an argument, where 0 indicates the enemy has been damaged and 1 indicated the enemy has died.
-
-[TODO seems a bit incongruous, routines say Dead, description says its for dead characters, so why the modifier for damage?]
-
-
+Let's begin on the Japan Final version, in file `dk3.bin`:
 
 Japan Final - dk3.bin
 
@@ -102,65 +89,167 @@ WhereScrBlock	equ	*
 		move.l	MapCu
 ```
 
-Here we have the tail end of one function and the beginning of another.
+This is a good place to start and is useful as an introduction to some assembly language concept.
 
-According to the symbol list in keio6.bin:
+## Subroutine Comments
+
+Here we have the tail end of one function and the beginning of another, called `WhereScrBlock`. In C or JavaScript or many other high level languages, a function might be declared something like this:
+
+```
+return_type FunctionName(arg1, arg2)
+	return_type out = arg1 + arg2
+	return out
+```
+
+We can see that it takes two values, does some kind of work, and returns a value back to us. Some languages are more explicit, indicating if those values passed to the function are mutable and example what type of data is returned. The point here is that we, as humans, can easily identify all the pieces going in and coming out.
+
+In assembly, we have no such concept of a function definition. It's much more difficult to write "[self-documenting code](https://en.wikipedia.org/wiki/Self-documenting_code)" at such a low level, so we need to explain to those who see our code what our intention is, what goes in, what comes out, and what gets broken along the way. This helps not only those who use our code but our future selves when we revisit some code for bug fixes weeks or months later.
+
+So here, the header comment above says that it "finds at which scroll position the specified character is currently located." Below that we have the in parameters, out parameters and the break list. The in and out parameters are pretty simple to understand: they are the arguments to the function and the values it returns. Here, it says the Y coordinate will be expected in the D0 register, and the scroll position will be available in the D0 register when complete. It also says the Carry flag will be set if there were no problems and will be cleared if there was an error.
+
+## Break List
+
+Finally, it says that register D0 will be "broken." The break list, also called the clobber list, is a list of all registers that will be modified by the function at some point.
+
+In `WhereScrBlock` above, it's pretty obvious that D0 will be modified since it will hold the output value, but let's say we have a more complex function. In this supposed function, D0 is used but some additional storage space is needed to do some calculation. You could use some space on the stack, but RAM allocation is quite slow compared to register access, and if this code is part of a tight loop or a time critical part of the program (like the HBLANK phase), you need to optimize for every clock tick. So you decide to use the much faster CPU registers, and choose register D1.
+
+This means that D1 will not have the same value with which it entered the function. Since it is not the return value, we call this a side effect. In the comments, we warn those who intend to call this function that register D1 will be broken. So if they're using D1 for their own code, they first need to push it on to the stack to preserve it.
+
+## Symbols
+
+Now what about the subroutine above it? Its beginning is cut off, so we don't know what its called. Skipping ahead a little bit, there are also several large symbol lists within the Keio Yugekitai data. In programming, a *symbol* is any named component that is stored somewhere in memory. This can of course mean variables but also subroutine names. In the example above, `WhereScrBlock` is a symbol which will eventually be located somewhere in the final program code.
+
+When a program is compiled, symbols are no longer necessary in the output binary. This is because symbols are for human understanding and are not used by the machine itself, which only understands memory addresses in binary. Thus, symbols are stripped and we are left with a blob of binary data that runs on the machine. This is why whendoing a disassembly there are no variable or function names and we have to infer what everything does.
+
+To aid in debugging, especially when dealing with embedded hardware like a retro game console, symbol lists were often generated during the build process which listed the memory location of all symbols within the final binary. That way the developer could set a breakpoint at an address that corresponded to a certain subroutine, or could debug a system crash by seeing where the CPU had an issue and deduce in what part of the code there was a problem.
+
+Such symbol lists appeared in a few of the Keio files. If we have a look at `keio6.bin` on the Japan Final version, we see our subroutine:
 
 ```
  FFFF85D2  WhereScrBlock
 ```
+
+It tells us the code begins at 0xFF85D2, which is within Work RAM on the Main CPU side, which is exactly where we would expect to find it. Now this address is actually incorrect, and we'll discuss that next, but what we're interested in is what is listed around it:
+
+```
+FFFF82E0  SearchWork
+FFFF84FA  VecSwap
+FFFF858A  ScrollChrWork
+FFFF85D2  WhereScrBlock
+FFFF8AE6  PlayerDeadDemo
+FFFF8B46  OptTurnUp
+FFFF8BF8  OptMove
+```
+
+The symbol appearing directly before it is `ScrollChrWork`, which is almost certainly the name of the routine that is cut off in our example code. Indeed, there is a comment there that seems to confirm it:
+
+```
+;*** Scroll Chararcter Work ***
+```
+
+In this way, symbol tables become *extremely* useful with disassembly. Even just the name of a routine can be a huge clue in figuring out what it does and how it works.
+
+But we still have to be careful. As I just commented, the address for `WhereScrBlock` in this list is incorrect, which means all the addresses are incorrect. How do we know this? Well, to start, if we check out 0xFF85D2, the code there does not match what we have in our source listing. So we'll have to search the disassembly using some relatively unique code that appears in our listing. Say, `addq.w #1,d2`. Not exactly uncommon code, but different enough that we would hopefully only get a handful of hits when searching for it. We check the matches, looking for code that is identical to our source, and we eventually find it at 0xFF8614.
+
+The symbol list is likely from an earlier version, so the offsets don't match our final release. But the symbol list is still invaluable: while the length of the code might have changed, it's unlikely that the order of the subroutines would change. Therefore we can say within the disassembly that the subroutine following `WhereScrBlock` is probably `PlayerDeadDemo`, and `OptTurnUp` after that, and so on.
+
+Can we find this code in the actual game? Yes! We just need to capture the data from the running game, load that into a disassembler like IDA Pro or Ghidra, and search for one of those lines of code. We could dump the entire 16 megabytes of M68000 address space, but this is where knowing the hardware saves time. On the Mega CD, game code (especially "permanent" routines like the game engine) is located in Work RAM, from 0xFF0000 to 0xFFFFFF on the Main CPU side. So we dump that region of memory and examine it. And after some short investigation, we find that WhereScrBlock is located at 0xFF8614 in the Japan final version.
+
+
+
+
+According to the symbol list in keio6.bin:
+
+
 
 WhereScrBlock should be located at 0xFF85D2, which will be on the Main side since 0xFF0000 and high is Work RAM for the Main side. However, this offset isn't accurate, so it is likely from an older build. However, after having a look at the disassembled contents of Work RAM, we see that WhereScrBlock is actually located to 0xFF8614 in the Final JP version.
 
 ff8614
 
 
+
+Japan Final - keio1.bin
+
+```
+ブルーチン			*
+*									*
+*************************************************************************
+*	In	d1.w	0 : ダメージ時
+*			1 : 死んだ時
+*************************************************************************
+*									*
+*	敵キャラが死んだとき呼ばれるサブルーチン			*
+*									*
+*************************************************************************
+DeadSubTab	equ	*
+		dc.l	DeadKoya	; 1
+		dc.l	DeadBos		; 2
+		dc.l	DeadUshi	; 3
+		dc.l	DeadOchya	; 4
+		dc.l	DeadSubMarine	; 
+```
+
+Here we have a pointer table to code, called `DeadSubTab`. The description text reads, "Subroutine called when an enemy character dies," and above it it indicated that these subroutines take D1 as an argument, where 0 indicates the enemy has been damaged and 1 indicated the enemy has died.
+
+[TODO seems a bit incongruous, routines say Dead, description says its for dead characters, so why the modifier for damage?]
+
 Japan Demo - keio2.bin
 
 ```
-0x0000c061 <唐ｪ押されているか調べる
-0x0000c07b 	xdef	EneHit
-0x0000c08b ******[ External Symbol ]********
-0x0000c0b0 	;**** func ****
-0x0000c0c4 	xref	MoveCalcVec
-0x0000c0d7 ;	xref	MoveCalcVec8
-0x0000c0ec 	xref	HitCheck
-0x0000c0fc 	xref	ChrFormPut
-0x0000c10e 	xref	ChrWorkClr
-0x0000c120 	xref	SearchWork
-0x0000c132 	xref	SearchChrWork
-0x0000c147 	xref	GetShotBut
-0x0000c159 	xref	GetBomBut
-0x0000c16a 	xref	GetAtkBut
-0x0000c17b 	xref	GetKeyVec
-0x0000c18c 	xref	ChgVec64
-0x0000c19c 	xref	DamageEnemy	* 弾が当った時の処理
-0x0000c1c4 	xref	ClearMemory
-0x0000c1d7 	xref	Sin,Cos
-0x0000c1e6 	xref	HEneCheck
-0x0000c1f7 	xref	HEneShotCheck	* 敵キャラ弾接触チェック
-0x0000c225 	xref	VTransSetDma,VTransGo
-0x0000c242 	xref	BGTop
-0x0000c24f 	xref	SEOut,SEOutP
-0x0000c263 	xref	GetPointVec
-0x0000c276 	xref	TurnUpSLevUp	* ショットレベルＵＰのアイテムを出現させる
-0x0000c2b5 	xref	Random
-0x0000c2c3 	xref	HomSearchEnemy
-0x0000c2d9 	xref	ShotClear
-0x0000c2ea 	xref	HomingFast,HomingNext,MyHomingNext
-0x0000c314 	xref	EneScrCheck
-0x0000c327 	xref	RedOut,ColorRet
-0x0000c33e 	xref	
-0x0000e08c **********************************************************
-0x0000e0c8 *									*
-0x0000e0d5 *		      敵、弾に当たった瞬間の処理			*
-0x0000e0fe *									*
-0x0000e10b *********************************************************
+押されているか調べる
+	xdef	EneHit
+******[ External Symbol ]********
+	;**** func ****
+	xref	MoveCalcVec
+;	xref	MoveCalcVec8
+	xref	HitCheck
+	xref	ChrFormPut
+	xref	ChrWorkClr
+	xref	SearchWork
+	xref	SearchChrWork
+	xref	GetShotBut
+	xref	GetBomBut
+	xref	GetAtkBut
+	xref	GetKeyVec
+	xref	ChgVec64
+	xref	DamageEnemy	* 弾が当った時の処理
+	xref	ClearMemory
+	xref	Sin,Cos
+	xref	HEneCheck
+	xref	HEneShotCheck	* 敵キャラ弾接触チェック
+	xref	VTransSetDma,VTransGo
+	xref	BGTop
+	xref	SEOut,SEOutP
+	xref	GetPointVec
+	xref	TurnUpSLevUp	* ショットレベルＵＰのアイテムを出現させる
+	xref	Random
+	xref	HomSearchEnemy
+	xref	ShotClear
+	xref	HomingFast,HomingNext,MyHomingNext
+	xref	EneScrCheck
+	xref	RedOut,ColorRet
+	xref	
 ```
 
 "Find out if [] is being pushed"
 
+The xref commands here are like the `extern` keyword in C, indicating that these functions are not in this file but will be present when everytyhing is linked together.
+
+
+```
+**********************************************************
+*									*
+*		      敵、弾に当たった瞬間の処理			*
+*									*
+*********************************************************
+```
+
+
+
 "Enemy, handling the moment it hits the bullet"
+
+
+
 
 Japan Demo - keio3.bin
 
@@ -640,3 +729,6 @@ Japan Final - dk3.bin
 0x00006a03 14.  謝辞
 0x00006a10   $fontx.sys の著作者である lepton 氏に感謝します。
 ```
+
+
+The pattern that emerges is that the data seems to begin around [] and end near 0x7000. 
