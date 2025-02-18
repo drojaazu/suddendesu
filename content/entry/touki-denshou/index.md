@@ -326,7 +326,7 @@ If that's not enough, the developers directly address this situation in both the
 
 For those not aware, the DOA character profiles describe strawberry millefeulle as Kasumi's favorite food, and the original storyline for Lei Fang is basically her tracking down Jann Lee from China to defeat him.
 
-Aside from the fact that fighting game characters just didn't need creative, deep and involving stories, another reason for the similarities is probably due to the small size of the company at the time. In several places in throughout the Tōki Denshō dev diary, the writer laments losing staff to other teams and expresses exasperation that a certain other game (which was almost certainly Dead Or Alive) was getting more resources and attention than his humble project. It seems likely that staff carried ideas around between projects.
+Aside from the fact that fighting game characters just didn't need creative, deep and involving stories, another reason for the similarities is probably due to the small size of the company at the time. In several places in throughout [the Tōki Denshō dev diary](/entry/touki-denshou-dev-diary), the writer laments losing staff to other teams and expresses exasperation that a certain other game (which was almost certainly Dead Or Alive) was getting more resources and attention than his humble project. It seems likely that staff carried ideas around between projects.
 
 Comparing the staff roll between Tōki Denshō and the very first arcade release of DOA, only a couple names are shared. One in particular is interesting, however: ASAMIN. He is listed as one of the nebulously defined planners for Tōki Denshō, and as the "Character's Story" staff in the arcade version of DOA (and as Scenario Writer in the Saturn port of DOA). It's probably this one person who had a hand in the storylines for both games, and possibly character names as well, further contributing to similarities.
 
@@ -336,4 +336,6 @@ So there's no official connection between Tōki Denshō and Dead Or Alive, thoug
 
 ---
 
-That's all for Tōki Denshō for now. I'll have another post along eventually with a full scan and translation of the dev materials from Tōki Gentei!
+That's all for Tōki Denshō for now. ~I'll have another post along eventually with a full scan and translation of the dev materials from Tōki Gentei!~ 
+
+**The devi diary has finally be translated. [Check it out here!](/entry/touki-denshou-dev-diary)
