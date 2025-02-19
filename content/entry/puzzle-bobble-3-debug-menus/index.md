@@ -206,6 +206,7 @@ STILL INVESTIGATING, copious notes...
 The most inteersting thing so far has been finding early staff credits, see 0x52654 (older) vs 0x93218 (final)
 
 
+looks like 0x40000 (unused?) mirrors 0x80000 (used?)
 
 
 # Scratchpad
