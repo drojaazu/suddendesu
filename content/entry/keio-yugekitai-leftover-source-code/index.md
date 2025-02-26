@@ -1,5 +1,5 @@
 ---
-title: 'Keio Yugekitai Leftover Source Code'
+title: 'Keio Yūgekitai Leftover Source Code'
 date: 2025-02-08T00:50:10+09:00
 author: Name
 images:
@@ -17,29 +17,126 @@ tags:
 draft: true
 ---
 
-We can learn a lot from disassembling game data, but we learn *so much more* from source code. Source code, however, is extremely rare, especially for retro games, especially especially for Japanese games. So when we find source, it's a real treat to examine it. And today we're going to look at some source code for Keio Yugekitai for teh Sega Mega CD, known in the west as Keio Flying Squadron.
+We can learn a lot from disassembling game data, but we learn *so much more* from source code. Source code, however, is extremely rare, especially for retro games, doubly so for Japanese games. So it's a rare treat when we are able to have a look at the original comments, variable names and structure of such games.
+
+Today is one of those lucky days! Let's have a look at some source code for Keio Yūgekitai (Keio Flying Squadron in the west) for the Sega Mega CD.
 
 <!--more-->
 
-We kind of buried the lede with that introduction, so let's start from the beginning. We do not have the complete source code for Keio Yugekitai, but there are relatively large chunks of it tucked away in the data of some files on the disc:
+# SCRATCHPAD:
+
+Looks like the dk*.bin files get loaded to sub at 0x9000
+
+And the keio*.bin files too
+
+## HOW DID THIS HAPPEN
+
+The short answer is: unsanitized buffers.
+
+The longer answer of how did this happen specifically with Keio Yūgekitai is a little bit more difficult tyo answer. My initial thought was that certain chunks of data were being positioned at certain offsets to reduce copying around in memory. As an example, let's say there's a 2 megabit buffer (like there is in the Mega CD, a space shared between the Main and Sub CPUs) but the file you're loading from disc is only around 5kb. However, you need the 2kb from the end of that file to be positioned at the 1 megabit boundary, as that is where it will be expected. Well, you could load that 5k file to offset zero, then have some code copy the 2kb over to the 1mbit offset... or you could have a file that is larger, with the 3k data at the front and then a bunch of zeroes that pads things out to the 1mb boundary, and yoru 2kb data can appear there.
+
+Realistically that's not a great example with such small sizes, but in some cases it may be more efficient to load a slightly larger file with the data already "in position" than to copy it all to where it needs to be.
+
+In such cases the dummy data used for padding may be sourced from someplace in RAM (unsanitized) rather than filled with a zeroes (sanitized).
+
+That would be a fair assumption about Keo Yūgekitai, but after some (admittedly brief) analysis, that doesn't seem to be the case. It may be because of it appears in a chunk which may also be used for RAM.
+
+
+KEIO3B FINAL
+looks like this is the key:
+0x000049aa     Start     Stop   Length  Section name
+0x000049d5  FFFF0800 FFFF0807 00000008  head
+0x000049f8  FFFF0808 FFFF080F 00000008  jtbl
+0x00004a1b  FFFF0810 FFFF228F 00001A80  map
+0x00004a3d  FFFF5600 FFFFB207 00005C08  main
+0x00004a60  FFFFB240 FFFFCF9F 00001D60  ram
+0x00004a82  FFFFD000 FFFFD753 00000754  tab
+0x00004aa6 Program entry point : FFFF0808
+
+note that Main is at 0xff5600
+and there's some space between the end of map and the beginning of mame
+this is our unsanitized buffer
+basically, any area where there is space not filled up, is an unsanitized buffer
+
+
+---
+
+We kind of buried the lede with that introduction, so let's start from the beginning: The source code for Keio Yūgekitai has not been released or leaked. However, there are relatively large chunks of it tucked away in the data of some files on the disc:
 
 ![](img/keio_example_hex.jpg1)
 
-Moreover, the game was released in three regions, each one being a different build, so each version has different bits of source code. And! There were two demo versions, one for Japan and one for Europe, with their own different source code. So altogether we have five discs to look at!
+Moreover, the game was released in three regions. With each region being a different build, each version has different bits of source code in the data. And! There were two demo versions, one for Japan and one for Europe, with their own different chunks of source code. So altogether we have five discs to investigate!
 
-We'll take a look at the source code and other leftover text in the files on these discs while discussing some concepts relating to assembly language programming, and what it all means for fans of the game.
+# Introduction
 
+For those are not sofware developers or are otherwise not familiar with lower-level programming, we should clarify some things. Feel free to skip this section if you're already well-versed in software development and buffer hygiene.
 
+## Source Code vs Machine Code
 
+Source code is the text you see on screen, the words that represent the instructions for the computer. It is written in a wide range of programming languages, like C, Java, Rust, BASIC, COBOL, assembly, etc. But the words are for us humans, a way for our inefficient meat brains to communicate with the machine and for others who read the code to understand the intentions of the coder.
 
+The computer, of course, doesn't think in words, but in a blindingly fast series of electrical voltage changes that represent binary values: on or off, 1 or 0, yes or no. While one can write a program entirely in binary data (and people did in the early days of computing), it is extremely difficult gievn the complexity of modern computing.
 
-It would be *awesome* to find some code with symbols/labels that we can compare to the actual binary and maybe find the name of one of those "forbidden" Mega CD library calls...
+Instead we use a programming language, which is fed into a compiler that turns our *source code* into *machine code*. What this means is that the executable file generated by the compiler has none of the "words" that we used to write the program: none of the commands, none of the variable names, none of the comments. It is just binary data for the CPU to process.
 
+That's why so many articles on this site are filled with conjecture: "maybe it worked like this, perhaps this was called from there..." Because none of the names or comments exists anymore to give us context and we have to make educated guesses.
 
-# Symbols
+That's what makes finding source code so exciting: it takes away the guesswork!
 
+## Unsanitized Buffers
+
+So if binary data does not have any "words," what do we mean earlier when we said chunks of source code were found "tucked away in the data of some files"?
+
+In summary, there is junk data in these files to pad out the non-junk data to certain offsets, and in some cases this junk data happens to be the text of some source code files. To be clear, these fragments of source code have nothing to do with the compiled data directly. It is just a happy accident that they got pulled into the binary data during the build process.
+
+It was certainly not the intention of the development staff to share the proprietary code to their game, so how did this happen? Actually, finding bits of source code like this is a pretty common occurance when examining old software. TCRF has [a category for this very situation](https://tcrf.net/Category:Games_with_uncompiled_source_code), and there's a great article on OS/2 Museum that looks at [fragments of Microsoft emails that were found within sector padding on the diskettes of an old version of the MS C compiler](https://www.os2museum.com/wp/careful-with-that-buffer/).
+
+That last link introduces the concept of the *unsanitized buffer*. A buffer is any space in memory where a given chunk of data is stored temporarily. It's a holding tank, basically. Now lets say you have a 1 megabyte buffer, which you fill up with data. Later, you re-use that buffer (because re-use is more efficient than allocating new space), but this time you only need to use 256 kilobytes. If we view the whole of the 1 megabyte of the buffer, the first 256kb is our new data, and after than up to the 1mb mark is the data leftover from the first time we used it. If we were to reach past that 256kb mark of our current data, either unintentionally or maliciously, we can access that older data.
+
+This is what we mean by unsanitized: the buffer has not been cleaned out before we use it again. In all modern operating systems, it is standard practice to fill memory with zero's immediately after its use. To not do so is a security risk: what if you typed your password into a text field, and that data remained in memory even after you logged in? If it was known that a certain program didn't clear that buffer, malware could take advantage of that.
+
+But that was hardly a concern in the years before the explosion of the internet, so operating systems and applications were somewhat careless with their use of buffers and memory access. And that leads to situations like what we have here.
+
+# In Keio's Case...
+
+With Keio Yūgekitai, the culprit was likely the linker. This is the tool that takes each of the compiled pieces of machine code and wires them together, positioning them at certain expected offsets within memory. Let's have a look at this bit of "junk data" text that appears in `keio3b.bin` on the Japanese final version:
+
+```
+    Start     Stop   Length  Section name
+ FFFF0800 FFFF0807 00000008  head
+ FFFF0808 FFFF080F 00000008  jtbl
+ FFFF0810 FFFF228F 00001A80  map
+ FFFF5600 FFFFB207 00005C08  main
+ FFFFB240 FFFFCF9F 00001D60  ram
+ FFFFD000 FFFFD753 00000754  tab
+Program entry point : FFFF0808
+```
+
+As a reminder, this itself is some "junk data" that we are lucky to have. It was pure chance that it was included in the file, and it's somewhat ironic that it helps us understand how it got to be there in the first place.
+
+It is part of a report shown after a build that explains where the linker put certain sections of the code into memory. In particular, it details code from one of the gameplay stages that is loaded to and runs from Mega Drive Work RAM.
+
+Now, look carefully at the Stop offset compared to the Start offset of the next section. For `head` and `jtbl`, we have a logical layout, with each small section taking up 8 bytes and following one another.
+
+Now look at the Stop address of `map` and the Start address of `main`. There is a large gap that is unaccounted for, from 0xFFFF2290 to 0xFFFF55FF. There is something similar happening from the end of `main` to the beginning of `ram`, and from `ram` to `tab`.
+
+The Start values listed here are not arbitrary and would have been defined in a linker script by the programmers. These offsets are where lower level code (the memory-resident "manager" that directs things) expects to find the data. The end offset doesn't matter as much, so long as the data fits in its allocated space. So that means if a chunk of data doesn't fill out its entire space, we need to fill the remainder to reach the next Start offset.
+
+In modern times, we would fill that gap with zeroes or 0xFF or some meaningless randomly generated values. But instead of actually filling that space, the linker can be "clever" and just jump ahead in RAM (that is, the RAM on the development machine where the code is being compiled, not the Mega Drive/CD) to where the next section begins.
+
+And therein lies the problem. That area of RAM that it has skipped over may have some old data in it, like in our "holding tank" example above. And that old data may be the text of some source code that was recently opened...
+
+So in the end, we have a number of data files that have "holes" in between sections of usable data that have the remnants of data in RAM on the development machine, and in a number of cases those remnants happen to be source code and other text related to the games development.
+
+Now let's have a look at it!
 
 # Source Code
+
+From here, we'll look at each file that has source code present, then later we'll look at symbol listings, then finally other text that is not directly related to the game's development.
+
+There's no particular order going forward, except perhaps in a subjective descending ranking of interesting-ness.
+
+## `dk3.bin` (Japan Final version)
 
 Let's begin on the Japan Final version, in file `dk3.bin`:
 
@@ -89,9 +186,13 @@ WhereScrBlock	equ	*
 		move.l	MapCu
 ```
 
-This is a good place to start and is useful as an introduction to some assembly language concept.
+What we have here is M68000 assembly language. This is as low level as you can get while still maintaining the concept of "words readable by a human." Each command here directly corresponds to an opcode, the binary data equivalent of a single, primitive command that the CPU can perform. This is extremely simple actions like: move this byte to this location in memory, store this value in a register, add these two numbers together, and so on.
 
-## Subroutine Comments
+But this is how most console games of the era were developed. Using a higher level language like C wouldn't become more common until the 32-bit era rolled around. There were tools to make life easier for developers, like symbols and macros, but it was still quite complex.
+
+Let's talk a little more about assembly language in terms of what we see above, so we can get a better understanding of what is going on.
+
+### Subroutine Comments
 
 Here we have the tail end of one function and the beginning of another, called `WhereScrBlock`. In C or JavaScript or many other high level languages, a function might be declared something like this:
 
@@ -101,35 +202,33 @@ return_type FunctionName(arg1, arg2)
 	return out
 ```
 
-We can see that it takes two values, does some kind of work, and returns a value back to us. Some languages are more explicit, indicating if those values passed to the function are mutable and example what type of data is returned. The point here is that we, as humans, can easily identify all the pieces going in and coming out.
+We can see that it takes two values (arg1 and arg2), does some kind of work with them, and returns a value back to us. Some languages are more explicit, indicating if those values passed to the function are mutable and example what type of data is returned. The point here is that we, as humans, can easily identify all the pieces going in and coming out.
 
-In assembly, we have no such concept of a function definition. It's much more difficult to write "[self-documenting code](https://en.wikipedia.org/wiki/Self-documenting_code)" at such a low level, so we need to explain to those who see our code what our intention is, what goes in, what comes out, and what gets broken along the way. This helps not only those who use our code but our future selves when we revisit some code for bug fixes weeks or months later.
+In assembly, we have no such concept of a function definition. It's much more difficult to write "[self-documenting code](https://en.wikipedia.org/wiki/Self-documenting_code)" at such a low level, so we need to explain to those who read it what our intention is, what goes in, what comes out, and what side effects occur along the way. This helps not only those who see our code but our future selves when we revisit some code for bug fixes weeks or months later.
 
-So here, the header comment above says that it "finds at which scroll position the specified character is currently located." Below that we have the in parameters, out parameters and the break list. The in and out parameters are pretty simple to understand: they are the arguments to the function and the values it returns. Here, it says the Y coordinate will be expected in the D0 register, and the scroll position will be available in the D0 register when complete. It also says the Carry flag will be set if there were no problems and will be cleared if there was an error.
+So here the header comment above says (in Japanese) that it "finds at which scroll position the specified character is currently located." Below that we have the in parameters, out parameters and the break list. The in and out parameters are pretty simple to understand: they are the arguments to the function and the values it returns. Here it says the Y coordinate will be expected in the D0 register, and the scroll position will be available in the D0 register when complete. It also says the Carry flag will be set if there were no problems and will be cleared if there was an error.
 
-## Break List
+### Break List
 
-Finally, it says that register D0 will be "broken." The break list, also called the clobber list, is a list of all registers that will be modified by the function at some point.
+Finally, it says that register D0 will be "broken." The *break list*, also called the clobber list, is a list of all registers that will be modified by the function at some point.
 
 In `WhereScrBlock` above, it's pretty obvious that D0 will be modified since it will hold the output value, but let's say we have a more complex function. In this supposed function, D0 is used but some additional storage space is needed to do some calculation. You could use some space on the stack, but RAM allocation is quite slow compared to register access, and if this code is part of a tight loop or a time critical part of the program (like the HBLANK phase), you need to optimize for every clock tick. So you decide to use the much faster CPU registers, and choose register D1.
 
-This means that D1 will not have the same value with which it entered the function. Since it is not the return value, we call this a side effect. In the comments, we warn those who intend to call this function that register D1 will be broken. So if they're using D1 for their own code, they first need to push it on to the stack to preserve it.
+This means that D1 will not have the same value with which it entered the function. Since it is not the return value, we call this a side effect. In the comments, we warn those who intend to call this function that register D1 will be modified, i.e. broken. So if they're using D1 for their own code, they first need to push it on to the stack to preserve it.
 
-## Symbols
+### Symbols
 
-Now what about the subroutine above it? Its beginning is cut off, so we don't know what its called. Skipping ahead a little bit, there are also several large symbol lists within the Keio Yugekitai data. In programming, a *symbol* is any named component that is stored somewhere in memory. This can of course mean variables but also subroutine names. In the example above, `WhereScrBlock` is a symbol which will eventually be located somewhere in the final program code.
+Now what about the subroutine above it? Its beginning is cut off, so we don't know what it's called. Skipping ahead in the article a little bit, there are also several large symbol lists within the Keio Yūgekitai data. In programming, a *symbol* is any named element that is stored somewhere in memory. This can of course mean variables but also subroutine names and memory offsets. In the example above, `WhereScrBlock` is a symbol which will eventually be located somewhere in the final program code.
 
-When a program is compiled, symbols are no longer necessary in the output binary. This is because symbols are for human understanding and are not used by the machine itself, which only understands memory addresses in binary. Thus, symbols are stripped and we are left with a blob of binary data that runs on the machine. This is why whendoing a disassembly there are no variable or function names and we have to infer what everything does.
+When a program is compiled to machine code, these symbols disappear, as we discussed earlier. To aid in debugging (especially when dealing with embedded hardware like a retro game console), symbol lists were often generated during the build process. These tells the programmer where each symbol ended up in memory. That way the developer could set a breakpoint at an address that corresponded to a certain subroutine, or could debug a system crash by seeing where the CPU choked and deduce in what part of the code there was a problem.
 
-To aid in debugging, especially when dealing with embedded hardware like a retro game console, symbol lists were often generated during the build process which listed the memory location of all symbols within the final binary. That way the developer could set a breakpoint at an address that corresponded to a certain subroutine, or could debug a system crash by seeing where the CPU had an issue and deduce in what part of the code there was a problem.
-
-Such symbol lists appeared in a few of the Keio files. If we have a look at `keio6.bin` on the Japan Final version, we see our subroutine:
+Such symbol lists appear in a few of the Keio files. If we have a look at `keio6.bin` on the Japan Final version, we find our subroutine from the example above:
 
 ```
  FFFF85D2  WhereScrBlock
 ```
 
-It tells us the code begins at 0xFF85D2, which is within Work RAM on the Main CPU side, which is exactly where we would expect to find it. Now this address is actually incorrect, and we'll discuss that next, but what we're interested in is what is listed around it:
+It tells us the code begins at 0xFF85D2, which is within Work RAM on the Main CPU side, which is exactly where we would expect to find it. We're interested in is what surrounds it:
 
 ```
 FFFF82E0  SearchWork
@@ -141,34 +240,289 @@ FFFF8B46  OptTurnUp
 FFFF8BF8  OptMove
 ```
 
-The symbol appearing directly before it is `ScrollChrWork`, which is almost certainly the name of the routine that is cut off in our example code. Indeed, there is a comment there that seems to confirm it:
+The symbol appearing directly before it is `ScrollChrWork`, which is almost certainly the name of the routine that is cut off in our example. Indeed, there is a comment there that seems to confirm it:
 
 ```
 ;*** Scroll Chararcter Work ***
 ```
 
-In this way, symbol tables become *extremely* useful with disassembly. Even just the name of a routine can be a huge clue in figuring out what it does and how it works.
+In this way, symbol tables are *extremely* useful for code disassembly. Even just the name of a routine can be a huge clue in figuring out what it does and how it works.
 
-But we still have to be careful. As I just commented, the address for `WhereScrBlock` in this list is incorrect, which means all the addresses are incorrect. How do we know this? Well, to start, if we check out 0xFF85D2, the code there does not match what we have in our source listing. So we'll have to search the disassembly using some relatively unique code that appears in our listing. Say, `addq.w #1,d2`. Not exactly uncommon code, but different enough that we would hopefully only get a handful of hits when searching for it. We check the matches, looking for code that is identical to our source, and we eventually find it at 0xFF8614.
+So ultimately what we have here is a portion of the code from `ScrollChrWork` and `WhereScrBlock`. Neat!
 
-The symbol list is likely from an earlier version, so the offsets don't match our final release. But the symbol list is still invaluable: while the length of the code might have changed, it's unlikely that the order of the subroutines would change. Therefore we can say within the disassembly that the subroutine following `WhereScrBlock` is probably `PlayerDeadDemo`, and `OptTurnUp` after that, and so on.
+### Macros, Directives and Preprocessing
 
-Can we find this code in the actual game? Yes! We just need to capture the data from the running game, load that into a disassembler like IDA Pro or Ghidra, and search for one of those lines of code. We could dump the entire 16 megabytes of M68000 address space, but this is where knowing the hardware saves time. On the Mega CD, game code (especially "permanent" routines like the game engine) is located in Work RAM, from 0xFF0000 to 0xFFFFFF on the Main CPU side. So we dump that region of memory and examine it. And after some short investigation, we find that WhereScrBlock is located at 0xFF8614 in the Japan final version.
+Somethat that may have caught your eye in that example is this line:
+
+```
+	if	EnemyDebug
+		subq.w	#1,ChrX(a5)
+;		add.w	d0,ChrY(a5)
+	else
+		lea.l	MapScrAdd(pc),a1
+		asl.w	#2,d0
+		lea.l	(a1,d0.w),a1
+```
+
+Does that mean there is some debug function hidden away that we can coax into working? Well, no, unfortunately. This looks to be a *directive*, a command that applies to the compiler and not to the code itself. When the compiler works on this file, it first goes through a *preprocessing* stage where it finds all the compiler-specific commands and processes them first before continuing to compilation. This is things like the directives that we just mentioned, but also *macros*, which are small chunks of code that are given a name to be re-used throughout the code: basically, shortcuts so the programmer doesn't have to repeat the same three or four commands over and over. With assembly source code like this, we see a mix of CPU level commands and "psuedo" commands intended for the compiler.
+
+In the example above, if EnemyDebug is defined, the next two lines are included while everything between `else` and `endif` is excluded. If it is not defined, then the opposite happens. As such, the alternate code is never included in the final binary. We would never have known about this if we didn't happen to have this fragment of code.
+
+(It looks like, in this particular case, EnemyDebug simply subtracted 1 from the X position of the sprite in each iteration. We can imagine this made the enemy act "dumb," simply moving to the left of the screen with no other movement.)
+
+If you've survived the wall of text so far, congratulations. From here things won't be so dense as we'll look more at the content of the code rather than trying to do a course on "assembly language development for game consoles in the early 1990s."
+
+
+
+Japan Demo - keio3.bin
+
+
+```
+*************************************************************************
+*									*
+*	慶応遊撃隊　　−天津船編−					*
+*									*
+*					ステージごとの特殊処理		*
+*									*
+*				92.6.19 (Fri) Version 1.00 T.Yamaki	*
+*									*
+*************************************************************************
+stage	group
+	section	map,stage
+	include	flags.i
+	include	keio.i
+	include	equates.i
+	include	macro.i
+	include	scroll.i
+	include	pat1.i
+	include	enemy.i
+	include	cmu.i
+	include	se.i
+	include	syswrk.i
+***********[ Public Symbol ]**********
+	;**** routine ****
+;	xdef	MapEffect
+	xdef	EffStage1
+	xdef	MapInitialize1
+***********[ External Symbol ]**********
+	;**** routine ****
+	xref	CrtOn,CrtOff
+	xref	VramTrans
+	xref	Vsync,Scroll
+	xref	EnemyClear
+	xref	VTransGo
+	xref	PalTop,MoveMemory
+	xref	CramTrans
+	xref	CheckOrders2
+	xref	VTransSetDma
+	xref	fadectl
+	xref	MpABlkTab
+	xref	BosMusStart
+	xref	SEOut
+	;**** work ****
+	xref	TSWork
+	xref	BGTop
+	xref	ScrCnt
+	xref	EneTabTop	* 敵キャラ発生テーブル
+	xref	EnemyMax	* 敵キャラの画面上の数最大値
+	xref	EnemyCnt	* 敵キャラの画面上の数
+	xref	EnemyOdr
+	xref	HScrBuf
+	xref	BosDead
+	xref	ScrStop
+	xref	PalWait1,PalWait2,PalWait3
+	xref	PalCnt1,PalCnt2,PalCnt3
+Mp1PanmSpd	equ	8
+AnmStart	equ	12290	; パレットアニメストップ
+AnmStop		equ	13312	; パレットアニメストップ
+*************************************************************************
+*									*
+*	マ　ッ　プ　１　の　イ　ニ　シ　ャ　ラ　イ　ズ			*
+*									*
+*************************************************************************
+MapInitialize1	equ	*
+		ori.w	#IntStageBat,IntEffect
+		move.w	#1,PalWait1	; パレットアニメ１のウエイト
+		move.w	#1,PalWait2
+		move.w	#1,PalWait3
+		clr.w	PalCnt1		; パレットアニメ１のポインタ
+		clr.w	PalCnt2
+		clr.w	PalCnt3
+		clr.w	TraiCnt		; １ＵＰの為のたらいカウンタ
+		rts
+*************************************************************************
+*									*
+*		マ　ッ　プ　１　の　特　殊　処　理			*
+*									*
+*************************************************************************
+EffStage1	equ	*
+		;**** ボスの音楽スタート ****
+	if	DiscFlag
+		cmpi.w	#13200-60*2,ScrCnt
+		bne	m1ej10
+		bsr	BosMusStart
+		;**** びっくりしたー ****
+m1ej10:		cmpi.w	#4600,ScrCnt
+		bne	m1ej11
+		move.w	#SEbikuri,d0
+		bsr	SEOut
+		;**** 何、あれ？ ****
+m1ej11:		cmpi.w	#13750,ScrCnt
+		bne	m1ej12
+		move.w	#SENani,d0
+		bsr	SEOut
+m1ej12:
+	endif
+		;**** スクロールフラグの操作 ****
+		lea.l	TSWork,a0
+		lea.l	TSBRegs(a0),a1		; flag 0
+		move.w	ScrCnt,d0
+		cmpi.w	#768,d0
+		bne	m1ej02
+		move.w	#1,(a1)
+		clr.w	Mp1PalAnm
+		clr.w	Mp1NPos
+		move.w	#1,Mp1Wait
+		bra	m1ej01
+m1ej02:		cmpi.w	#1024,d0
+		bne	m1ej03
+		move.w	#2,(a1)
+		bra	m1ej01
+m1ej03:		cmpi.w	#1280,d0
+		bne	m1ej04
+		move.w	#3,(a1)
+		bra	m1ej01
+m1ej04:		cmpi.w	#4096,d0
+		bne	m1ej05
+		move.w	#4,(a1)
+		bra	m1ej01
+m1ej05:		cmpi.w	#5376,d0
+		bne	m1ej06
+		move.w	#5,(a1)
+		bra	m1ej01
+m1ej06:		cmpi.w	#8704,d0
+		bne	m1ej07
+		move.w	#6,(a1)
+		bra	m1ej01
+m1ej07:		cmpi.w	#13824,d0
+		bne	m1ej01
+		move.w	#7,(a1)
+m1ej01:		move.w	ScrCnt,d0
+		cmpi.w	#AnmStart,d0
+		blt	m1pj01
+		cmpi.w	#AnmStop,d0
+		bhi	m1pj01
+		subq.w	#1,Mp1Wait
+		bne	m1pj01
+		move.w	#Mp1PanmSpd,Mp1Wait
+		lea.l	ColorRam,a1
+		move.l	PalTop,a0
+		lea.l	12*32*4(a0),a0
+		move.w	Mp1NPos,d0
+		asl.w	d0
+		lea.l	(a0,d0.w),a0
+		;*** Set Palet Data ***
+		move.w	00(a0),$0b*2(a1) 	; b
+		move.w	32(a0),$0c*2(a1)	; c
+		move.w	64(a0),$0d*2(a1) 	; d
+		move.w	96(a0),$0e*2(a1)	; e
+		;*** Next Palet Calc ***
+		move.w	Mp1NPos,d0
+		addq.w	#1,d0
+		cmpi.w	#6,d0
+		bne	m1pj21
+		moveq.l	#0,d0
+m1pj21:		move.w	d0,Mp1NPos
+		move.w	#1,HPalTrans
+m1pj01:		rts
+Mp1PalAnm:	dc.w	0
+Mp1NPos:	dc.w	0
+Mp1Wait:	dc.w	1
+;************************************************
+;*		ＳＥベロシティテーブル		*
+;************************************************
+	xdef	SEVelTab
+SEVelTab	equ	*
+		dc.b	$e0	;  0 ヒット１
+		dc.b	$d0	;  1 ヒット２
+		dc.b	$80	;  2 ショット１
+		dc.b	$80	;  3 ショット２
+		dc.b	$c0	;  4 爆発１
+		dc.b	$ff	;  5 爆発２
+		dc.b	$ff	;  6 爆発３(生物用)
+		dc.b	$80	;  7 ボム
+		dc.b	$ff	;  8 オプション発生
+		dc.b	$ff	;  9 もーらい
+		dc.b	$ff	; 10 オプションショット
+		dc.b	$ff	; 11 パワーアップ
+		dc.b	$ff	; 12 アイテム
+		dc.b	$ff	; 13 ダメージ
+		dc.b	$ff	; 14 やっちゃえ
+		dc.b	$ff	; 15 きゃん
+		dc.b	$ff	; 16 ポチの声
+		dc.b	$ff	; 16 牛
+		dc.b	$ff	; 17 びっくりしたー
+		dc.b	$ff	; 18 何、あれ？
+		dc.b	$ff	; 19
+		dc.b	$ff	; 20
+		dc.b	$ff	; 21
+		dc.w	-1
+TraiCnt:	dc.w	0
+:		dc.w	EneBom
+		dc.w	0
+		dc.w	0
+		dc.w	PEBom
+		dc.w	ETAPri
+*************************************************
+*　		子宝壱号Ｅパターン		*
+*************************************************
+KodaChr:	dc.w	EneKoTakaraB
+		dc.w	272
+		dc.w	064
+		dc.w	PEKoTakaraAA
+		dc.w	0
+HouLife:	dc.w	0
+		end
+```
+
+This is the largest continuous chunk of source code we have available. Moreover, it starts from the beginning of the file and covers parts of Stage 1. Cool!
+
+Right at the top we have a plate comment:
+
+```
+*************************************************************************
+*									*
+*	慶応遊撃隊　　−天津船編−					*
+*									*
+*					ステージごとの特殊処理		*
+*									*
+*				92.6.19 (Fri) Version 1.00 T.Yamaki	*
+*									*
+*************************************************************************
+```
+The first line reads "Keio Yūgekitai - Amatsubune-hen", the heavenly ship chapter. I guess this is the 
+
+
+宿敵、宝船の追撃
+shukuteki, takarabune no tsuigeki
+
+Saturn version is called:
+慶応遊撃隊 活劇編
+
+There are also two novels, with these titles:
+慶応遊撃隊 １ ２ 方舟編 宝玉編
 
 
 
 
-According to the symbol list in keio6.bin:
+
+This is a bit interesting, since it implies the game could be built to run on a system without a disc. When set, it skips music and some sound effect playback
+0x000059d3 	if	DiscFlag
 
 
 
-WhereScrBlock should be located at 0xFF85D2, which will be on the Main side since 0xFF0000 and high is Work RAM for the Main side. However, this offset isn't accurate, so it is likely from an older build. However, after having a look at the disassembled contents of Work RAM, we see that WhereScrBlock is actually located to 0xFF8614 in the Final JP version.
 
-ff8614
-
-
-
-Japan Final - keio1.bin
+## `keio1.bin` (Japan Final version)
 
 ```
 ブルーチン			*
@@ -193,47 +547,7 @@ Here we have a pointer table to code, called `DeadSubTab`. The description text 
 
 [TODO seems a bit incongruous, routines say Dead, description says its for dead characters, so why the modifier for damage?]
 
-Japan Demo - keio2.bin
 
-```
-押されているか調べる
-	xdef	EneHit
-******[ External Symbol ]********
-	;**** func ****
-	xref	MoveCalcVec
-;	xref	MoveCalcVec8
-	xref	HitCheck
-	xref	ChrFormPut
-	xref	ChrWorkClr
-	xref	SearchWork
-	xref	SearchChrWork
-	xref	GetShotBut
-	xref	GetBomBut
-	xref	GetAtkBut
-	xref	GetKeyVec
-	xref	ChgVec64
-	xref	DamageEnemy	* 弾が当った時の処理
-	xref	ClearMemory
-	xref	Sin,Cos
-	xref	HEneCheck
-	xref	HEneShotCheck	* 敵キャラ弾接触チェック
-	xref	VTransSetDma,VTransGo
-	xref	BGTop
-	xref	SEOut,SEOutP
-	xref	GetPointVec
-	xref	TurnUpSLevUp	* ショットレベルＵＰのアイテムを出現させる
-	xref	Random
-	xref	HomSearchEnemy
-	xref	ShotClear
-	xref	HomingFast,HomingNext,MyHomingNext
-	xref	EneScrCheck
-	xref	RedOut,ColorRet
-	xref	
-```
-
-"Find out if [] is being pushed"
-
-The xref commands here are like the `extern` keyword in C, indicating that these functions are not in this file but will be present when everytyhing is linked together.
 
 
 ```
@@ -251,219 +565,6 @@ The xref commands here are like the `extern` keyword in C, indicating that these
 
 
 
-Japan Demo - keio3.bin
-
-
-```
-0x00005144 *************************************************************************
-0x0000518f *									*
-0x0000519c *	慶応遊撃隊　　−天津船編−					*
-0x000051c0 *									*
-0x000051cd *					ステージごとの特殊処理		*
-0x000051ee *									*
-0x000051fb *				92.6.19 (Fri) Version 1.00 T.Yamaki	*
-0x00005227 *									*
-0x00005234 *************************************************************************
-0x00005281 stage	group
-0x0000528e 	section	map,stage
-0x000052a4 	include	flags.i
-0x000052b6 	include	keio.i
-0x000052c7 	include	equates.i
-0x000052db 	include	macro.i
-0x000052ed 	include	scroll.i
-0x00005300 	include	pat1.i
-0x00005311 	include	enemy.i
-0x00005323 	include	cmu.i
-0x00005333 	include	se.i
-0x00005342 	include	syswrk.i
-0x00005359 ***********[ Public Symbol ]**********
-0x00005383 	;**** routine ****
-0x0000539a ;	xdef	MapEffect
-0x000053ac 	xdef	EffStage1
-0x000053bd 	xdef	MapInitialize1
-0x000053d5 ***********[ External Symbol ]**********
-0x00005401 	;**** routine ****
-0x00005416 	xref	CrtOn,CrtOff
-0x0000542a 	xref	VramTrans
-0x0000543b 	xref	Vsync,Scroll
-0x0000544f 	xref	EnemyClear
-0x00005461 	xref	VTransGo
-0x00005471 	xref	PalTop,MoveMemory
-0x0000548a 	xref	CramTrans
-0x0000549b 	xref	CheckOrders2
-0x000054af 	xref	VTransSetDma
-0x000054c3 	xref	fadectl
-0x000054d2 	xref	MpABlkTab
-0x000054e3 	xref	BosMusStart
-0x000054f6 	xref	SEOut
-0x00005505 	;**** work ****
-0x00005519 	xref	TSWork
-0x00005527 	xref	BGTop
-0x00005534 	xref	ScrCnt
-0x00005542 	xref	EneTabTop	* 敵キャラ発生テーブル
-0x0000556a 	xref	EnemyMax	* 敵キャラの画面上の数最大値
-0x00005597 	xref	EnemyCnt	* 敵キャラの画面上の数
-0x000055be 	xref	EnemyOdr
-0x000055ce 	xref	HScrBuf
-0x000055dd 	xref	BosDead
-0x000055ec 	xref	ScrStop
-0x000055fd 	xref	PalWait1,PalWait2,PalWait3
-0x0000561f 	xref	PalCnt1,PalCnt2,PalCnt3
-0x00005646 Mp1PanmSpd	equ	8
-0x00005658 AnmStart	equ	12290	; パレットアニメストップ
-0x00005685 AnmStop		equ	13312	; パレットアニメストップ
-0x000056b4 *************************************************************************
-0x000056ff *									*
-0x0000570c *	マ　ッ　プ　１　の　イ　ニ　シ　ャ　ラ　イ　ズ			*
-0x00005742 *									*
-0x0000574f *************************************************************************
-0x0000579c MapInitialize1	equ	*
-0x000057b4 		ori.w	#IntStageBat,IntEffect
-0x000057d6 		move.w	#1,PalWait1	; パレットアニメ１のウエイト
-0x00005809 		move.w	#1,PalWait2
-0x0000581f 		move.w	#1,PalWait3
-0x00005835 		clr.w	PalCnt1		; パレットアニメ１のポインタ
-0x00005864 		clr.w	PalCnt2
-0x00005875 		clr.w	PalCnt3
-0x00005886 		clr.w	TraiCnt		; １ＵＰの為のたらいカウンタ
-0x000058b7 		rts
-0x000058c2 *************************************************************************
-0x0000590d *									*
-0x0000591a *		マ　ッ　プ　１　の　特　殊　処　理			*
-0x00005945 *									*
-0x00005952 *************************************************************************
-0x0000599f EffStage1	equ	*
-0x000059b2 		;**** ボスの音楽スタート ****
-0x000059d3 	if	DiscFlag
-0x000059e3 		cmpi.w	#13200-60*2,ScrCnt
-0x00005a00 		bne	m1ej10
-0x00005a10 		bsr	BosMusStart
-0x00005a27 		;**** びっくりしたー ****
-0x00005a46 m1ej10:		cmpi.w	#4600,ScrCnt
-0x00005a64 		bne	m1ej11
-0x00005a74 		move.w	#SEbikuri,d0
-0x00005a8b 		bsr	SEOut
-0x00005a9a 		;**** 何、あれ？ ****
-0x00005ab5 m1ej11:		cmpi.w	#13750,ScrCnt
-0x00005ad4 		bne	m1ej12
-0x00005ae4 		move.w	#SENani,d0
-0x00005af9 		bsr	SEOut
-0x00005b06 m1ej12:
-0x00005b13 	endif
-0x00005b1b 		;**** スクロールフラグの操作 ****
-0x00005b42 		lea.l	TSWork,a0
-0x00005b55 		lea.l	TSBRegs(a0),a1		; flag 0
-0x00005b79 		move.w	ScrCnt,d0
-0x00005b8f 		cmpi.w	#768,d0
-0x00005ba1 		bne	m1ej02
-0x00005baf 		move.w	#1,(a1)
-0x00005bc3 		clr.w	Mp1PalAnm
-0x00005bd6 		clr.w	Mp1NPos
-0x00005be7 		move.w	#1,Mp1Wait
-0x00005bfc 		bra	m1ej01
-0x00005c0c m1ej02:		cmpi.w	#1024,d0
-0x00005c26 		bne	m1ej03
-0x00005c34 		move.w	#2,(a1)
-0x00005c46 		bra	m1ej01
-0x00005c56 m1ej03:		cmpi.w	#1280,d0
-0x00005c70 		bne	m1ej04
-0x00005c7e 		move.w	#3,(a1)
-0x00005c90 		bra	m1ej01
-0x00005ca0 m1ej04:		cmpi.w	#4096,d0
-0x00005cba 		bne	m1ej05
-0x00005cc8 		move.w	#4,(a1)
-0x00005cda 		bra	m1ej01
-0x00005cea m1ej05:		cmpi.w	#5376,d0
-0x00005d04 		bne	m1ej06
-0x00005d12 		move.w	#5,(a1)
-0x00005d24 		bra	m1ej01
-0x00005d34 m1ej06:		cmpi.w	#8704,d0
-0x00005d4e 		bne	m1ej07
-0x00005d5c 		move.w	#6,(a1)
-0x00005d6e 		bra	m1ej01
-0x00005d7e m1ej07:		cmpi.w	#13824,d0
-0x00005d99 		bne	m1ej01
-0x00005da7 		move.w	#7,(a1)
-0x00005dbd m1ej01:		move.w	ScrCnt,d0
-0x00005dd8 		cmpi.w	#AnmStart,d0
-0x00005def 		blt	m1pj01
-0x00005dfd 		cmpi.w	#AnmStop,d0
-0x00005e13 		bhi	m1pj01
-0x00005e23 		subq.w	#1,Mp1Wait
-0x00005e38 		bne	m1pj01
-0x00005e46 		move.w	#Mp1PanmSpd,Mp1Wait
-0x00005e66 		lea.l	ColorRam,a1
-0x00005e7b 		move.l	PalTop,a0
-0x00005e8f 		lea.l	12*32*4(a0),a0
-0x00005ea7 		move.w	Mp1NPos,d0
-0x00005ebc 		asl.w	d0
-0x00005ec8 		lea.l	(a0,d0.w),a0
-0x00005ee0 		;*** Set Palet Data ***
-0x00005efd 		move.w	00(a0),$0b*2(a1) 	; b
-0x00005f1d 		move.w	32(a0),$0c*2(a1)	; c
-0x00005f3c 		move.w	64(a0),$0d*2(a1) 	; d
-0x00005f5c 		move.w	96(a0),$0e*2(a1)	; e
-0x00005f7d 		;*** Next Palet Calc ***
-0x00005f9b 		move.w	Mp1NPos,d0
-0x00005fb0 		addq.w	#1,d0
-0x00005fc0 		cmpi.w	#6,d0
-0x00005fd0 		bne	m1pj21
-0x00005fde 		moveq.l	#0,d0
-0x00005fef m1pj21:		move.w	d0,Mp1NPos
-0x0000600b 		move.w	#1,HPalTrans
-0x00006022 m1pj01:		rts
-0x00006034 Mp1PalAnm:	dc.w	0
-0x00006047 Mp1NPos:	dc.w	0
-0x00006058 Mp1Wait:	dc.w	1
-0x00006071 ;************************************************
-0x000060a4 ;*		ＳＥベロシティテーブル		*
-0x000060c3 ;************************************************
-0x000060f8 	xdef	SEVelTab
-0x0000610a SEVelTab	equ	*
-0x0000611a 		dc.b	$e0	;  0 ヒット１
-0x00006134 		dc.b	$d0	;  1 ヒット２
-0x0000614e 		dc.b	$80	;  2 ショット１
-0x0000616a 		dc.b	$80	;  3 ショット２
-0x00006186 		dc.b	$c0	;  4 爆発１
-0x0000619e 		dc.b	$ff	;  5 爆発２
-0x000061b6 		dc.b	$ff	;  6 爆発３(生物用)
-0x000061d6 		dc.b	$80	;  7 ボム
-0x000061ec 		dc.b	$ff	;  8 オプション発生
-0x0000620c 		dc.b	$ff	;  9 もーらい
-0x00006226 		dc.b	$ff	; 10 オプションショット
-0x0000624a 		dc.b	$ff	; 11 パワーアップ
-0x00006268 		dc.b	$ff	; 12 アイテム
-0x00006282 		dc.b	$ff	; 13 ダメージ
-0x0000629c 		dc.b	$ff	; 14 やっちゃえ
-0x000062b8 		dc.b	$ff	; 15 きゃん
-0x000062d0 		dc.b	$ff	; 16 ポチの声
-0x000062ee 		dc.b	$ff	; 16 牛
-0x00006302 		dc.b	$ff	; 17 びっくりしたー
-0x00006322 		dc.b	$ff	; 18 何、あれ？
-0x0000633e 		dc.b	$ff	; 19
-0x0000634f 		dc.b	$ff	; 20
-0x00006360 		dc.b	$ff	; 21
-0x00006371 		dc.w	-1
-0x00006382 TraiCnt:	dc.w	0
-0x00006396 :		dc.w	EneBom
-0x000063a6 		dc.w	0
-0x000063b0 		dc.w	0
-0x000063ba 		dc.w	PEBom
-0x000063c8 		dc.w	ETAPri
-0x000063d9 *************************************************
-0x0000640c *　		子宝壱号Ｅパターン		*
-0x00006428 *************************************************
-0x0000645d KodaChr:	dc.w	EneKoTakaraB
-0x00006479 		dc.w	272
-0x00006485 		dc.w	064
-0x00006491 		dc.w	PEKoTakaraAA
-0x000064a6 		dc.w	0
-0x000064b4 HouLife:	dc.w	0
-0x000064c7 		end
-```
-
-This is a bit interesting, since it implies the game could be built to run on a system without a disc. When set, it skips music and some sound effect playback
-0x000059d3 	if	DiscFlag
 
 Japan Demo - keio6.bin
 
@@ -514,6 +615,50 @@ Japan Demo - keio7.bin
 0x0000e127 		bsr	SEOut
 0x0000e136 		;*** 自キャム
 ```
+
+
+
+Japan Demo - keio2.bin
+
+```
+押されているか調べる
+	xdef	EneHit
+******[ External Symbol ]********
+	;**** func ****
+	xref	MoveCalcVec
+;	xref	MoveCalcVec8
+	xref	HitCheck
+	xref	ChrFormPut
+	xref	ChrWorkClr
+	xref	SearchWork
+	xref	SearchChrWork
+	xref	GetShotBut
+	xref	GetBomBut
+	xref	GetAtkBut
+	xref	GetKeyVec
+	xref	ChgVec64
+	xref	DamageEnemy	* 弾が当った時の処理
+	xref	ClearMemory
+	xref	Sin,Cos
+	xref	HEneCheck
+	xref	HEneShotCheck	* 敵キャラ弾接触チェック
+	xref	VTransSetDma,VTransGo
+	xref	BGTop
+	xref	SEOut,SEOutP
+	xref	GetPointVec
+	xref	TurnUpSLevUp	* ショットレベルＵＰのアイテムを出現させる
+	xref	Random
+	xref	HomSearchEnemy
+	xref	ShotClear
+	xref	HomingFast,HomingNext,MyHomingNext
+	xref	EneScrCheck
+	xref	RedOut,ColorRet
+	xref	
+```
+
+"Find out if [] is being pushed"
+
+The xref commands here are like the `extern` keyword in C, indicating that these functions are not in this file but will be present when everytyhing is linked together.
 
 Japan Demo - title.bin
 
