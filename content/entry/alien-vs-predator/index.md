@@ -16,13 +16,32 @@ We're back on our CPS2 jam, this time looking at Alien vs Predator. Buried in it
 
 <!--more-->
 
+# Player 4
+
+Before we get into things, it should be noted that the game makes use of 4 button control panels and of the Player 4 slot. Player 4 is not present in the final hardware and only 3 buttons are used, and thus that is the configuration MAME uses. I will be opening a PR to MAME to add the extra controls when the machine is in the development configuration, but until that PR is merged (if it is merged...), you will need to build a custom version of MAME in order to fully use all of the debug tools.
+
+It is a pretty simple modification. In `cps2.cpp`, find these lines near the bottom:
+
+```
+GAME( 1994, avsp,       0,        cps2,     cps2_3p3b, cps2_state, init_cps2,     ROT0,   "Capcom", "Alien vs. Predator (Europe 940520)",                                            MACHINE_SUPPORTS_SAVE )
+GAME( 1994, avspu,      avsp,     cps2,     cps2_3p3b, cps2_state, init_cps2,     ROT0,   "Capcom", "Alien vs. Predator (USA 940520)",                                               MACHINE_SUPPORTS_SAVE )
+GAME( 1994, avspj,      avsp,     cps2,     cps2_3p3b, cps2_state, init_cps2,     ROT0,   "Capcom", "Alien vs. Predator (Japan 940520)",                                             MACHINE_SUPPORTS_SAVE )
+GAME( 1994, avspa,      avsp,     cps2,     cps2_3p3b, cps2_state, init_cps2,     ROT0,   "Capcom", "Alien vs. Predator (Asia 940520)",                                              MACHINE_SUPPORTS_SAVE )
+GAME( 1994, avsph,      avsp,     cps2,     cps2_3p3b, cps2_state, init_cps2,     ROT0,   "Capcom", "Alien vs. Predator (Hispanic 940520)",                                          MACHINE_SUPPORTS_SAVE )
+
+```
+
+Where the text says `cps2_3p3b`, change this to `cps2_4p4b` then save and [recompile MAME](https://docs.mamedev.org/initialsetup/compilingmame.html).
+
 # Test Menu
 
 ![](img/avspj_testmenu.png)
 
-As with several other CPS2 games, there is a hidden test menu in the game. It is accessed relatively easily by setting the byte @ 0xFF21AA to 2 while the standard test menu is active.
+As with several other CPS2 games, there is a hidden test menu in the game. It is accessed relatively easily by setting the byte @ 0xFF21AA to 2 while the standard test menu is active. Unfortunately, there doesn't seem to be any remaining code that sets that the value to 2, so we can't really speculate as to how it was originally enabled.
 
-in all menus, p2 start changes background color. a single press makes a "big" change, while holding it changes the hue in a gradient
+But we can certainly force it with cheats, so let's have a look inside.
+
+In all menus, P2 Start changes background color. a single press makes a "big" change, while holding it changes the hue in a gradient
 
 ## Character Test
 
@@ -157,6 +176,195 @@ p1 start toggle text overlay
 p2 up/down change opponent id
 
 
+# Debug DIPs
+
+At first glance, Alien vs Predator does not seem to use [the CPS2 debug DIP switches](/entry/cps2-debug-switches-and-the-games-that-love-them/) that we have talked about in the past. These were three rows of eight physical switches, only present on development hardware, with each row mapped to bytes in RAM from 0x8040B0 to 0x8040B2. Many final production games still contain code that references these switches, though in most cases that code is blocked off or disabled.
+
+In Alien vs Predator, there are no such references in the code to these switches at all. However, it's pretty likely that the game did make use of them at one time. How do we know?
+
+It's simple enough: There are a number of debugging tools remaining in the game that are activated in an identical way to other games that do use the switches. The tools are toggled by bit-level flags stored across three bytes in RAM, from 0xFF806C to 0xFF806E. These bytes are likely where the copy of the hardware switch state was stored.
+
+That is how most games (including CPS2 games) handle reading values from external inputs like controllers and switches: read the value once early in an update period (usually the screen blanking interval) and store it in RAM for all the subsequent program logic to use. This keeps things consistent because such external devices (controllers, switches, data communication) are volatile in nature. That is, their state can change independent of the CPU. Multiple reads directly from the hardware can return inconsistent results and possibly even affect the internal state of the external device.
+
+So storing an exact copy of the value of the switches in memory is completely normal. It seems we're left with references to the copies and are missing the piece of code that does that copying itself.
+
+The logical conclusion is that copying code was removed before the game was published, a guarantee that the dev tools would not be accessible on any hardware in the final version.
+
+But the programmers did something interesting, something I haven't seen done in a CPS2 game before...
+
+## Soft Switches
+
+Within Alien vs Predator, there is code that enables the user to toggle the bit level state of the debug bytes from within the game:
+
+![](img/avspj_soft_dips.png)
+
+Here we see three rows of eight bits, showing the state of the three debug bytes in RAM and representing the three rows of switches present on a CPS2 development board. Essentially, it is a "virtual" bank of switches, controlling the debug flags by software rather than hardware.
+
+Each row is managed by a player controller (Player 1, 2 and 3) with each unqiue input on that controller mapping to one bit in the row: the first four bits map to the joystick and the last four to the four buttons. (We'll discuss this more in depth in the technical section.)
+
+Such a system would have been useful for playtesters who may have only had production hardware instead of a proper development board or perhaps even to other devs if the number of proper development units was limited. They would be able to access all the debugging tools without needing the physical switches.
+
+## Soft Switches - Technical
+
+We're missing code that copies from the debug DIPs hardware switch bank, which begs the question: was it actually removed, or was it *replaced* with the soft DIPs system?
+
+The code located at 0x1434 seems to answer that for us:
+
+[0x1434 disasm]
+
+The end result of this small routine is that the global debug tool enable flag will be toggled based if *either* DIP 1 Switch 1 is set OR the soft DIP subsystem is enabled. The "global debug tool enable flag" is checked by all of the debugging tools at their start. It must be non-zero or the tool exits immediately. Essentially then, Debug DIP 1-1 needs to be set, OR the soft DIPs enable flag must be set to allow any of the debugging tools to run.
+
+Thinking inductively, we can say that hardware copy code was *removed* rather than *replaced* by the soft DIPs and the two methods of setting debug flags "coexisted." We can say this because if we were to assert that the debug flags could only be set by teh soft dips system (that is, that the soft dips had replaced the hardware copying and there was now no other way to set those flags), then the code at 0x1434 doesn't make sense. 
+
+
+
+This display is toggled with P4 B2+B3. The game does not pause when it is on screen, so your inputs will also affect the gameplay in the background. (Note that you will need to enable the soft DIPs subsystem first with a MAME cheat; we'll dicuss that in the technical section.)
+
+---
+
+NEW THEORY:
+
+Let's review the code at 1434:
+
+it first checks bit 0 of dip 1 (the "copied to ram" dips) and if it *is set* it will set bit 1 of the temp variable in that routine. It then checks the use soft dips variable and ORs the temp variable against it. The temp variable then gets written into the global "debug enable" that is used by all the debugging tools.
+
+SO... if the copy is unset and use soft dips is unset, then global debug is unset... if EITHER of those two is set, then global debug is set...
+
+SO... we can extrapolate from this that "use soft dips" flag and the DIP copies are independent... since either of the two is checked to enable debug tools globally, it does NOT seem that the soft dips are a replacement for the hardware copy... if there was a dependency, then the DIP copy bits could never be set without using the soft dips, and the code at 1434 wouldn't make sense: checking the DIP copy at all implies it could be set elsewhere... that is, within a copy routine somewhere else, that is no longer present in our version...
+
+
+BUZZER ERRRR WRONG....
+
+What about if the soft dips were turned on, DIP 1-1 was set, and then the dips disabled? 0x1434 would still make sense...
+
+---
+
+One theory is that there were different build targets for dev and non-dev hardware that either enabled the copy code and disabled the software DIPs or vice versa, and that we have the former of those. Or, perhaps the switch copy code "coexisted" with the software DIPs and there was a separate flag that acted as a toggle to choose whether to read from hardware or not, and then that code was removed... Who knows.
+
+I do however strongly feel that the debugging DIP switches were in use by the team in some fashion and that the "emulated" soft switches were an add-on to their existing structure.
+
+So, in summary, our version of Alien vs Predator does not use the debug DIP hardware, but it does have a number of debug tools which are enabled using bitwise flags in a layout that is identical to a RAM copy of those DIP switches. Those flags are enabled/disabled by an in-game tool that "emulates" the DIPs, mapping each switch to an input on all three player controllers. There are a number of possibilities for why the actual, physical DIP switches are not used in the final version, but we can only conjecture the reason.
+
+## Soft DIPs technical
+
+There's not much more to discuss with the soft switches, but less address a couple more technical aspects.
+
+First, how is the soft switch display shown in the screenshot above accessed? We mentioned P4 B2+B3 will toggle it, but there's another variable in play: the byte at 0xFF81D8 seems to be the flag to enable the soft DIP system. This byte is checked at the very start of the soft dip display code and will immediately return if it is zero.
+
+Unfortunately, there is no code that writes to this location, so whatever method was used to set it has been removed. So the first step to restoring the soft DIPs is a cheat to set things up:
+
+```
+  <cheat desc="Enable Debug Soft DIPs">
+    <comment>Enables the soft DIPs system; display can be toggled with Player 4 B2+B3</comment>
+    <script state="on">
+      <action>temp0=maincpu.mb@ff81d8</action>
+      <action>maincpu.pb@ff81d8=1</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pb@ff81d8=0</action>
+    </script>
+  </cheat>
+```
+
+
+
+
+ff81c7 - uk__debug__global_debug_tools_enable - Seems to be the "global" debug tools enable (tools check that this is non-zero to even begin processing)
+^---- used the most, used by the tools themselves
+
+ff81d8 - debug__uk__use_soft_dips - 
+                     it seems that this is the flag to use the soft DIP 
+                     system; when set, the spawner will not work (as it 
+                     uses the P4 inputs)
+
+^--- only used in a couple places
+
+
+TODO - need to really confirm what is different about the above two
+ff81dc - debug__enable_soft_dip_config - enables the soft dip display and editor
+
+SOFT DIP CONTROLS:
+
+right - bit 0
+left - bit 1
+down - bit 2
+up - bit 3
+B1 - bit 4
+B2 - bit 5
+B3 - bit 6
+B4 - bit 7
+
+
+
+
+
+
+In fact, there is another set of three bytes involved here, from 0xFF81D9 to 0xFF81DB, and these also appear to be copies of what was read from the physical switches.
+
+To make things easier, we'll refer to the copies in the 0xFF806C range as Copy A, and those in the 0xFF81D9 range as Copy B. Copy A is what is actually used by 
+
+
+CURRENT THEORIES:
+
+- Copy B is an copy of the data read directly from switch memory mapping
+- Copy B is the settings saved to memory and then loaded on startup
+
+
+the "soft dip" system is not perfect - it conflicts with the object spawner which makes use of the P4 controls that the soft dip editor does
+
+
+And this is where things get interesting: Alien vs Predator seems to make use of "virtual" or "soft" DIP switches.
+
+First let's look at his interesting bit of code located at 0x12D6:
+
+[disasm of 0x126 to 0x12ec]
+
+It is only called once, during startup. It copies three bytes, from 0xFF81D9 into 0xFF806C, followed by the next two bytes. Notably, it has an RTS right at the start, returning immediately and never reaching the actual copy.
+
+
+
+
+
+DO NOT USE THIS:
+
+Devices that are connected to a CPU (things like joysticks and buttons and lightguns and keyboards) have a *volatile state,* meaning their operation and output can change independnt of the state of the CPU. In the case of things like keyboards or lightguns, an *interrupt* is generated, which is a signal to the CPU that an external device needs attention or has some data to give. However, some devices do not generate an interrupt and their state must be checked by the CPU whenever it needs an update.
+
+This is usually the case for game hardware controllers. The state of the joystick and buttons is only checked by the CPU at certain intervals, usually during the vertical blanking interval, that period of time when the CRT's beam was resetting up to the top left corner. That means that even if you hit a button while that CRT screen update is only half down, it won't register with the game until the blanking interval. Those speeds are incredibly fast (60 times per second, usually) so it's not noticeable to anyone who isn't a top tier elite noscope 360 pro gamer.
+
+Now lets say it's that blanking period, and your code is updating the state of the game based on what is being pressed on the controller. Now lets say you happen to press a button or change direction quickly enough during that period. If the code is reading directly from the hardware, then the state of the controller is inconsistent. It may have read that you were pressing Button A earlier and is now on a code path for that button press, but now you're holding B instead. If the code needds to check the controller again, expecting A to be pressed but finds it isn't, it may enter some invalid code.
+
+(also: quick reads from the hardware may put it into a bad state, etc)
+
+Instead, the state of the controller is read once earlier on and saved off to RAM, and that is considered the definitive state of the controller for the rest of that update period.
+
+This applies to DIP switches as well: the state is read early on and copied to RAM and any code that needs to check those switches references the RAM copy rather than the hardware mapping itself.
+
+This is how the CPS2 games work with their debug DIP switches as well: copying the state of all three to RAM for the rest of the game to read from.
+
+
+With all that out of the way, let's have a look at what tools are actually available.
+
+## Spawner
+
+P4 Stick - move cursor
+P4 B1 - spawns object/task
+P4 B2 - hold + P4 up/down to change object/task
+P4 B3 - "fast" mode - hold this to move the cursor quickly or to sroll the object selection quickly
+
+
+## Stage Collision
+
+![](img/avspj_collision.png)
+
+## Hitboxes
+
+![](img/avspj_hitboxes01.png)
+
+![](img/avspj_hitboxes02.png)
+
+
+
+
 # Scratchpad
 
 # Alien vs Predator
@@ -192,8 +400,14 @@ Okaaay...
 
 The "soft dips" were enabled/disabled by P4 B2+B3 (same time)
 
+(when ff81d8 is set to 1!)
+
 Bit zero of DIP 0 (soft or hard) enables the object spawner
 However, it will not work if Soft DIPs are enabled, since they share use of P4 inputs
+
+
+
+
 
 
 DIP 1
