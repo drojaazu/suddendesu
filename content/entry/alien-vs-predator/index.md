@@ -18,7 +18,7 @@ We're back on our CPS2 jam, this time looking at Alien vs Predator. Buried in it
 
 # Player 4
 
-Before we get into things, it should be noted that the game makes use of 4 button control panels and of the Player 4 slot. Player 4 is not present in the final hardware and only 3 buttons are used, and thus that is the configuration MAME uses. I will be opening a PR to MAME to add the extra controls when the machine is in the development configuration, but until that PR is merged (if it is merged...), you will need to build a custom version of MAME in order to fully use all of the debug tools.
+It must first be noted that the game makes use of 4 button control panels and of the Player 4 slot. On the final hardware, Player 4 is not present and only 3 buttons are used, and thus that is the configuration MAME uses. I will be opening a PR to MAME to add the extra controls when the machine is in the development configuration, but until it is merged (if it is merged...), you will need to build a custom version of MAME in order to fully use all of the debug tools.
 
 It is a pretty simple modification. In `cps2.cpp`, find these lines near the bottom:
 
@@ -37,11 +37,11 @@ Where the text says `cps2_3p3b`, change this to `cps2_4p4b` then save and [recom
 
 ![](img/avspj_testmenu.png)
 
-As with several other CPS2 games, there is a hidden test menu in the game. It is accessed relatively easily by setting the byte @ 0xFF21AA to 2 while the standard test menu is active. Unfortunately, there doesn't seem to be any remaining code that sets that the value to 2, so we can't really speculate as to how it was originally enabled.
+As with several other CPS2 games, there is a hidden test menu in the game. It is accessed when the byte @ 0xFF21AA equals 2 while the standard test menu is active.
 
-But we can certainly force it with cheats, so let's have a look inside.
+Unfortunately, there doesn't seem to be any remaining code that sets that value, so we can't really speculate as to how it was originally enabled. But we can easily force it with cheats, so let's have a look inside.
 
-In all menus, P2 Start changes background color. a single press makes a "big" change, while holding it changes the hue in a gradient
+In all tools, P2 Start changes background color.
 
 ## Character Test
 
@@ -75,6 +75,7 @@ The basic character viewer. Most of the commands here work in the other modes as
  - P1 B2 resets the animation to its initial frame.
  - P4 B1 changes the weapon held by the character
  - P3 Up/Down changes the vertical flip; P3 Left/Right changes the horizontal flip. Note that when in CHAR TEST2 mode, this controls the second character only. However, P1 Left/Right will also change the horizontal flip for the first character in any mode.
+ - P2 Start changes the background color like in other modes, but holding P2 Start will change the shade of that particular color.
 
 also p3 b2 + p2 stick moves the char test2 sprite
 
@@ -172,23 +173,24 @@ p1 b2 reset animation
 hold p1 b2 + p1 up/down change table number
 p1 b3 advance animation on frame
 p1 start toggle text overlay
+holding P2 start cycles bg color 
 
 p2 up/down change opponent id
 
 
 # Debug DIPs
 
-At first glance, Alien vs Predator does not seem to use [the CPS2 debug DIP switches](/entry/cps2-debug-switches-and-the-games-that-love-them/) that we have talked about in the past. These were three rows of eight physical switches, only present on development hardware, with each row mapped to three bytes (0x8040B0 to 0x8040B2) in RAM. Many final production games still contain code that references these switches, though in most cases that code is blocked off or disabled.
+At first glance, Alien vs Predator does not seem to use [the CPS2 debug DIP switches](/entry/cps2-debug-switches-and-the-games-that-love-them/) that we have talked about in the past. These were three rows of eight physical switches, only present on development hardware, with each row mapped to three bytes in RAM (0x8040B0 to 0x8040B2). Many final production games still contain code that references these switches, though in most cases that code is blocked off, uncalled, or otherwise disabled.
 
-In Alien vs Predator, there are no such references in the code to these switches at all. However, it's pretty likely that the game did make use of them at one time. How do we know? It's simple enough: there are a number of debugging tools remaining in the game that are activated in an identical way to other games that do make use the switches.
+In Alien vs Predator, there are no such references to these switches at all. However, it's pretty likely that the game did make use of them at one time. How do we know? It's simple enough: there are a number of debugging tools remaining in the game that are activated identically to other games that do make use the switches.
 
-The tools are toggled by bit-level flags stored across three bytes in RAM, from 0xFF806C to 0xFF806E. These bytes are likely where the copy of the hardware switch state was stored.
+The tools are toggled by bit-level flags stored across three bytes in RAM, from 0xFF806C to 0xFF806E. These bytes were likely the cached copy of the hardware switch state.
 
-That is how most games (including CPS2 games) handle reading values from external inputs like controllers and switches: read the input once early in an update period (usually the screen blanking interval) and store it in RAM for all the subsequent program logic to use. This keeps things consistent, because such external devices (controllers, switches, data communication) are volatile in nature. That is, their state can change independent of the CPU. Multiple reads directly from the hardware can return inconsistent results and possibly even affect its internal state.
+That is how most games (including CPS2 games) handle reading values from external inputs like controllers and switches: read the input once early in an update period (usually the screen blanking interval) and store it in RAM for all the subsequent program logic to use. This keeps things consistent, because such external devices (controllers, switches, data communication) are volatile in nature. That is, their state can change independent of the CPU. Multiple reads directly from the hardware can return inconsistent results and, in some cases, even affect its internal state.
 
-So storing an exact copy of the value of the switches in memory is completely normal. It seems we're left with the copies and are missing the piece of code that does that copying itself. The logical conclusion is that the copying code was removed before the game was published, a guarantee that the dev tools would not be accessible on any hardware in the final version.
+So storing an exact copy of the switches in memory is completely normal. It seems we are missing the code that does that copying and and are left with only the references to where those copies would be in RAM.
 
-That conclusion is probably the correct one, but the story with the debug DIP switches doesn't end there. The programmers did something interesting, something I haven't seen done in a CPS2 game before...
+The logical conclusion is that the copying code was removed before the game was published, a guarantee that the dev tools would not be accessible on any hardware in the final version. That conclusion is probably the correct one, but the story with the debug DIP switches doesn't end there. The programmers did something interesting, something I haven't seen done in a CPS2 game before...
 
 ## Soft Switches
 
@@ -196,11 +198,11 @@ Alien vs Predator has code to "emulate" the debug switches in software:
 
 ![](img/avspj_soft_dips.png)
 
-Here we see three rows of eight bits, showing the state of the three debug bytes in RAM and representing the three rows of switches present on a CPS2 development board. Essentially, it is a "virtual" bank of switches, controlling the debug flags by software rather than hardware.
+Here we see three rows of eight bits, showing the state of the three debug bytes in RAM and representing the three rows of switches present on a CPS2 development board. Essentially, it is a "virtual" bank of switches, controlling the debug flags by software rather than hardware, where 0 is off and 1 is on.
 
 (*Technically* it's still controlled by hardware since it uses the player controllers to do the toggling, but let's not split hairs...)
 
-Such a system would have been useful for playtesters who may have only had production hardware instead of a proper development board or perhaps even to other devs if the number of proper development units was limited. They would be able to access all the debugging tools without needing the physical switches.
+Such a system would have been useful for play testers who may have only had production hardware instead of a proper development board or perhaps to other devs if the number of proper development units was limited. They would be able to access all the debugging tools without needing the physical switches.
 
 In this mode, each row is managed by its respective player controller (Row 1 by Player 1, Row 2 by P2, and so on) with each unqiue input on that controller mapping to one bit in the row: the first four bits map to the joystick and the last four to the four buttons.
 
@@ -212,17 +214,17 @@ But things aren't quite that simple. There's a "software switch enable" flag tha
 
 Something that may have crossed your mind about this soft DIPs system is contention between the two "sources": if both the hardware switches and these virtual switches are present, which takes precedence?
 
-The next logical thought is, well, that's probably why they removed the copying code. Sure, that's a possibility. Perhaps these soft switches replaced the use of the hardware switches entirely. Or perhaps there were different build targets: one for dev hardware that copied from physical switches and disabled the soft switch code, and vice versa for non-dev hardware.
+The next logical thought is, well, that's probably why they removed the aforementioned copying code. Sure, that's a possibility. Perhaps these soft switches replaced the use of the hardware switches entirely. Or perhaps there were different build targets: one for dev hardware that copied from physical switches and disabled the soft switch code, and vice versa for non-dev hardware.
 
-Another possibility is that the two systems "coexisted," that there was another flag that determined which source to use, and that the hardware copy code was removed because it was the production build, as we initially surmised.
+Another possibility is that the two systems "coexisted," that there was another flag that determined which source to use, and that the hardware copy code was removed because it was the production build as we initially surmised.
 
 I lean more towards that last scenario, and that's because there is indeed a "soft switch enable" flag in the code. It is the byte located at 0xFF81D8 and it must be non-zero to enable the use of the soft switches UI.
 
-How to set that flag is unknown since all references to it are reads and nothing that writes to it except for RAM initialization on startup. All that it really does in our final version is act as the flag to enable the soft switches code, and to disable the object spawner (for reasons that we will describe in that section below). Presumably, however, it would have also been used in that routine that copied from hardware switch state: if set, skip the hardware copy and use the "virtual" switches instead.
+How to set that flag is unknown since all references to it are reads and nothing writes to it except for RAM initialization on startup. All that it really does in our final version is act as the flag to enable the soft switches code, and to disable the object spawner (for reasons that we will describe in that section below). Presumably, it would have also been used in the missing routine that copied the hardware debug switches.
 
-So, in summary, our version of Alien vs Predator does not use the debug DIP hardware, but it does have a number of debug tools which are enabled using bitwise flags in a layout that is identical to a RAM copy of those DIP switches. Those flags are enabled/disabled by an in-game tool that "emulates" the DIPs, mapping each switch to an input on all three player controllers. There are a number of possibilities for why the actual, physical DIP switches are not used in the final version, but since there is a flag to enable/disable the use of the software switches, it's likely that the hardware switch copy was simply removed before the final build.
+So, in summary, our version of Alien vs Predator does not use the debug DIP hardware, but it does have a number of debug tools which are enabled using bitwise flags in a layout that is identical how other games make use of the switches. Those flags are toggled by an in-game tool that "emulates" the DIPs, mapping each switch to an input on all three player controllers. There are a number of possibilities for why the actual, physical DIP switches are not used in the final version, but since there is a flag to enable/disable the use of the software switches, it's likely that the hardware switch copy was simply removed before the final build.
 
-Without further ado, here is the MAME cheat to enable the software switches. Don't forget you'll need to press Player 4 B2+B3 simultaneously to toggle the display.
+Without further ado, here is the MAME cheat to enable the software switches. Don't forget you'll need to press Player 4 B2+B3 simultaneously to display/hide the switch interface. You will also need to set the "global debug tools enable" flag with switch 1-1 to enable any of the tools (see the next section).
 
 ```
   <cheat desc="Enable Debug Soft DIPs">
@@ -237,13 +239,47 @@ Without further ado, here is the MAME cheat to enable the software switches. Don
   </cheat>
 ```
 
-And now let's finally have a look at what sort of debugging tools are now available to us. Note that the switch IDs below are the row then the switch number. For the developers out there, the numbers are *not* zero indexed.
 
-## Switch 1-1 - Tools enable; Entity Spawner; Player suicide
+# Debug Tools
 
-Just to make things a little more complicated, there is yet another flag check that stands in our way. This acts as a sort of global "debug tools enable," and thankfully it can be set easily by setting switch 1-1. In other words, make sure 1-1 is enabled before using the other tools.
+And now let's finally have a look at what sort of debugging tools are now available to us... after we discuss one last thing.
 
-Aside from that, this switch also enables player suicide by pressing that player's Start button during gameplay.
+Because things aren't complicated enough, there is yet another flag check that stands in the way of accessing the debug tools, and that is the global "debug tools enable" flag. This is the byte at 0xFF81C7, and all the debug tools check that this value is non-zero before they run. 
+
+Thankfully, this flag is set by simply enabled debug DIP switch 1-1. Easy!
+
+So if you're doing things the "proper" way, you would need to:
+
+1. Enable the soft switches cheat
+2. Display the switches interface with P4 B2+B3
+3. Set switch 1-1
+4. Set other switches for the debug tools you'd like to use
+5. Close the switches interface with P4 B2+B3 again
+6. If you want to use the item spawner, you'll then need to disable the soft switches cheat (see the next section)
+
+While I think it is very, very important to document how such tools were *meant* to be accessed, I also understand that it is a bit of an annoyance to go through all these steps. So for the three main tools (spawner, stage collision, hitboxes), I will include a MAME cheat that will enable these directly without having to mess about with the switches interface and turning things on and off.
+
+Okay, *now* let's have a look at the tools themselves.
+
+## Switch 1-1 - Tools enable; Entity Spawner; Player suicide; Info display
+
+As we said in the previous section, the primary use of switch 1-1 is to act as the global "debug tools enable" flag. In other words, **make sure switch 1-1 is enabled before using the other debug tools.**
+
+Aside from that, displays a numeric value on the left hand side of the screen. The lower value is the time remaining for the current scene. It's unknown what the two numbers above are used for.
+
+Moreover, this switch also enables a couple other functions. The first is player suicide by pressing that player's Start button during gameplay.
+
+That's not exactly useful, but the main tool it enables is quite handy: an object spawner.
+
+![](img/avspj_spawner01.png)
+![](img/avspj_spawner02.png)
+
+The spawner appears on screen as a green triangle acting as the cursor and the name of the current object/task in the upper right.
+
+
+
+The spawner makes use of the P4 controls quite a bit, including the buttons that toggle the soft switches display. As such, **the object spawner will not display/run while the "soft switch enable" flag is set.**
+
 
 
 P4 Stick - move cursor
@@ -389,6 +425,8 @@ TODO: need to find a better way to get the uncalled debug functions hacked in...
 
 
 # Alt credits
+
+The "Mystics" object in the spawner shows these credits!
 
 credits @ 0x15ac8 appear to be used
 
