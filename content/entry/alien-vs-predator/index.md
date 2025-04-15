@@ -265,27 +265,32 @@ Okay, *now* let's have a look at the tools themselves.
 
 As we said in the previous section, the primary use of switch 1-1 is to act as the global "debug tools enable" flag. In other words, **make sure switch 1-1 is enabled before using the other debug tools.**
 
-Aside from that, displays a numeric value on the left hand side of the screen. The lower value is the time remaining for the current scene. It's unknown what the two numbers above are used for.
+Aside from that, this switch displays a numeric value on the left hand side of the screen. The lower value is the time remaining for the current scene. It's unknown what the two numbers above are used for.
 
-Moreover, this switch also enables a couple other functions. The first is player suicide by pressing that player's Start button during gameplay.
+Moreover, this switch also enables instant player suicide by pressing that player's Start button during gameplay.
 
-That's not exactly useful, but the main tool it enables is quite handy: an object spawner.
+That's not exactly useful, but the last function it enables is quite handy: an object spawner.
 
 ![](img/avspj_spawner01.png)
 ![](img/avspj_spawner02.png)
 
-The spawner appears on screen as a green triangle acting as the cursor and the name of the current object/task in the upper right.
+The spawner appears on screen as a green triangle acting as the cursor with the name of the current object/task in the upper right. It is controlled with the Player 4 inputs: the stick moves the cursor, holding P4 B2 and pressing Up/Down changes the item to spawn, P4 B1 spawns the selected object, and holding P4 B3 activates "fast mode", which moves the cursor and the item selection quickly.
 
+Since the spawner makes use of the P4 controls quite a bit, it is incompatible with the DIP switches interface we discussed above. As you'll recall, that display is toggled with P4 B2+B3, which interferes with the spawner. As such, **the object spawner will not display/run while the "soft switch enable" flag is set.**
 
+This makes things a little convoluted as you need to enable the soft switches, then display them, then set switch 1-1, then disable the switches (the steps 1 to 6 above)... So instead of all that, you could just use this cheat to activate all the switch 1-1 tools directly. Just make sure you have the "Enable Debug Soft DIPs" cheat disabled too if you want to use the spawner.
 
-The spawner makes use of the P4 controls quite a bit, including the buttons that toggle the soft switches display. As such, **the object spawner will not display/run while the "soft switch enable" flag is set.**
-
-
-
-P4 Stick - move cursor
-P4 B1 - spawns object/task
-P4 B2 - hold + P4 up/down to change object/task
-P4 B3 - "fast" mode - hold this to move the cursor quickly or to sroll the object selection quickly
+```
+  <cheat desc="Enable Debug and Spawner">
+    <comment>Sets the flag to enable all other debug tools; also enables player suicide with Start button, a data display, and an object spawner controlled with Player 4 inputs</comment>
+    <script state="on">
+      <action>maincpu.pb@ff806c=(maincpu.pb@ff806c | 1)</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pb@ff806c=0</action>
+    </script>
+  </cheat>
+```
 
 ## Switch 2-6 - Display Stage Collision
 
@@ -295,6 +300,21 @@ Remember the "display stage collision" option in the Scroll viewers in the test 
 
 Note that toggling this switch will not affect the background immediately. You will need to walk through the stage to see the changes as it updates the background.
 
+And as above, here is a cheat to enable it directly without the need of the switches interface. Don't forget that **switch 1-1 needs to be set for this tool to activate**, so make sure the "Enable Debug and Spawner" cheat is set as well.
+
+```
+  <cheat desc="Show Stage Collision">
+    <comment>Requires "Enable Debug and Spawner" to be set</comment>
+    <script state="on">
+      <action>temp0=maincpu.mb@ff806d</action>
+      <action>maincpu.pb@ff806d=(maincpu.pb@ff806d | 0x40)</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pb@ff806d=(maincpu.pb@ff806d BAND 0xbf)</action>
+    </script>
+  </cheat>
+```
+
 ## Switch 2-7 - Display Hitboxes
 
 ![](img/avspj_hitboxes01.png)
@@ -303,7 +323,65 @@ Note that toggling this switch will not affect the background immediately. You w
 
 Just like the title says. Displays the hitboxes of all entities on the screen, including objects and pickups.
 
-## Spawner
+Here is a cheat to enable hitboxes without the need of the switches interface. Again, **switch 1-1 needs to be set for this tool to activate**, so make sure the "Enable Debug and Spawner" cheat is set as well.
+
+```
+  <cheat desc="Enable Hitboxes">
+    <comment>Requires "Enable Debug and Spawner" to be set</comment>
+    <script state="on">
+      <action>temp0=maincpu.mb@ff806d</action>
+      <action>maincpu.pb@ff806d=(maincpu.pb@ff806d | 0x80)</action>
+    </script>
+    <script state="off">
+      <action>maincpu.pb@ff806d=(maincpu.pb@ff806d BAND 0x7f)</action>
+    </script>
+  </cheat>
+```
+
+## The Rest of the Switches
+
+1-2 - checked within code beginning b1998, which seems to be uncalled...? - when hacked in, shows a dump of hex on the right side of the screen
+
+Appears to be an object monitor. The text on the right is the objecty ID, teh X/Y position, and some other info. The color is the current status of that object slot.
+
+The game crashed occasionally when this was enabled, the given the nature of the crashes (it varied, but in several cases it was address errors, indicating invalid values going into the function) it may just not be being called from the correct place
+
+1-3 - checked within code beginning b1866, which seems to be uncalled...? - when hacked in, like above, shows some hex on the left side
+
+Appears to be a player monitor. Displays the X/Y position of the player, while the bottom two rows seem to be positioning of the stage itself.
+
+1-4 to 1-8 appear to be unused
+
+2-1 to 2-5 appear to be unused
+2-6 - tested within code @ 03a5cc, which is called through a maze of functions above that we haven't unraveled yet
+
+3-1, 3-7, 3-8 - unused
+3-2 - when set, computer controlled players do nothing during attract mode gameplay demo sequences
+3-3 - checked within code beginning b1a84, which seems to be uncalled...?
+seems to show a grid overlay
+3-4 - disables timer countdown in the "break control box" special stage
+3-5 - displays two numbers on the right side, may possible be CPU load; number goes higher and turns red when spawning many entities
+3-6 - shows the x/y position of the cursor for the spawner
+
+
+TODO: need to find a better way to get the uncalled debug functions hacked in...
+
+
+
+
+# Alt credits
+
+The "Mystics" object in the spawner shows these credits!
+
+credits @ 0x15ac8 appear to be used
+
+but there is anotehr set @ 0x98850 that is slightly different. Unused?
+
+The data at 0x98850 is referenced by code beginning 0x9871a, which is in turn listed in a ptbl at 0x1bc28
+
+The normal staff roll is called from 0x157d2, as a direct jump. So the calling methods are different.
+
+
 
 
 
@@ -394,47 +472,6 @@ However, it will not work if Soft DIPs are enabled, since they share use of P4 i
 
 
 
-
-
-
-DIP 1
-bit 0 - enables other debug tools; enables spawner (controller by P4); enables player suicide (with Start)
-bit 1 - checked within code beginning b1998, which seems to be uncalled...? - when hacked in, shows a dump of hex on the right side of the screen
-bit 2 - checked within code beginning b1866, which seems to be uncalled...? - when hacked in, like above, shows some hex on the left side
-
-3 - 7 look to be unchecked
-
-DIP 2
-0-4 unchecked
-5 - tested within code @ 03a5cc, which is called through a maze of functions above that we haven't unraveled yet
-6 - display stage collision/boundaries
-7 - display hitboxes
-
-DIP 3
-0 - unchecked
-1 - when set, computer controlled players do nothing during attract mode gameplay demo sequences
-2 - checked within code beginning b1a84, which seems to be uncalled...?
-3 - disables timer countdown in the "break control box" special stage
-4 - displays two numbers on the right side, may possible be CPU load; number goes higher and turns red when spawning many entities
-5 - shows the x/y position of the cursor for the spawner
-6-7 unchecked
-
-TODO: need to find a better way to get the uncalled debug functions hacked in...
-
-
-
-
-# Alt credits
-
-The "Mystics" object in the spawner shows these credits!
-
-credits @ 0x15ac8 appear to be used
-
-but there is anotehr set @ 0x98850 that is slightly different. Unused?
-
-The data at 0x98850 is referenced by code beginning 0x9871a, which is in turn listed in a ptbl at 0x1bc28
-
-The normal staff roll is called from 0x157d2, as a direct jump. So the calling methods are different.
 
 
 
