@@ -28,7 +28,6 @@ Let's see what's on the disc compared to the final version:
 **Final**
 
 ![](img/files_final.jpg)
-cd ls 
 
 It's pretty much identical, both in file names and sizes. The only real difference is the inclusion of `enddummy.dat` in the final version, which may be there to simply pad out some space on the disc.
 
