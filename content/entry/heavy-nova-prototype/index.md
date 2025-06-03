@@ -51,13 +51,13 @@ Which brings us back to Heavy Nova.
 
 # Heavy Nova's Security
 
-The security code within Heavy Nova does *not* match the Boot ROM/BIOS version. With Heavy Nova being one of only two launch titles for the Mega CD, it seems that what we have is a version of the security code from a pre-production version of the BIOS.
+The security code within Heavy Nova does *not* match the copy stored in the internal Boot ROM/BIOS. With Heavy Nova being one of only two launch titles for the Mega CD, it seems that what we have is a version of the security code from a pre-production version of the BIOS.
 
-(Pedantic side note: technically, what everyone generally calls the BIOS is an image of the Boot ROM, the chip containing all the low level system code for both the Main CPU (Mega Drive) and Sub CPU (Mega CD) side, which is "distributed" to each side very early on boot. The system code that runs specifically on the Sub side is called the BIOS. However, I will use the term BIOS to refer to dumps of the whole ROM as that is the colloquial terminology.)
+(Pedantic side note: technically, what everyone generally calls the BIOS is an image of the Boot ROM, the chip containing all the low level system code for both the Main CPU (Mega Drive) and Sub CPU (Mega CD) sides, which is "distributed" to each side very early on boot. The system code that runs specifically on the Sub side is called the BIOS. However, I will use the term BIOS to refer to dumps of the whole ROM as that is the colloquial terminology.)
 
 ![](img/megacd_rom_100c.jpg)
 
-My first thought was to check against the ["pre-retail" version of the BIOS that was dumped some years back](https://gendev.spritesmind.net/forum/viewtopic.php?t=3043), version 1.00C. However, the security code in this version does not match either. Given how close the dates are on these versions (1991-11-02 for the Heavy Nova prototype and 1991-11-14 for BIOS 1.00C), this must have been a relatively last minute change.
+My first thought was to check against the ["pre-retail" version of the BIOS that was dumped some years back](https://gendev.spritesmind.net/forum/viewtopic.php?t=3043), version 1.00C. However, the security code there does not match either. Given how close the dates are on these versions (1991-11-02 for the Heavy Nova prototype and 1991-11-14 for BIOS 1.00C), this must have been a relatively last minute change.
 
 The change is pretty minor, though. Let's compare the prototype version with the final.
 
@@ -104,3 +104,5 @@ Since there is extensive use of the Boot ROM library in the game's code, we woul
 Is that do-able? Provided there aren't any additional issues like library functions from the old version that no longer exist in the newer one, or routines that have different calling parameters, then yes, it's possible.
 
 Myself, however, I don't care to spend that time on a game like Heavy Nova, doubly so on a late prototype which likely has minimal differences. I salute anyone else who wishes to take on this challenge, however.
+
+So while the game is unplayable, I do think it was worth the (very expensive) price as it contains this interesting little nugget of early Mega CD hardware history.
