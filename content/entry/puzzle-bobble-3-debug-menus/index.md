@@ -73,6 +73,25 @@ Holding P1 Button 1 while using P1 stick makes it move quickly
 
 P1 Button 3 brings up Color Edit
 
+
+# More debug menus
+
+strings at 05e156
+
+Code that looks like it may be a part of it around 0x5e52e
+
+when code at 0x5e52e is hacked in, P1 B2 + P2 B2 will automatically clear the entire game if in gameplay
+
+
+the strings originally mentioned above likely do not have anything to do with this menu
+this also looks like it's within the chunk of "prototype" code
+
+code at 5e630 looks like it may have been a part of 0x5e52e, but is also definitely broken: the many JSRs all point to invalid code
+
+
+
+wpset 52654,1,r
+
 # Mahjong Notepad
 
 https://x.com/suddendesu/status/1829904976510140587
@@ -103,11 +122,7 @@ Any other graphics like this?
 
 Given its name in the viewer (3DDBG00) which is similar to the "fighting game" background graphics that appear before it, which is called 3DCBG00 and *is* used in the game during that stage's introduction animation, it seems likely that this is an old version of Marina's stage intro, before the proper mahjong game scene was added.
 
-# More debug menus
 
-strings at 05e156
-
-Code that looks like it may be a part of it around 0x5e52e
 
 
 # Gameplay Modes
