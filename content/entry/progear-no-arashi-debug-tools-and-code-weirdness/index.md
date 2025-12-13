@@ -359,7 +359,7 @@ Not exactly user-friendly, but again, there is a near zero chance this would hap
 
 Crash handlers in most games will statically display the contents of the CPU registers and the PC where the exception happened and maybe a small window of RAM data. But in Progear we have an interactive handler, one of the nicest I've ever encountered.
 
-The game will still freeze when hitting an exception, but pretty P2 Button 1 will switch to the dump view as shown in the screenshot above. We have the register data and a RAM dump. Holding P1 Up/Down will scroll the RAM view by line, and P1 Left/Right will scroll by page. P2 Button 3 will reset the RAM location to the value of 'tcbhead,' which is the start of the TCB array that we discussed earlier. P2 Up/Down will scroll the column with tcbhead/tagene/tagboss.
+The game will still freeze when hitting an exception, but P2 Button 1 will switch to the dump view as shown in the screenshot above. We have the register data and a RAM dump. Holding P1 Up/Down will scroll the RAM view by line, and P1 Left/Right will scroll by page. P2 Button 3 will reset the RAM location to the value of 'tcbhead,' which is the start of the TCB array that we discussed earlier. P2 Up/Down will scroll the column with tcbhead/tagene/tagboss.
 
 Pressing P2 Button 2 will return to the gameplay view with the graphics still frozen. Here, you can hold down P2 Button 3 and it will replay the last three or four frames of animation and position for each of the visible task elements on screen! This is pretty amazing, and it's something I've never seen before. And to have a "memory" of previous animation frames indicates there is a history of sorts stored somewhere. Perhaps this has something to do with the strange way the tasks are set up in the code that we mentioned before. It's something to dig into further someday.
 
@@ -566,7 +566,7 @@ Now, what does it all mean?
 
 First of all, we can say for certain that the Obj Bench Test code is original to Progear and not a leftover from MvSF, as nothing like it appears there. We can also say with a pretty high degree of confidence that none of the code for the Secret Test functions within MvSF are present in Progear, except for some lines of text in the string table. Some chunks of code are identical between the two, though these appear to be generic utility functions used in multiple places. For example, we see that the Obj Bench Test jumps to code that is exactly equivalent to that at 0xB315C in MvSF, just as the end of the Star Test does.
 
-So I think the broken test menu we have here is some of the earliest code the Cave devs wrote, an early test with the CPS2 platform that they were unfamiliar with. They took a debug tool from their example code, which seems to be the (partial? complete?) source of Marvel Super Heroes vs Street Fighter, and began to modify it. They first worked on something simple, just a simple graphics viewer, the Obj Bench Test. And it truly is simple, with no user input and naive implementation, like the group of six NOPs at 0x73402 that run in a loop, presumably ascting as the delay between the changing screens.
+So I think the broken test menu we have here is some of the earliest code the Cave devs wrote, an early test with the CPS2 platform that they were unfamiliar with. They took a debug tool from their example code, which seems to be the (partial? complete?) source of Marvel Super Heroes vs Street Fighter, and began to modify it. They first worked on something simple, just a simple graphics viewer, the Obj Bench Test. And it truly is simple, with no user input and naive implementation, like the group of six NOPs at 0x73402 that run in a loop, presumably acting as the delay between the changing screens.
 
 Along the way, either intentionally for testing or by accident, they messed up other entries in the menu. And then the whole effort was abandoned and they moved on to other parts of development. The test file remained in the source tree and ended up being compiled/linked into the final ROM.
 
@@ -576,4 +576,4 @@ This is fascinating to me, as all of this tells a story and raises some question
 
 As always, a lot of conjecture. If anyone knows any ex-Cave devs who may know the answers, I'd love to know the story!
 
-But that brings us to the end of our time with Progear, more than two years after starting this artle. Finally. On to something new!
+But that brings us to the end of our time with Progear, more than two years after starting this article. Finally. On to something new!
