@@ -12,13 +12,13 @@ tags:
 draft: false
 ---
 
-A solid shooter from Taito with impressive scene transitions and even better music from Zuntata. And a handful of debug tools that took some wrangling to get working. But wrangled it has been!
+A solid shooter from Taito with impressive scene transitions and even better music from Zuntata. And a handful of debug tools that took some wrangling to get working. But wrangled they have been!
 
 <!--more-->
 
 # Skip ROM Check
 
-Though it doesn't explicitly announce it, the game does perform a checksum routine on startup. Any of the cheats in this article will cause it to fail, resulting in an unending black screen, so you'll need to activate this cheat first:
+Though it doesn't explicitly announce it, the game performs a checksum routine on startup. Any of the cheats in this article will cause it to fail, resulting in an locked black screen, so you'll need to activate this cheat first:
 
 ```
   <cheat desc="Skip ROM check">
@@ -59,7 +59,7 @@ Let's quickly run through the options listed.
 
 ![](img/rayforce_debug_game.png)
 
-As you might have guessed, Normal Game starts the game normally while Debug Game starts the game... debug_ly? In this gameplay debug mode, there is a text display indicating enemy stats, the time in the stage, the player rank, and likely the randomizer seed.
+As you might have guessed, Normal Game starts the game normally while Debug Game starts the game... debug-ly? In this gameplay debug mode, there is a text display indicating enemy stats, the time in the stage, the player rank, and what is likely to be the randomizer seed.
 
 The enemy stats is interesting as it's actually showing two values, separated by the comma. The upper value is at 0x4048CE and indicates the total "value" of enemies destroyed in your current life. Weak enemies may be worth 1 point, while stronger are worth 2 or 4 and so on. This value seems to be what feeds into your Rank
 
@@ -97,7 +97,7 @@ It's unclear what this is supposed to be. It feels like another tool for visuali
 
 P1 Left/Right moves the camera to the left and right. The rows of ships have some parallax to them.
 
-P1 Up/Down does something (increases/decreases long @ 0x40569C) but no noticeable change visually. It also looks like P1 Button 1/2 are meant to increase/decrease a value as well, but the value they are changing is being overwritten by 0x28ca8.
+P1 Up/Down does something (increases/decreases long @ 0x40569C) but produces no noticeable visual change. It also looks like P1 Button 1/2 are meant to increase/decrease a value as well, but the value they are changing is being overwritten by 0x28ca8.
 
 Could use more research by someone feeling up for a challenge.
 
@@ -295,7 +295,7 @@ A surprisingly well-made palette editor. P1 Button 1 / Button 2 scroll through t
 
 These options are all fundamentally the same in appearance: a column of hex values on the left side of the screen. As their names imply, they are related to the enemies on screen. The first option, "ENE ENTRY," seems to be the ID of each type of enemy on screen, but it is unclear what the rest represent exactly. I leave that research to the hardcore fans of the game.
 
-# Gameplay Debug Menu - Details & Cheat
+# Gameplay Debug Menu - Technical
 
 Getting this menu working took some creative thinking.
 

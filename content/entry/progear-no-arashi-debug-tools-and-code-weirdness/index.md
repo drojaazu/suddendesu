@@ -469,7 +469,7 @@ Compare this with the extended audit enabled in Marvel Super Heroes vs Street Fi
 
 ![](img/mshvsf_extendedaudit.png)
 
-Since this code that can be reached through normal means on the final version references these strings from another game, it is almost certainly not remnant data.
+Since this Progear code (reachable through normal means in the final version) references these strings from another game, it is almost certainly not remnant data.
 
 The connection to MvSF goes deeper:
 
@@ -566,11 +566,11 @@ Now, what does it all mean?
 
 First of all, we can say for certain that the Obj Bench Test code is original to Progear and not a leftover from MvSF, as nothing like it appears there. We can also say with a pretty high degree of confidence that none of the code for the Secret Test functions within MvSF are present in Progear, except for some lines of text in the string table. Some chunks of code are identical between the two, though these appear to be generic utility functions used in multiple places. For example, we see that the Obj Bench Test jumps to code that is exactly equivalent to that at 0xB315C in MvSF, just as the end of the Star Test does.
 
-So I think the broken test menu we have here is some of the earliest code the Cave devs wrote, an early test with the CPS2 platform that they were unfamiliar with. They took a debug tool from their example code, which seems to be the (partial? complete?) source of Marvel Super Heroes vs Street Fighter, and began to modify it. They first worked on something simple, just a simple graphics viewer, the Obj Bench Test. And it truly is simple, with no user input and naive implementation, like the group of six NOPs at 0x73402 that run in a loop, presumably acting as the delay between the changing screens.
+So I think the broken test menu we have here is some of the earliest code the Cave devs wrote, a test with the CPS2 platform that they were unfamiliar with. They took a debug tool from their example code, which seems to have been the (partial? complete?) source of Marvel Super Heroes vs Street Fighter, and began to modify it. They first worked on something simple, a graphics viewer, the Obj Bench Test. And it truly is simple, with no user input and a naive implementation, like the group of six NOPs at 0x73402 that run in a loop to presumably act as the delay between the cycling screens.
 
 Along the way, either intentionally for testing or by accident, they messed up other entries in the menu. And then the whole effort was abandoned and they moved on to other parts of development. The test file remained in the source tree and ended up being compiled/linked into the final ROM.
 
-As a professional software dev myself, it reminds me of the countless times I've started a new project and need to quickly become familiar with a new language or framework or tool. I take an existing example and "play with it," making simple modifications and breaking things in the service of learning how it works, and then abandoning it to move on to the actual project with the knowledge I've gained.
+As a professional software dev myself, it reminds me of the countless times I've started a new project and needed to quickly become familiar with a new language or framework or tool. I take an existing example and "play with it," making simple modifications and breaking things in the service of learning how it works, and then abandoning it to move on to the actual project with the knowledge I've gained.
 
 This is fascinating to me, as all of this tells a story and raises some questions: Why is the code so different compared to other CPS2 games? What was the relationship between Cave and Capcom that things ended up the way they did? What is the development connection with Marvel vs Street Fighter? How did this test code and the "example" test menu we talked about earlier make it into the final version? 
 
