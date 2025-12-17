@@ -200,7 +200,7 @@ Okay, rant over. Now let's have a look at the very start of the Character Test l
 <pre class="pdasm pdasm-arch-m68k">
 00D2E6: 48E7 0002      movem.l A6, -(A7)
 00D2EA: 41ED 0300      lea     ($300,A5)[$ff8300{data_block_p1}], A0
-00D2EE: 116D 0050 0060 move.b  ($50,A5)[$ff8050{input_copy_p1}], ($60,A0)[$ff8360{char_test__input_copy_p1}]
+00D2EE: 116D 0050 0060 move.b  ($50,A5)=>$ff8050{input_copy_p1}, ($60,A0)=>$ff8360{char_test__input_copy_p1}
 00D2F4: 116D 0051 0061 move.b  ($51,A5)[$ff8051{input_copy_p1_prev}], ($61,A0)[$ff8360{char_test__input_copy_p1_prev}]
 00D2FA: 116D 7BFA 0063 move.b  ($7bfa,A5)[$fffbfa{input_copy_unknown1}], ($63,A0)[$ff8363{char_test__input_copy_unknown1}]
 00D300: 116D 7BFB 0064 move.b  ($7bfb,A5)[$fffbfb{input_copy_unknown1_prev}], ($64,A0)[$ff8363{char_test__input_copy_unknown1_prev}]
