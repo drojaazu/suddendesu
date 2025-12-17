@@ -199,32 +199,32 @@ Okay, rant over. Now let's have a look at the very start of the Character Test l
 
 <pre class="pdasm pdasm-arch-m68k">
 00D2E6: 48E7 0002      movem.l A6, -(A7)
-00D2EA: 41ED 0300      lea     ($300,A5){char_test__data_block_p1}, A0
-00D2EE: 116D 0050 0060 move.b  ($50,A5){input_copy_p1}, ($60,A0){char_test__input_copy_p1}
-00D2F4: 116D 0051 0061 move.b  ($51,A5){input_copy_p1_prev}, ($61,A0){char_test__input_copy_p1_prev}
-00D2FA: 116D 7BFA 0063 move.b  ($7bfa,A5){input_copy_unknown1}, ($63,A0){char_test__input_copy_unknown1}
-00D300: 116D 7BFB 0064 move.b  ($7bfb,A5){input_copy_unknown1_prev}, ($64,A0){char_test__input_copy_unknown1_prev}
+00D2EA: 41ED 0300      lea     ($300,A5)$ff8300{data_block_p1}, A0
+00D2EE: 116D 0050 0060 move.b  ($50,A5)$ff8050{input_copy_p1}, ($60,A0){char_test__input_copy_p1}
+00D2F4: 116D 0051 0061 move.b  ($51,A5)ff8051{input_copy_p1_prev}, ($61,A0){char_test__input_copy_p1_prev}
+00D2FA: 116D 7BFA 0063 move.b  ($7bfa,A5)$fffbfa{input_copy_unknown1}, ($63,A0){char_test__input_copy_unknown1}
+00D300: 116D 7BFB 0064 move.b  ($7bfb,A5)$fffbfb{input_copy_unknown1_prev}, ($64,A0){char_test__input_copy_unknown1_prev}
 ...
-00D32C: 41ED 0700      lea     ($700,A5){char_test__data_block_p2}, A0
-00D330: 116D 0052 0060 move.b  ($52,A5){input_copy_p2}, ($60,A0){char_test__input_copy_p2}
-00D336: 116D 0053 0061 move.b  ($53,A5){input_copy_p2_prev}, ($61,A0){char_test__input_copy_p2_prev}
-00D33C: 116D 7BFC 0063 move.b  ($7bfc,A5){input_copy_unknown2}, ($63,A0){char_test__input_copy_unknown2}
-00D342: 116D 7BFD 0064 move.b  ($7bfd,A5){input_copy_unknown2_prev}, ($64,A0){char_test__input_copy_unknown2_prev}
+00D32C: 41ED 0700      lea     ($700,A5)$ff8700{data_block_p2}, A0
+00D330: 116D 0052 0060 move.b  ($52,A5)$ff8052{input_copy_p2}, ($60,A0){char_test__input_copy_p2}
+00D336: 116D 0053 0061 move.b  ($53,A5)$ff8053{input_copy_p2_prev}, ($61,A0){char_test__input_copy_p2_prev}
+00D33C: 116D 7BFC 0063 move.b  ($7bfc,A5)$fffbfc{input_copy_unknown2}, ($63,A0){char_test__input_copy_unknown2}
+00D342: 116D 7BFD 0064 move.b  ($7bfd,A5)$fffbfd{input_copy_unknown2_prev}, ($64,A0){char_test__input_copy_unknown2_prev}
 </pre>
 
 We also have this chunk of code at 0xE74E and a duplicated copy at 0xEC1C, which are called by the Block 2 and Block 3 Tests, respectively:
 
 <pre class="pdasm pdasm-arch-m68k">
-00E74E: 102D 0050      move.b  ($50,A5){input_copy_p1}, D0
-00E752: 122D 0051      move.b  ($51,A5){input_copy_p1_prev}, D1
+00E74E: 102D 0050      move.b  ($50,A5)$ff8050{input_copy_p1}, D0
+00E752: 122D 0051      move.b  ($51,A5)$ff8051{input_copy_p1_prev}, D1
 00E756: 4601           not.b   D1
 00E758: C200           and.b   D0, D1
-00E75A: 1B41 0362      move.b  D1, ($362,A5){input_copy_p1_tap}
-00E75E: 102D 7BFA      move.b  ($7bfa,A5){input_copy_unknown1}, D0
-00E762: 122D 7BFB      move.b  ($7bfb,A5){input_copy_unknown1_prev}, D1
+00E75A: 1B41 0362      move.b  D1, ($362,A5)$ff8362{input_copy_p1_tap}
+00E75E: 102D 7BFA      move.b  ($7bfa,A5)$fffbfa{input_copy_unknown1}, D0
+00E762: 122D 7BFB      move.b  ($7bfb,A5)$fffbfb{input_copy_unknown1_prev}, D1
 00E766: 4601           not.b   D1
 00E768: C200           and.b   D0, D1
-00E76A: 1B41 0365      move.b  D1, ($365,A5){input_copy_unknown1_tap}
+00E76A: 1B41 0365      move.b  D1, ($365,A5)$ff8365{input_copy_unknown1_tap}
 00E76E: 4E75           rts
 </pre>
 
