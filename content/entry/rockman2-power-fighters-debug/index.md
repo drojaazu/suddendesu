@@ -26,6 +26,8 @@ Let's start with...
 
 # Secret Test Menu
 
+![](img/rockman2j_secret.png)
+
 Like [some](entry/secret-menu-dungeons-dragons-shadow-over-mystara/) [other](entry/pocket-fighter-secret-menu-re-enabled/) CPS-2 games, this one has a SECRET TEST menu.
 
 Note that some tools make use of a non-existant Button 4. If you're a game data research dweeb like me and have the MAME source regularly pulled and ready to compile for test builds, then this can be easily fixed by changing the `rockman2j` driver (or whatever variant you'd like) to use the `cps2_2p4b` input map. If not, you'll need to compromise on accuracy a bit and use the cheat in the Character Test section, which is the only tool where this button really matters.
