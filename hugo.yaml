@@ -26,9 +26,12 @@ menus:
   - name: Twitter
     url: http://twitter.com/suddendesu
     weight: 40
-  - name: Support us on Ko-Fi
-    url: https://ko-fi.com/suddendesu
+  - name: Bluesky
+    url: https://bsky.app/profile/sudden-desu.net
     weight: 50
+  - name: Support us on Patreon
+    url: https://www.patreon.com/cw/SUDDENDESU
+    weight: 60
 
 services:
   googleAnalytics:
