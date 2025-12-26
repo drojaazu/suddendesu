@@ -38,7 +38,7 @@ But the translation is *glorious.*
 
 The World and US regions are identical, except that the US adds that good ol' Winners Don't Do Drugs screen in the attract mode.
 
-Was there actually an overseas release, and we just don't yet have a dump (like what happened with [Kōtetsu Yōsei Strahl](https://sudden-desu.net/entry/english-text-in-koutetsu-yousai-strahl/))? Quite possibly. But until we discover such a version, we'll have to use a cheat to change the region:
+Was there actually an overseas release, and we just don't yet have a dump (like what happened with [Kōtetsu Yōsei Strahl](/entry/english-text-in-koutetsu-yousai-strahl/))? Quite possibly. But until we discover such a version, we'll have to use a cheat to change the region:
 
 ```
   <cheat desc="Set region">

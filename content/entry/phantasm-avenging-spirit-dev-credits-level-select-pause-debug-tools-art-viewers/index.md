@@ -81,7 +81,13 @@ I've set watches on D7 and let the game run in all sort of places: it never goes
 
 Of course I've poked it all sorts of ways to fudge the code, to make D7 greater than 0x2843 at that point, and all I get is occasional graphics twitches and CPU exceptions. I've still no clue no what's going on with that. If I spent more time getting into the game engine code, the program flow, then maybe I could figure it out, but that's a project for a rainy day week.
 
-# Build Constant
+# Test Mode Pause
+
+Like a couple other games for Jaleco Mega System hardware, there is a "Test Mode" DIP switch setting related to freezing the game. When enabled, hold P1 Start and press P2 Start to pause the game. Holding P2 Start with run the game in slow motion, and press P1 + P2 Start again to unpause.
+
+There is, however, a "better" pause mode set via the debug flags below, which renders this kind of useless except for use on actual hardware.
+
+# Build Constants
 
 Once again, we have a build constant in the game which defines some basic settings for the program. It is a byte value defined at 0x21FFF. Three bitwise flags enable or disable these settings:
 
@@ -97,7 +103,7 @@ Determines the region: set for Japan, unset for World.
 
 Ah, the good stuff! Setting this flag enables a number of functions, including pause, stage select, game options, graphics viewers...
 
-You can pause at any time by holding P1 Start then pressing P2 Start. Holding P2 start will run the game in slow mode, pressing P1 + P2 Start again will unpause.
+Identically to the DIP switch Test Mode mentioned above, you can pause at any time by holding P1 Start then pressing P2 Start. Holding P2 start will run the game in slow mode, and pressing P1 + P2 Start again will unpause.
 
 Pause mode is the gateway to all the debug tools. While paused, hold P1 Start and press either P1 Button 1 or 2 for the Debug Options and Graphics Viewers, respectively.
 
