@@ -19,6 +19,12 @@ Well, I decided to finally power through it about a month ago, and here we are. 
 
 <!--more-->
 
+# 2026 Update
+
+I was contacted way back in September 2024 by Rod Land super fan [MP83](https://twitter.com/TheMSXChannel) with a large list of corrections and additions to the article. After he went to the trouble of compiling notes and screenshots, I said thank you and... did nothing with it. It's been well over a year since then and I'm just now making those updates. My apologies, MP83, and my thanks for providing the info!
+
+Updates to the article will be marked as such.
+
 # Rod Land Prototype Version
 
 ![](img/rittam_title.png)
@@ -111,21 +117,13 @@ So while it's not accessible, we know that the second chapter was in at least th
 
 # Unused Music and Sound Effects
 
-Among the most noticeable changes from the final are the different music and odd sound effects. Actually, most of the music in the prototype is also used in the final, just at different points. There is only one song, 0x10, which is used in the proto that is not used in the final.
+**2026 UPDATE:** This section has been entirely removed as it was not thoroughly researched. It originally asserted that a number of music tracks are unused in both revisions of the game. This is false. MP83 says that the only unused tracks are the jingle (0x0A) and the "Egyptian theme" (0x17).
 
-There are 26 pieces of music in the game. The prototype uses 14 of them, and the final uses 20 of them. The unused tracks across both versions are 0xA, 0xF, 0x13, 0x17, and 0x18. These can all be heard in the sound test in the standard service menu.
+It also discussed the odd player sound effects in the prototype:
 
-(Rather than playing through both versions, listening and noting, I figured this by using the disassembly to find all references to the 'play sound ID' memory location at 0xF0D64. I saw a couple of spots that were setting this location from a register instead of with a constant, so it's possible these 'unused' tracks may be used somewhere. If there's a Rod Land expert who can confirm that are not used, I'd appreciate it!)
+> One of the strangest aspects of the prototype are the player sound effects, which are very different from the final version. They seem to use samples of sounds made by human voices. For example, the sound when Tam collects a flower is food-munching sound, and when Rit creates a ladder, there's a 'oof' sound; when a bomb explodes there's a 'P-P-PLEH' sound. They don't really work as good sound effects and stand out noticeably. I can't decide if they were placeholders or if it was a stylistic choice. The voice samples remain in the final version: they can be heard in sound IDs 20 through 25 in the standard sound test.
 
-One of the strangest aspects of the prototype are the player sound effects, which are very different from the final version. They seem to use samples of sounds made by human voices. For example, the sound when Tam collects a flower is food-munching sound, and when Rit creates a ladder, there's a 'oof' sound; when a bomb explodes there's a 'P-P-PLEH' sound. They don't really work as good sound effects and stand out noticeably. I can't decide if they were placeholders or if it was a stylistic choice. The voice samples remain in the final version: they can be heard in sound IDs 20 through 25 in the standard sound test.
-
-Another difference is that Rit and Tam have different sound effects. Collecting flowers, creating ladders, capturing and bashing enemies; these sounds are different for the two characters. In the final version, they're the same. I kind of like the idea of having the two players have different sounds, to help identify who did what. Too bad the player sound effects aren't very good in the proto...
-
-The MAME commit above talks about the sound effects being played at the wrong time, and the driver source mentions that the sound effects are 'scrambled.' They claim that the actual PCB is the same way. I'm not sure what they mean by this. The timing seems to be just fine in emulation. Perhaps these strange, voice-based, earlier sound effects were just unexpected and sounded like they were broken. The first time you watch the attract mode demo, it's hard to identify what events are triggering what sound effects, since the style really doesn't match the actions. I can imagine someone being confused could think the sound was broken. But if someone knows what the MAME team is talking about here, I'd love to know...
-
-System11 provided some commentary on the sound as well. He suggested that the odd sound effects in the prototype may have been mismapped. I don't think this is case, as those sound effects are not used in the final as far as I can tell. Also there is the code that specifically plays different sound effects for player 1 and 2; if that was intentional, then these sound effects probably are too. On the other hand, some of the effects are so odd for the related action that they may very well be mapped incorrectly. Perhaps they were intentional, but a few are broken?
-
-He went on to recall that the sound also played too slowly on the hardware, and pointed out that in emulation, these ROMs use the Rod Land driver. If there were any problems with the PCB, they wouldn't be emulated. That explains why it sounds fine in MAME..
+There are indeed sound problems in the prototype which are mentioned in the MAME driver source, and when I talked with System11, he suggested the odd sound effects were mismapped. I initially disagreed since I thought the sounds were not used in the final version, but MP83 cleared things up: they are used in the final as boss fight sound effects.
 
 # Stage Editor
 
@@ -204,6 +202,15 @@ There isn't a direct way to leave the editor and return to the game, except for 
 So was this actually an editor for changing stage data, or just a tool for mocking up stages in the engine before coding them in? Or was it meant for an even earlier version? There's no real way to be sure. On one hand, I find it interesting that it loads the editor only when in a playable stage, and not during the attract mode demo, or the title screen, or anywhere else. That could mean it was meant to be loaded and unloaded with the DIP switch at will to test changes in the stage as it was playing. On the other hand, the fact that the Enemy Put Editor is clearly unfinished makes me wonder how seriously this tool was ever used.
 
 Lots of questions here, but no answers.
+
+# Other Differences
+
+**2026 UPDATE:** MP83 provided some additional differences between the revisions.
+
+- Rit and Tam walk more slowly in the prototype. ("Which is especially apparent during the Demon boss' second phase.")
+- There are no balloons, spike balls, or doors in the prototype.
+- There are some stage layout changes between both versions, and at least one prototype episode 1 stage is used in chapter 2 of the final.
+- The boss order is different in the prototype: the elephant boss is first instead of fourth.
 
 # PCB
 
