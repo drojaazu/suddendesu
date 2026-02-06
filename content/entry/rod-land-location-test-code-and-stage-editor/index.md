@@ -95,6 +95,16 @@ Final World with region set to World (left) and Japan (right)
 
 The green tildes are suddenly very noticeable when you realize text is meant to be there...
 
+# Stage Layout Differences
+
+**2026 UPDATE:**
+
+MP83 provided some images comparing the stage layouts across both chapters of the final and the playable chapter 1 of the prototype!
+
+(You'll probably need to open the image in a new window/tab to fully see it.)
+
+![](img/rodland_stage_comparison.png)
+
 # Chapter 2?
 
 The MAME commit above mentions that the 'hidden selectable set of extra levels' are not present. This is correct, but if we use the DIP switch to set the default chapter to 2:
@@ -103,7 +113,7 @@ The MAME commit above mentions that the 'hidden selectable set of extra levels' 
 
 ![](img/rittam_alt2.png)
 
-Prototype with Chapt. 1 (left) and Chapt. 2 (right)
+Prototype with Chapter 1 (left) and Chapter 2 (right)
 
 The title screen, introduction, stage layouts don't change, but as you can see above, we do get the alternate enemies of the second chapter.
 
@@ -115,9 +125,33 @@ Using the tile viewer (more on that below), we can also see that the images from
 
 So while it's not accessible, we know that the second chapter was in at least the early stages of development.
 
+**2026 UPDATE:**
+
+MP83 explained that the bosses are also out of order and incomplete in Chapter 2.
+
+![](img/rodland_p2_boss1.png)
+
+Instead of the first boss being the elephant, it is Sequiro, the final "true" boss of Chapter 2. It takes place in the elephant room, however.
+
+![](img/rodland_p2_boss2.png)
+
+![](img/rodland_p2_final_boss2.png)
+
+The second boss of Chapter 2, normally a crocodile, has become the brain boss, albeit with an incorrect color palette and the tentacle arms replaced with a couple black balls. The boss also lacks a hitbox, which means it is unbeatable and the game soft locks at this point. (For comparison, the second image above is the brain boss from the final version.)
+
+# Unused Cutscene Art
+
+**2026 UPDATE:** 
+
+![](img/rodland_unused_cutscene.png)
+
+MP83 found an unused cutscene image, located between the fortress and surprised Rit images. He guesses that it was meant to be used somewhere between scenes 8 to 12 based on that placement in the data.
+
 # Unused Music and Sound Effects
 
-**2026 UPDATE:** This section has been entirely removed as it was not thoroughly researched. It originally asserted that a number of music tracks are unused in both revisions of the game. This is false. MP83 says that the only unused tracks are the jingle (0x0A) and the "Egyptian theme" (0x17).
+**2026 UPDATE:**
+
+This section has been entirely removed as it was not thoroughly researched. It originally asserted that a number of music tracks are unused in both revisions of the game. This is false. MP83 says that the only unused tracks are the jingle (0x0A) and the "Egyptian theme" (0x17).
 
 It also discussed the odd player sound effects in the prototype:
 
@@ -386,6 +420,16 @@ Rod Land (Japan & World):
     </script>
   </cheat>
 ```
+
+# Unused sprite frames
+
+**2026 UPDATE:**
+
+![](img/rodland_unused_frames.png)
+
+MP83 explained that there is an unused frame for both Rit and Tam where their pendant shines. Perhaps there was a third ability planned, aside from the rod (attacks) and shoes (climbing ladders)?
+
+There is also a (likely) unused frame for each of the enemies where they are all brown and distressed, possibly the effect of some kind of explosion.
 
 # Unused Strings
 
