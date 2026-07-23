@@ -7,7 +7,7 @@
 {{ $description = printf "%s" . }}
 {{ else }}
 {{ if .IsPage }}
-{{ $description = printf "%s" .Summary | plainify }}
+{{ $description = printf "%s" .Summary | plainify | strings.Truncate 120 }}
 {{ end }}
 {{ end }}
 {{ end }}
@@ -21,10 +21,12 @@
 {{ $page_title := .Title }}
 
 {{ $title := $site_title }}
+{{ $og_title := $site_title }}
 {{ if .IsHome }}
 {{ $title = $site_title }}
 {{ else }}
 {{ $title = printf "%s | %s" $page_title $site_title }}
+{{ $og_title = $page_title }}
 {{ end }}
 
 
@@ -33,11 +35,12 @@
 
 <meta name="description" content='{{ $description }}'>
 <!-- Essential Open Graph Tags -->
-<meta property="og:title" content="{{ $title }}" />
+<meta property="og:title" content="{{ $og_title }}" />
 <meta property="og:description" content="{{ $description }}" />
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
 <meta property="og:url" content="{{ .Permalink }}" />
 <meta property="og:site_name" content="{{ .Site.Title }}" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta property="og:image" content="{{ $image  }}" />
 
 
