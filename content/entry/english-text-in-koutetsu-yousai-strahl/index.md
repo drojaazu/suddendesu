@@ -3,7 +3,7 @@ title: 'English Text in Kōtetsu Yōsai Strahl'
 date: 2015-02-19T19:14:00+09:00
 author: Ryou
 images:
-- img/strahl_title.png
+- img/strahl_title.jpg
 category: Disassembly / Analysis
 tags:
 - upl

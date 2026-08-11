@@ -1,9 +1,10 @@
 ---
 title: 'Oedo Fight (Blood Warrior) - Leftover debug tools and more'
+og_description: "A less than stellar versus fighter that still carries a fully functional debug menu. And some intriguing leftover text."
 date: 2017-03-03T22:08:00+09:00
 author: Ryou
 images:
-- img/oedfight_title.png
+- img/oedfight_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool

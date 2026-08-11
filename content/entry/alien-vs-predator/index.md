@@ -3,7 +3,7 @@ title: 'Alien vs Predator: Debug Tools and Alternate Staff Credits'
 date: 2025-04-20T23:09:00+09:00
 author: Ryou
 images:
-- img/cover.png
+- img/avspj_title.jpg
 category: Disassembly / Analysis
 tags:
 - capcom

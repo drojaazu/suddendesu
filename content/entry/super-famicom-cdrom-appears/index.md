@@ -1,5 +1,6 @@
 ---
 title: 'The Super Famicom CDROM (aka the original PlayStation) appears'
+og_description: "Pictures of a real Nintendo PlayStation Super Disc prototype have surfaced! A look at the unit, and whether it stands up to scrutiny."
 date: 2015-07-04T14:14:00+09:00
 author: Ryou
 images:

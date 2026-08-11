@@ -1,0 +1,76 @@
+/*
+Ｓ Ｕ Ｄ Ｄ Ｅ Ｎ デ ス
+*/
+
+@import 'vars';
+@import 'mixins_util';
+@import 'reset';
+@import 'crt';
+@import 'mixins_style';
+@import 'html_def';
+@import 'pdasm';
+@import 'record';
+
+.invert-bar {
+	@include invert-bar;
+}
+
+.callout {
+	@include callout;
+}
+
+.header {
+	@include header-text;
+}
+
+@import 'id_def';
+@import 'class_def';
+
+
+/*
+	The bezel border, the content gutters and the list indents are all sized for a
+	1024px column. Left unchanged they eat most of a phone's width, so they step
+	down before the type does.
+*/
+@media only screen and (max-width: 900px) {
+	:root {
+		font-size: 17px;
+	}
+
+	.record-body {
+		p, div, ul, ol {
+			@include margin-h($gutter-narrow);
+		}
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	:root {
+		font-size: 14px;
+	}
+
+	#maincol {
+		border-width: 0.5rem;
+		border-radius: 0.75rem;
+	}
+
+	#badge {
+		@include pad-h(0.5rem);
+	}
+
+	.record-body {
+		p, div, ul, ol {
+			@include margin-h(0.6rem);
+		}
+
+		pre, blockquote, table, hr {
+			max-width: 100%;
+		}
+
+		// figures go edge to edge rather than centring in a column that no
+		// longer has room for one
+		& > figure, figure {
+			width: 100%;
+		}
+	}
+}

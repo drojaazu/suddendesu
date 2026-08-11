@@ -1,9 +1,10 @@
 ---
 title: 'Akuu/Air Gallet - Stage select, invincibility, region select and more'
+og_description: "Disabled test mode options with stage select, invincibility, pause and region select? Let's get those re-enabled."
 date: 2015-10-28T23:03:00+09:00
 author: Ryou
 images:
-- img/agallet_title.png
+- img/agallet_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool

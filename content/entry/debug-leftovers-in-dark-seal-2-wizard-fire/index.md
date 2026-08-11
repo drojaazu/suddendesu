@@ -3,7 +3,7 @@ title: 'Debug Leftovers in Dark Seal 2 / Wizard Fire'
 date: 2015-07-04T02:19:00+09:00
 author: Ryou
 images:
-- img/darkseal2_title.png
+- img/darkseal2_title.jpg
 category: Disassembly / Analysis
 tags:
 - data east

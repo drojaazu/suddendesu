@@ -1,0 +1,16 @@
+<article class='record-container'>
+	{{ partial "entry/list_header.html" . }}
+	<div class='record-body'>
+		{{ with (.Param "images") }}
+		{{ partial "img.html" (dict
+			"page" $
+			"src" (index . 0)
+			"alt" $.LinkTitle
+			"link" $.RelPermalink
+			"figure" true
+		) }}
+		{{ end }}
+		{{ .Summary }}
+	</div>
+	{{ partial "entry/list_footer.html" . }}
+</article>

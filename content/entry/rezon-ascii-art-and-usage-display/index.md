@@ -1,9 +1,9 @@
 ---
-title: 'Rezon - ASCII art and Usage Dhugo isplay'
+title: 'Rezon - ASCII art and Usage Display'
 date: 2015-07-27T22:00:00+09:00
 author: Ryou
 images:
-- img/rezon_title.png
+- img/rezon_title.jpg
 category: Disassembly / Analysis
 tags:
 - unused content

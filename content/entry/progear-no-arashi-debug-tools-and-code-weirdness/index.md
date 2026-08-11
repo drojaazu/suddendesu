@@ -3,7 +3,7 @@ title: 'Progear no Arashi - Debug tools and Code Weirdness'
 date: 2025-02-07T22:20:00+09:00
 author: Ryou
 images:
-- img/progearj_title.png
+- img/progearj_title.jpg
 category: Disassembly / Analysis
 tags:
 - capcom

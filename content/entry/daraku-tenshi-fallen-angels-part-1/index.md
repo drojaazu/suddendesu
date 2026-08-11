@@ -3,7 +3,7 @@ title: 'Daraku Tenshi / Fallen Angels - Part 1 - Debug Tools and Hidden Code'
 date: 2023-02-28T04:20:00+09:00
 author: Ryou
 images:
-- img/daraku_title.png
+- img/daraku_title.jpg
 category: Disassembly / Analysis
 tags:
 - psikyo

@@ -3,7 +3,7 @@ title: 'Namco Classics Collection - Dev messages and debug tools galore'
 date: 2018-04-04T20:24:00+09:00
 author: Ryou
 images:
-- img/ncv1j2_title.png
+- img/ncv1j2_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool
@@ -309,7 +309,7 @@ Volume 1 lists all six games even though only three are present in this edition.
 
 ## Dummy Program (Vol. 1 only)
 
-![](img/1513733975_ncv1j2_dummy1.png)
+![](img/ncv1j2_dummy1.png)
 ![](img/ncv1j2_dummy2.png)
 
 
@@ -501,7 +501,7 @@ Same as above, but for system level variables. Controls are also the same.
 
 ## RAM Area
 
-![](img/1515828756_ncv1j2_ram.png)
+![](img/ncv1j2_ram.png)
 
 Displays the raw values in RAM. P2 Up/Down to scroll, P2 Left/Right to shift by page.
 
@@ -601,8 +601,7 @@ Here are some finds that are specific to Volume 1:
 
 ## Old Audit Screen
 
-![](img/1513900872_ncv1j2_audit.png)
-
+![](img/ncv1j2_audit.png)
 
 It looks like there is an old audit screen leftover. It was once activated by a series of input presses at the title screen. The inputs were:
 

@@ -3,7 +3,7 @@ title: 'Sexy Parodius - Debug Tool'
 author: Ryou
 date: 2021-12-20T22:19:00+09:00
 images:
-- img/sexyparo_title.png
+- img/sexyparo_title.jpg
 draft: false
 ---
 

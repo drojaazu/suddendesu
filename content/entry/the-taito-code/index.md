@@ -3,7 +3,7 @@ title: 'The Taito Code'
 date: 2015-02-12T22:18:00+09:00
 author: Ryou
 images:
-- img/taito_logo.png
+- img/taito_title.jpg
 category: Disassembly / Analysis
 tags:
 - taito

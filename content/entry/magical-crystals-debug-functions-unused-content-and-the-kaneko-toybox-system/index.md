@@ -3,7 +3,7 @@ title: 'Magical Crystals - Debug functions, unused content and the Kaneko ToyBox
 date: 2022-01-12T00:00:00+09:00
 author: Ryou
 images:
-- img/mgcrystlj_title.png
+- img/mgcrystlj_title.jpg
 category: Disassembly / Analysis
 tags:
 - kaneko

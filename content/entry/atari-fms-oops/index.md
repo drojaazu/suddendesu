@@ -1,5 +1,6 @@
 ---
 title: 'Oops.'
+og_description: "An off-by-one in Atari's 810 floppy File Management Subsystem left sector 720 unaddressable and a nonexistent sector 0 in its place, wasting 128 perfectly good bytes."
 date: 2015-02-16T19:26:00+09:00
 author: Ryou
 category: Article

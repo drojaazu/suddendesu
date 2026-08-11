@@ -3,7 +3,7 @@ title: 'Disabled Test Options in Bakuretsu Breaker / Explosive Breaker'
 date: 2015-07-14T17:30:00+09:00
 author: Ryou
 images:
-- img/bakubrkr_title.png
+- img/bakubrkr_title.jpg
 category: Disassembly / Analysis
 tags:
 - kaneko

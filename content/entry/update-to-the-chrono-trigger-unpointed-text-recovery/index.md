@@ -3,7 +3,7 @@ title: 'Update to the Chrono Trigger unpointed text recovery'
 date: 2015-08-11T21:10:00+09:00
 author: Ryou
 images:
-- img/chronotr_title.png
+- img/chronotr_title.jpg
 category: Disassembly / Analysis
 tags:
 - square

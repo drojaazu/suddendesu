@@ -3,7 +3,7 @@ title: 'Phantasm / Avenging Spirit - Dev credits, level select, pause, debug too
 date: 2017-08-28T10:49:00+09:00
 author: Ryou
 images:
-- img/phantasm_title.png
+- img/phantasm_title.jpg
 category: Disassembly / Analysis
 tags:
 - jaleco

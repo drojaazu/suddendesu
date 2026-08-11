@@ -3,7 +3,7 @@ title: 'Level Select and More in Magical Error wo Sagase'
 date: 2015-02-14T22:11:00+09:00
 author: Ryou
 images:
-- img/magerror_title.png
+- img/magerror_title.jpg
 category: Disassembly / Analysis
 tags:
 - techno soft

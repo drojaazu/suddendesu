@@ -1,0 +1,72 @@
+/*
+-------------------------------------------------------------------------------
+	VARS
+	Variables for page colors, typography, sizes, etc
+-------------------------------------------------------------------------------
+*/
+
+// Path config
+$path-img: '/img/';
+$path-font: '/font/';
+
+// Typography
+@font-face {
+	font-family: pxl;
+	src: url($path-font+'spleen_8x16.otf');
+}
+
+// Web fonts are requested from <head> (see partials/html_head/fonts.html) rather
+// than with @import here: an @import inside the stylesheet cannot start
+// downloading until the stylesheet itself has arrived, which serialises the
+// requests. Only the three families actually used below are loaded -- VT323 and
+// Noticia Text used to be fetched on every page view and referenced by nothing.
+
+$font-monospace: Inconsolata, 'Roboto Mono', monospace;
+$font-condensed: Cuprum;
+$font-sans: 'Nunito Sans', Roboto, sans-serif;
+$font-pixel: 'pxl', $font-monospace;
+
+$font-size-base: 20px;
+
+$font-family-base: $font-sans;
+
+// Colors - monochrome
+$color-white: #d0d0d0;
+$color-off-white: #626c6a;
+$color-grey: #1f1f2b;
+//$color-black: #080811;
+$color-black: #13131c;
+
+$color-bg-for-light-text: rgba(79, 79, 79, 0.25);
+
+// CRT colors
+$color-crt-white: #dddddd90;
+$color-crt-green: #6a975690;
+//$color-crt-amber: #cc7d1490;
+$color-crt-amber: #bd6d0a90;
+$color-crt-theme: $color-crt-amber;
+
+// burn in color: #130e0636
+
+$color-link: #e1850a;
+
+$color-background: $color-black;
+$color-text: $color-white;
+
+//$color-darken: rgba(30, 30, 30, 0.6);
+$color-darken: rgba(12%, 12%, 14%, 0.4);
+
+// Layout
+// The column is wide so screenshots and disassembly tables have room, but prose
+// set to the full 1024px runs ~100 characters per line. Text is capped separately.
+$content-max: 1024px;
+$measure: 68ch;
+$gutter: 2.2rem;
+$gutter-narrow: 1rem;
+
+// Shadows
+$shadow-large: 0 0 6px;
+
+// Radii
+$radius-half: 0.4rem;
+$radius-quarter: 0.25rem;

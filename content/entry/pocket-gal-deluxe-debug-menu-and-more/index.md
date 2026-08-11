@@ -3,7 +3,7 @@ title: 'Pocket Gal Deluxe - Debug Menu and more'
 date: 2015-01-31T05:30:00+09:00
 author: Ryou
 images:
-- img/pktgaldxj_cover.png
+- img/pktgaldxj_title.jpg
 category: Disassembly / Analysis
 tags:
 - data east

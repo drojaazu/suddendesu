@@ -3,7 +3,7 @@ title: 'Nostradamus - Stage Select and Loc Test Audit Data'
 date: 2020-05-29T00:16:00+09:00
 author: Ryou
 images:
-- img/nostj_title.png
+- img/nostj_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool

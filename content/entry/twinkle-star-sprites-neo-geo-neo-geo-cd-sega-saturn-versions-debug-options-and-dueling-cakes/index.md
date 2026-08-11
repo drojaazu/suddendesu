@@ -3,7 +3,7 @@ title: 'Twinkle Star Sprites - Debug Options and Dueling Cakes'
 date: 2019-12-06T11:00:00+09:00
 author: Ryou
 images:
-- img/twinspri_title.png
+- img/twinspri_title.jpg
 category: Disassembly / Analysis
 tags:
 - adk

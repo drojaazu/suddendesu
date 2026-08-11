@@ -3,7 +3,7 @@ title: 'Unused Menus in Land Maker'
 author: Ryou
 date: 2015-02-14T12:22:00+09:00
 images:
-- img/landmakr_title.png
+- img/landmakr_title.jpg
 category: Disassembly / Analysis
 tags:
 - taito

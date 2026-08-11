@@ -3,7 +3,7 @@ title: 'Blocken - Debug Functions and Graphics Viewer'
 date: 2019-10-30T23:00:00+09:00
 author: Ryou
 images:
-- img/blocken_title.png
+- img/blocken_title.jpg
 category: Disassembly / Analysis
 tags:
 - visco

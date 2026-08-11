@@ -3,7 +3,7 @@ title: 'Quiz Sailor Moon - Disabled data viewers and Game pause/reset'
 date: 2017-04-10T00:00:00+09:00
 author: Ryou
 images:
-- img/quizmoon_title.png
+- img/quizmoon_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool

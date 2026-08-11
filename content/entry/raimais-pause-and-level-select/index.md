@@ -3,7 +3,7 @@ title: 'Raimais: Pause, level select, invulnerability... and unseen endings!'
 date: 2017-07-31T12:34:00+09:00
 author: Ryou
 images:
-- img/raimais_title.png
+- img/raimais_title.jpg
 category: Disassembly / Analysis
 tags:
 - taito

@@ -3,7 +3,7 @@ title: 'Daraku Tenshi / Fallen Angels - Part 2 - Cut Characters and Storylines'
 date: 2023-05-23T04:01:00+09:00
 author: Ryou
 images:
-- img/daraku_title_world.png
+- img/daraku_title.jpg
 category: Disassembly / Analysis
 tags:
 - psikyo

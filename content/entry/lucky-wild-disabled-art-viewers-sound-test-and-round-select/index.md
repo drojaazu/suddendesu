@@ -3,7 +3,7 @@ title: 'Lucky & Wild - Disabled Art Viewers, Sound Test and Round Select with Te
 author: Ryou
 date: 2019-02-04T20:54:00+09:00
 images:
-- img/luckywld_title.png
+- img/luckywld_title.jpg
 draft: false
 ---
 

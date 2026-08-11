@@ -3,7 +3,7 @@ title: 'Mach Breakers - All sorts of debug tools'
 author: Ryou
 date: 2021-02-24T22:55:00+09:00
 images:
-- img/machbrkrj_title.png
+- img/machbrkrj_title.jpg
 draft: false
 ---
 

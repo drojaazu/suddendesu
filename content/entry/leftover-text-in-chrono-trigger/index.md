@@ -3,7 +3,7 @@ title: 'Revisiting the Chrono Trigger Pre-release Leftover Dialogue'
 date: 2016-03-13T14:03:00+09:00
 author: Ryou
 images:
-- img/chronotrigger_title.png
+- img/chronotrigger_title.jpg
 category: Disassembly / Analysis
 tags:
 - square

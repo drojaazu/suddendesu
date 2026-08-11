@@ -3,7 +3,7 @@ title: 'Magical Speed - Hidden Debugging Menu & Unused Graphics'
 date: 2019-09-23T09:55:00+09:00
 author: Ryou
 images:
-- img/magspeed_title.png
+- img/magspeed_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool

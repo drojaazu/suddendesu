@@ -3,7 +3,7 @@ title: 'Sonic Cosmo Fighter - A Handful of Development Leftovers'
 author: Ryou
 date: 2017-03-29T07:33:00+09:00
 images:
-- img/sonicfgt_title.png
+- img/sonicfgt_title.jpg
 draft: false
 ---
 

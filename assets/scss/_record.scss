@@ -1,0 +1,347 @@
+
+.record-container {
+	@include pad-v(1.5rem);
+	
+}
+
+.record-title {
+	@include header-text;
+	color: $color-grey;
+	//background-color: $color-off-white;
+	background-color: $color-crt-theme;
+	font-size: 2rem;
+	@include pad-v(0.25em);
+	font-weight: normal;
+	line-height: 1.25em;
+	
+	&	:hover {
+		text-decoration: none;
+	}
+}
+
+.record-body {
+	& *:focus-visible {
+		outline: 2px solid $color-crt-theme;
+	}
+
+	& > * {
+		@include margin-v(1.25rem);
+		@include margin-h(auto);
+	}
+
+	pre, blockquote, table, hr {
+		max-width: 90%;
+	}
+
+	// Prose is capped at a readable measure; figures, tables and code keep the
+	// full column, which is the whole reason the column is this wide.
+	p, ul, ol, blockquote {
+		max-width: $measure;
+	}
+
+	p, div {
+		@include margin-h($gutter);
+	}
+
+	ul, ol {
+		@include margin-h($gutter);
+		padding-inline-start: 1.5em;
+	}
+
+	p {
+		// Paragraphs are already separated by a blank line's worth of margin, so an
+		// indent on top of that is doubled-up separation. Justification without
+		// hyphenation opens rivers at this measure.
+		hyphens: auto;
+	}
+
+	a {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+		color: $color-link;
+
+		&:hover {
+			text-decoration-style: solid;
+		}
+	}
+
+	hr {
+		width: 80%;
+		border: none;
+		border-top: 2px dashed $color-white;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@include header-text;
+		@include indent;
+	}
+
+	// Headings are demoted one level by _markup/render-heading.html so the article
+	// title can own the page's <h1>. These sizes keep the rendered result identical
+	// to what the markdown levels used to produce: `#` -> h2, `##` -> h3, etc.
+	h2 {
+		@include callout;
+		@include pad-v(0.25em);
+		font-size: 2rem;
+	}
+
+	h3 {
+		font-size: 1.5rem;
+	}
+
+	h4 {
+		font-size: 1.17rem;
+	}
+
+	h5 {
+		font-size: 1rem;
+	}
+
+	h6 {
+		font-size: 0.9rem;
+	}
+
+	img, table, blockquote, pre {
+		border: 2px solid $color-black;
+		border-radius: $radius-half;
+	}
+
+	img {
+		height: auto;
+		max-width: 100%;
+	}
+
+	// Native-resolution game screenshots. partials/img.html has already sized these
+	// to a whole-number multiple of their natural width, so all that is left is to
+	// stop the browser smoothing them. This is the site's primary content type and
+	// it was previously being interpolated up to 70% of the column.
+	img.pixelart {
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+	}
+
+	// Photos and scans: never upscale past their natural size.
+	img:not(.pixelart) {
+		width: auto;
+	}
+
+	p:has(img) {
+		text-align: center;
+		display:flex;
+		flex-flow:row;
+		justify-content: space-evenly;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	figure {
+		display: flex;
+		flex-flow: column;
+		width: fit-content;
+		max-width: 100%;
+		@include margin-auto;
+
+		& > figcaption {
+			@include margin-h(1rem);
+			max-width: $measure;
+		}
+	}
+	
+	figure.imgbar, div.imgbar {
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		flex-wrap: wrap;
+	}
+
+	figcaption, caption {
+		text-align: left;
+		caption-side: bottom;
+		font-style: italic;
+		font-size: 1.0rem;
+	}
+
+
+	table {
+		border-collapse: separate;
+		border-spacing: 0;
+		font-family: $font-monospace;
+		@include margin-h(auto);
+
+		th,
+		td {
+			padding: 0.25em 1em;
+			text-align: left;
+			vertical-align: top;
+			border-left: 2px dotted #000;
+		}
+
+		th:first-child, td:first-child {
+			border:none;
+		}
+
+		tr {
+			display: table-row;
+			vertical-align: inherit;
+		}
+
+		th:first-child {
+			border-radius: $radius-half 0 0 0;
+		}
+		th:last-child {
+			border-radius: 0 $radius-half 0 0;
+		}
+		tr:last-child {
+			td:first-child {
+				border-radius: 0 0 0 $radius-half;
+			}
+			td:last-child {
+				border-radius: 0 0 $radius-half 0;
+			}
+		}
+
+		thead {
+			display: table-header-group;
+			vertical-align: middle;
+			@include invert-bar;
+			font-weight: bold;
+			font-size: 1.1rem;
+		}
+
+		tbody {
+			tr:nth-child(odd) {
+				background: lighten($color-darken, 6);
+			}
+			tr:nth-child(even) {
+				background: $color-darken;
+			}
+		}
+	}
+
+	pre,
+	blockquote {
+		width: fit-content;
+		min-width: 50%;
+		padding: 1rem;
+		@include margin-auto;
+		overflow-x: auto;
+		background: $color-bg-for-light-text;
+		tab-size: 2;
+		p {
+			text-indent: 0;
+		}
+	}
+
+	pre, code {
+		font-family: $font-monospace;
+	}
+
+	// Fixed-width content -- ASCII art, hex dumps, disassembly -- must not reflow.
+	// It scrolls inside its own box instead of wrapping or widening the page.
+	pre {
+		white-space: pre;
+	}
+
+	// Wide tables scroll in place rather than forcing the whole page sideways.
+	.table-scroll {
+		overflow-x: auto;
+		max-width: 100%;
+		@include margin-auto;
+
+		table {
+			max-width: none;
+		}
+	}
+
+	blockquote {
+		font-style: italic;
+	}
+}
+
+.record-meta {
+	//color: $color-off-white;
+	display: flex;
+	flex-wrap: wrap;
+	@include pad-v(0.25em);
+
+	div:last-child {
+		margin-left: auto;
+	}
+}
+
+.record-tags {
+	@include pad-v(0.25em);
+
+	a {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+
+		&:hover {
+			text-decoration-style: solid;
+		}
+	}
+}
+
+.record-tags-all {
+	@include pad-v(1em);
+
+	li {
+		font-size: 1.5rem;
+		@include pad(0.2em,0.2em);
+	}
+	a {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+
+		&:hover {
+			text-decoration-style: solid;
+		}
+	}
+}
+
+// Markup comes from Hugo's built-in _internal/pagination.html:
+// ul.pagination > li.page-item > a.page-link
+.pagination {
+	@include callout;
+	@include crt-text;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: right;
+	gap: 0.1em;
+
+	color: $color-grey;
+	//background-color: $color-off-white;
+	background-color: $color-crt-theme;
+	font-size: 2rem;
+	line-height: 1em;
+
+	// first/prev on page 1, next/last on the final page
+	.page-item.disabled {
+		display: none;
+	}
+
+	// the anchor fills the cell so the whole box is clickable
+	.page-link {
+		display: block;
+		@include pad(0.25em, 0.25em);
+		min-width: 1.25em;
+		text-align: center;
+		text-decoration: none;
+
+		&:hover {
+			background: $color-grey;
+			color: $color-crt-amber;
+		}
+	}
+
+	.page-item.active .page-link {
+		background: $color-grey;
+		color: $color-crt-amber;
+	}
+}
+

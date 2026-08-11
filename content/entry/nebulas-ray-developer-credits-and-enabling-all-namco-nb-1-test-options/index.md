@@ -3,7 +3,7 @@ title: 'Nebulas Ray Developer Credits and Enabling All Namco Nb 1 Test Options'
 date: 2015-07-20T00:00:00+09:00
 author: Ryou
 images:
-- img/nebulrayj_title.png
+- img/nebulrayj_title.jpg
 category: Disassembly / Analysis
 tags:
 - namco

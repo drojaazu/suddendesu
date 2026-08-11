@@ -3,7 +3,7 @@ title: 'Riot City - English Version, Debug Tools, and "Good" Ending'
 date: 2025-12-23T08:47:35+09:00
 author: Ryou
 images:
-- img/riotcity_title.png
+- img/riotcity_title.jpg
 category: Disassembly / Analysis
 tags:
 - sega

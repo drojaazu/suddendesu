@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default "en-us" }}" dir="ltr">
+
+<head>
+  {{- partial "html_head.html" . -}}
+</head>
+
+<body>
+  <div id="maincol" class="crt-bg crt-edges">
+    <header>
+      {{ partial "doc_header.html" . -}}
+    </header>
+    <main>
+      {{ block "main" . -}}{{ end }}
+    </main>
+  </div>
+  <footer id="badge">
+    {{ partial "doc_footer.html" . }}
+  </footer>
+  {{- partial "html_foot.html" . -}}
+</body>
+
+</html>

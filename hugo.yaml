@@ -1,16 +1,40 @@
-baseURL: 'http://sudden-desu.net/'
-languageCode: 'en-us'
+baseURL: 'https://sudden-desu.net/'
+locale: 'en-us'
 title: 'SUDDEN DESU'
-theme: 'suddendesu_mk5'
+
+module:
+  hugoVersion:
+    min: '0.164.0'
 
 taxonomies:
-  category: categories
+  # `category` is a plain display string in entry front matter (rendered by
+  # _partials/entry/meta.html), not a browsable taxonomy -- there is no listing
+  # template and nothing links to one. Declaring it here only produced a stray
+  # term page at the mangled URL /categories/disassembly-/-analysis/.
   tag: tags
 
 Params:
   subtitle: 'disassemblies・digital archaeology・data preservation'
+  author: 'Ryou'
+  # Accent colour Discord and Slack use for the embed sidebar
+  theme_color: '#bd6d0a'
+  # og:locale wants underscore form with an uppercase region
+  og_locale: 'en_US'
+  social:
+    twitter: 'suddendesu'
   date_machine: '2006-01-02T15:04:05-07:00'
   date_human: '2006-01-02'
+  # NB: do not name this `images` -- that key is the page-level cover-image
+  # convention, and .Param "images" would fall back to it site-wide.
+  image_rules:
+    # at or below this natural width an image is treated as native-resolution
+    # pixel art: served untouched and scaled crisply by CSS
+    pixel_max_width: 640
+    # above this natural width an image is resized to WebP and given a srcset
+    large_width: 1200
+    # the prose column pixel art is scaled to fit, and the cap on that scaling
+    column_width: 900
+    pixel_scale_max: 4
 
 menus:
   main:
@@ -24,7 +48,7 @@ menus:
     pageRef: /tags
     weight: 30
   - name: Twitter
-    url: http://twitter.com/suddendesu
+    url: https://twitter.com/suddendesu
     weight: 40
   - name: Bluesky
     url: https://bsky.app/profile/sudden-desu.net

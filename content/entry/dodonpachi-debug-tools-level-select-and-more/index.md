@@ -3,7 +3,7 @@ title: 'Dodonpachi - Debug tools, level select and more'
 date: 2017-02-19T20:36:00+09:00
 author: Ryou
 images:
-- img/dodonpachi_title.png
+- img/dodonpachi_title.jpg
 category: Disassembly / Analysis
 tags:
 - developer

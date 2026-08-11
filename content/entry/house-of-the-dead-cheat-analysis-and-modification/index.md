@@ -3,7 +3,7 @@ title: 'House of the Dead - Cheat Analysis and Modification'
 date: 2020-03-12T00:00:00+09:00
 author: biggestsonicfan
 images:
-- img/hotd.png
+- img/hotd_title.jpg
 category: Disassembly / Analysis
 tags:
 - sega

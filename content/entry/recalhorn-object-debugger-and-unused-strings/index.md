@@ -3,7 +3,7 @@ title: 'Recalhorn - Object Debugger and Unused Strings'
 date: 2017-10-30T09:07:00+09:00
 author: Ryou
 images:
-- img/recalh_title.png
+- img/recalh_title.jpg
 category: Disassembly / Analysis
 tags:
 - taito

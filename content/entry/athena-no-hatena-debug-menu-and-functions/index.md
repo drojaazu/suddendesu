@@ -1,10 +1,10 @@
 ---
 title: 'Athena no Hatena - Debug menu and functions'
 date: 2019-08-12T08:45:00+09:00
-category: Disassembly/Analysis
+category: Disassembly / Analysis
 author: Ryou
 images:
-- img/atehate_title.png
+- img/atehate_title.jpg
 description: An analysis of the debugging functions within Athena no Hatena
 draft: false
 ---

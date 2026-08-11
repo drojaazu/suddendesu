@@ -3,7 +3,7 @@ title: 'Quick Intro to Mega CD Development & the Sonic CD MMD Loader'
 date: 2020-02-06T13:53:00+09:00
 author: Ryou
 images:
-- img/soniccd_title.png
+- img/soniccd_title.jpg
 category: Development
 tags:
 - sega

@@ -1,0 +1,27 @@
+@mixin header-text {
+	@include crt-text;
+	// Not justified: a wrapped heading gets stretched into huge word gaps, which
+	// is very visible in the title bar on narrow screens.
+	text-align: left;
+	text-wrap: balance;
+	font-weight: normal;
+}
+
+@mixin indent {
+	@include pad-h(1.4rem);
+}
+
+@mixin callout {
+	@include crt-edges-h;
+	@include crt-bg;
+	@include indent;
+	* {
+		display: inline-block;
+	}
+}
+
+@mixin invert-bar {
+	@include crt-bg;
+	background-color: transparentize($color-white, 0.7);
+	color: $color-grey;
+}

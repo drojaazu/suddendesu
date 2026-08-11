@@ -3,7 +3,7 @@ title: 'Rod-Land and R&T - Prototype, location test code, stage editor, and more
 date: 2017-07-03T10:01:00+09:00
 author: Ryou
 images:
-- img/rodlandj_title.png
+- img/rodlandj_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool

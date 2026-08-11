@@ -3,7 +3,7 @@ title: 'Rockman 2: The Power Fighters - Debug Mode and Secret Test'
 date: 2025-12-12T09:41:31+09:00
 author: Ryou
 images:
-- img/rockman2j_title.png
+- img/rockman2j_title.jpg
 category: Disassembly / Analysis
 tags:
 - cps2

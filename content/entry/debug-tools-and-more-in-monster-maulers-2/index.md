@@ -3,7 +3,7 @@ title: 'Object menu, debug tools and more in Kyukyoku Sentai Dadandaan (Monster 
 date: 2015-03-15T12:11:00+09:00
 author: Ryou
 images:
-- img/dadandrn_ed.png
+- img/dadandrn_title.jpg
 category: Disassembly / Analysis
 tags:
 - konami

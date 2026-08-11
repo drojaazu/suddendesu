@@ -1,9 +1,10 @@
 ---
 title: 'Another SECRET MENU! - Dungeons & Dragons: Shadow Over Mystara'
+og_description: "A hidden dev test menu in a CPS-2 game? Shocking! Object, animation and dialogue viewers unlocked."
 date: 2015-10-01T19:52:00+09:00
 author: Ryou
 images:
-- img/ddmyst_title.png
+- img/ddmyst_title.jpg
 category: Disassembly / Analysis
 tags:
 - capcom

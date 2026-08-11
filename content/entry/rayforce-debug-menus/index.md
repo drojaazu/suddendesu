@@ -3,7 +3,7 @@ title: 'A bunch of debug tools in Rayforce / Gunlock'
 date: 2020-07-18T22:11:00+09:00
 author: Ryou
 images:
-- img/rayforce_title.png
+- img/rayforce_title.jpg
 category: Disassembly / Analysis
 tags:
 - taito
@@ -251,7 +251,7 @@ Our cheat to always enable the debug monitor freezes this value at 1, meaning na
 
 # Gameplay Debug Menu
 
-![](img/rayforce_gameplay-menu.png)
+![](img/rayforce_gameplay_menu.png)
 
 There is another menu with a variety of debug tools that is meant to run during actual gameplay. It is activated by the Tilt input (mapped to T by default in MAME), which also pauses the game. P1 Up/Down moves the cursor, and P1 Button 1 chooses an option.
 

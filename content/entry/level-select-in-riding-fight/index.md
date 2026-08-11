@@ -3,7 +3,7 @@ title: 'Level Select in Riding Fight'
 date: 2015-02-07T23:41:00+09:00
 author: Ryou
 images:
-- img/ridingfight_title.png
+- img/ridingfight_title.jpg
 category: Disassembly / Analysis
 tags:
 - taito

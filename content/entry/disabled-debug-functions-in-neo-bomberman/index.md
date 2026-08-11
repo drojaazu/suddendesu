@@ -3,7 +3,7 @@ title: 'Disabled debug functions in Neo Bomberman'
 date: 2016-06-05T20:45:00+09:00
 author: Ryou
 images:
-- img/neobombe_title.png
+- img/neobombe_title.jpg
 category: Disassembly / Analysis
 tags:
 - hudson

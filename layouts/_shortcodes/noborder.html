@@ -1,0 +1,9 @@
+{{- /* Image with no border/radius. See partials/img.html. */ -}}
+{{- partial "img.html" (dict
+      "page" .Page
+      "src" (or (.Get "src") (.Get 0))
+      "alt" (.Get "alt" | default "")
+      "caption" (.Get "caption" | default "")
+      "imgclass" "noborder"
+      "figure" true
+) -}}

@@ -3,7 +3,7 @@ title: 'Tinkle Pit Name Substitutions'
 date: 2015-08-04T00:00:00+09:00
 author: Ryou
 images:
-- img/tinklpit_title.png
+- img/tinklpit_title.jpg
 category: Disassembly / Analysis
 tags:
 - namco

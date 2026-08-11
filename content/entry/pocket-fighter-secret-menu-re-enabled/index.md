@@ -3,7 +3,7 @@ title: 'Pocket Fighter / Super Gem Fighter - Secret Menu (finally) re-enabled!'
 date: 2015-07-08T01:27:00+09:00
 author: Ryou
 images:
-- img/pfghtj_title.png
+- img/pfghtj_title.jpg
 category: Disassembly / Analysis
 tags:
 - capcom

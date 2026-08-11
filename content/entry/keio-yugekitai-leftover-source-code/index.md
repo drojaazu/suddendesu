@@ -1,12 +1,10 @@
 ---
 title: 'Keio Yūgekitai Leftover Source Code'
 date: 2025-02-08T00:50:10+09:00
-author: Name
 images:
 - img/cover.png
 category: Disassembly / Analysis
 tags:
-- [developer]
 - debug tool
 - prototype
 - unused content

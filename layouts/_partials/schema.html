@@ -1,0 +1,68 @@
+{{- /*
+JSON-LD structured data. Google reads this for article rich results; the social
+platforms use the og: tags instead, so this is purely a search-side addition.
+
+Built as a Go map and piped through jsonify, so escaping and comma placement are
+the encoder's problem rather than the template's.
+
+@context {page}   page         required
+@context {string} description  the already-normalised description from html_head
+@context {string} image        absolute URL of the share image
+@context {int}    imageWidth
+@context {int}    imageHeight
+*/ -}}
+{{- $page := .page -}}
+{{- $isArticle := .isArticle -}}
+
+{{- $publisher := dict
+      "@type" "Organization"
+      "name" site.Title
+      "url" site.Home.Permalink
+      "logo" (dict "@type" "ImageObject" "url" (absURL "/icon.svg"))
+-}}
+
+{{- $data := dict -}}
+
+{{- if $isArticle -}}
+  {{- $tags := slice -}}
+  {{- range $page.GetTerms "tags" }}{{ $tags = $tags | append .LinkTitle }}{{ end -}}
+
+  {{- $data = dict
+        "@context" "https://schema.org"
+        "@type" "BlogPosting"
+        "mainEntityOfPage" (dict "@type" "WebPage" "@id" $page.Permalink)
+        "headline" $page.Title
+        "description" .description
+        "url" $page.Permalink
+        "datePublished" ($page.Date | time.Format site.Params.date_machine)
+        "dateModified" ($page.Lastmod | time.Format site.Params.date_machine)
+        "author" (dict "@type" "Person" "name" ($page.Param "author"))
+        "publisher" $publisher
+        "image" (dict
+            "@type" "ImageObject"
+            "url" .image
+            "width" .imageWidth
+            "height" .imageHeight)
+        "inLanguage" (site.Language.Locale | default "en-us")
+  -}}
+  {{- with $tags }}{{ $data = merge $data (dict "keywords" (delimit . ", ")) }}{{ end -}}
+  {{- with $page.Param "category" }}{{ $data = merge $data (dict "articleSection" .) }}{{ end -}}
+  {{- with $page.WordCount }}{{ $data = merge $data (dict "wordCount" .) }}{{ end -}}
+
+{{/* Only the unpaginated home page -- .IsHome is also true for /page/2/ and friends,
+     which would otherwise each declare themselves a separate Blog. */}}
+{{- else if and $page.IsHome (eq $page.Permalink site.Home.Permalink) -}}
+  {{- $data = dict
+        "@context" "https://schema.org"
+        "@type" "Blog"
+        "name" site.Title
+        "description" .description
+        "url" $page.Permalink
+        "publisher" $publisher
+        "inLanguage" (site.Language.Locale | default "en-us")
+  -}}
+{{- end -}}
+
+{{- with $data }}
+<script type="application/ld+json">{{ . | jsonify (dict "indent" "  ") | safeJS }}</script>
+{{- end -}}

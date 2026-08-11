@@ -3,7 +3,7 @@ title: 'Burning Force, Part 2 - Version differences, Broken test mode patch, Lef
 date: 2016-01-17T20:39:00+09:00
 author: Ryou
 images:
-- img/burnforc_ending.png
+- img/burnforc_title.jpg
 category: Disassembly / Analysis
 tags:
 - namco

@@ -3,7 +3,7 @@ title: 'Heavy Nova Prototype - Quick Analysis'
 date: 2025-06-03T02:16:00+09:00
 author: Ryou
 images:
-- img/cover.png
+- img/heavynova_title.jpg
 category: Disassembly / Analysis
 tags:
 - micronet

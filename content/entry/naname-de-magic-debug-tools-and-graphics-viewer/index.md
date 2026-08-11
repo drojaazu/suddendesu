@@ -3,7 +3,7 @@ title: 'Naname de Magic - Debug Tools and Graphics Viewer'
 date: 2019-10-30T23:00:00+09:00
 author: Ryou
 images:
-- img/naname_title.png
+- img/naname_title.jpg
 category: Disassembly / Analysis
 tags:
 - atlus

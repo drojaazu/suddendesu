@@ -3,7 +3,7 @@ title: ' Panel & Variety Akamaru Q - All sorts of test options!'
 date: 2015-04-15T00:15:00+09:00
 author: Ryou
 images:
-- img/akamaru_title.png
+- img/akamaru_title.jpg
 category: Disassembly / Analysis
 tags:
 - dynax

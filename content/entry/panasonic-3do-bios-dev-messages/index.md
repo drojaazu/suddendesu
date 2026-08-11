@@ -3,7 +3,7 @@ title: ' Panasonic 3DO Hidden BIOS Dev Messages'
 date: 2015-07-22T23:18:00+09:00
 author: Ryou
 images:
-- img/3do_title.png
+- img/3do_title.jpg
 category: Disassembly / Analysis
 tags:
 - hidden credits

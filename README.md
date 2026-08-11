@@ -4,7 +4,13 @@ This is the source for the blog at sudden-desu.net.
 
 # Building
 
-Requires at least [Hugo](https://gohugo.io/) 0.133. Run `hugo` from the root of the project to generate the site in the public subdirectory.
+Requires at least [Hugo](https://gohugo.io/) 0.164.0, extended edition. Run `hugo` from the
+root of the project to generate the site in the public subdirectory.
+
+The minimum is enforced in `hugo.yaml` (`module.hugoVersion.min`), so an older Hugo will
+fail with a clear error rather than silently producing different output. Note that the
+Hugo packaged by Debian stable is older than this; the dev server needs a build from
+[the releases page](https://github.com/gohugoio/hugo/releases) or `snap`.
 
 # Content
 
@@ -22,15 +28,51 @@ To generate a new page:
 
 `hugo new page/new-page-title`
 
+## Images
+
+Put images in the entry's `img/` directory and reference them with plain markdown —
+`![caption](img/thing.png)`. Everything else is automatic:
+
+- Native-resolution screenshots (PNG/GIF, 640px wide or under) are served untouched and
+  displayed at a whole-number scale factor with `image-rendering: pixelated`, so they
+  stay crisp. Non-integer scaling is what makes pixel art look mushy.
+- Photos and scans wider than 1200px are resized to WebP and given a `srcset`.
+- `width`, `height`, `loading="lazy"` and `decoding="async"` are emitted for everything.
+
+The link text becomes both the `<figcaption>` and the `alt` text, so it is worth writing.
+The thresholds live under `params.image_rules` in `hugo.yaml`. The shared implementation
+is `layouts/_partials/img.html`.
+
 ## Shortcodes
+
+All of the image shortcodes wrap `_partials/img.html` and accept the same named
+parameters (`src`, `alt`, `caption`, `class`, `imgclass`).
+
+### figure
+
+The general-purpose one. `{{< figure "img/thing.png" caption="..." >}}`
 
 ### zoomimg
 
-Used for images that are quite small. When used, images can be clicked and held to zoom in to their content.
+For images that are quite small. Can be clicked and held to zoom in.
+
+### tinyimg
+
+For very small images, rendered crisply at native size.
 
 ### large-image
 
-Useful for large, non-screenshot images (such as scans or photos).
+For large, non-screenshot images (such as scans or photos).
+
+### noborder
+
+Drops the border and corner radius.
+
+# Layout
+
+The site no longer uses a separate theme directory. Templates, styles and scripts
+live at the project root (`layouts/`, `assets/`, `static/`) using Hugo's current template
+structure (`_partials/`, `_shortcodes/`, `_markup/`).
 
 # Contributing
 

@@ -1,0 +1,9 @@
+{{/* The home page has no other title of its own, so the masthead carries its <h1>.
+     Everywhere else the page's own title is the <h1> and this is just a banner. */}}
+{{ if .IsHome }}
+<h1 class='site-title crt-prompt crt-fizzle pixel-font'>{{ site.Title }}</h1>
+{{ else }}
+<div class='site-title crt-prompt crt-fizzle pixel-font'><a href='{{ site.Home.RelPermalink }}'>{{ site.Title }}</a></div>
+{{ end }}
+<p role="doc-subtitle" class="pixel-font">{{ site.Params.subtitle }}</p>
+{{ partial "menu.html" (dict "menuID" "main" "page" .) }}

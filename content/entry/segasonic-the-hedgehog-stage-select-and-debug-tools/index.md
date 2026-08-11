@@ -3,7 +3,7 @@ title: 'Segasonic the Hedgehog - Debug Tools and So Much More'
 date: 2020-11-06T23:35:00+09:00
 author: Ryou
 images:
-- img/sonic_title.png
+- img/sonic_title.jpg
 category: Disassembly / Analysis
 tags:
 - sega
@@ -1031,7 +1031,7 @@ On a related note, the design on the door strikes me as odd. After all, we're on
 
 {{< zoomimg "img/sonic-unknown-enemy01.png" >}}
 
-{{< zoomimg "img/sonic-unknown-enemy02.png" >}}
+{{< zoomimg "img/sonic_unknown_enemy02.png" >}}
 
 (The palettes here are likely not correct.)
 
@@ -1045,7 +1045,7 @@ You may notice that the ground pattern doesn't match the smooth surface of the u
 
 ## Unused Electric Obstacle
 
-{{< zoomimg "img/sonicp-electric-enemy-assembled.png" >}}
+{{< zoomimg "img/sonicp_electric_enemy_assembled.png" >}}
 
 This was included among the [previously known discoveries on TCRF](https://tcrf.net/Proto:SegaSonic_the_Hedgehog#Unused_Graphics), but I will expand upon it and make some corrections here.
 
@@ -1081,7 +1081,7 @@ Oddly, even though it is unused, it also received the Robotnik treatment.
 
 ## Eggman's Ship
 
-{{< zoomimg "img/eggman-ship.png" >}}
+{{< zoomimg "img/sonic_eggman-ship.png" >}}
 
 We've know about [Eggman's unused ship and it's bomb tossing arm](https://tcrf.net/SegaSonic_the_Hedgehog#Eggman_Sprites) for a while, but the are further frames for displaying it from any angle.
 
@@ -1105,7 +1105,7 @@ The wall is in three pieces, and looks like the players were meant to bust throu
 
 ## Old Stage Names
 
-{{< zoomimg "img/old-stage-names.png" >}}
+{{< zoomimg "img/sonicp_old_stage_names.png" >}}
 
 Rev A has placeholder* stage names which are displayed on the overworld map like in the final. However, since it only plays up to Desert Dodge, the remainng labels are not used. (Note that since you are dropped into Volcanic Vault from the intro stage, that entry is not used either. This applies to the final version as well.)
 

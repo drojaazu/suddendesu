@@ -1,0 +1,117 @@
+{{/* Description: explicit og_description > front matter description > summary > site subtitle.
+     A hand-written description is used verbatim; only the auto-derived summary,
+     which can run to any length, gets truncated. */}}
+{{ $description := "" }}
+{{ $explicit := true }}
+{{ with .Param "og_description" }}
+{{ $description = . }}
+{{ else }}
+{{ with .Description }}
+{{ $description = . }}
+{{ else }}
+{{ if .IsPage }}
+{{ $description = .Summary }}
+{{ $explicit = false }}
+{{ else if eq .Kind "term" }}
+{{ $description = printf "%d articles tagged “%s” on %s — %s" (len .Pages) .Title site.Title site.Params.subtitle }}
+{{ else }}
+{{ $description = site.Params.subtitle }}
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{/* Normalise once, and mind the order. plainify strips tags but leaves HTML
+     entities encoded, and it returns a template.HTML value. replaceRE casts that
+     back to a plain string, which the engine then escapes on output -- so an
+     entity that survived this far got escaped a second time and share cards
+     displayed "Lucky &amp; Wild" and "I&rsquo;m" as literal text. Decoding has to
+     happen last, once the value is definitely a plain string. */}}
+{{ $description = $description | plainify | replaceRE `\s+` " " | chomp | htmlUnescape }}
+{{ if not $explicit }}{{ $description = $description | strings.Truncate 160 }}{{ end }}
+
+{{/* Share image. Resolving the cover as a page resource gives real dimensions,
+     which lets crawlers lay the card out without fetching the file first --
+     Facebook and LinkedIn will otherwise skip the image on a first share. */}}
+{{ $image := absURL "/og-default.png" }}
+{{ $imageW := 1200 }}
+{{ $imageH := 630 }}
+{{ $imageType := "image/png" }}
+{{ $imageAlt := site.Title }}
+{{ with .Param "images" }}
+{{ $src := index . 0 }}
+{{ $image = printf "%s%s" $.Permalink $src }}
+{{ with $.Resources.GetMatch $src }}
+{{ $probe := try (.Width) }}
+{{ with $probe.Err }}{{ else }}
+{{ $imageW = .Width }}
+{{ $imageH = .Height }}
+{{ $imageType = .MediaType.Type }}
+{{ end }}
+{{ end }}
+{{ $imageAlt = printf "Title screen for %s" $.Title }}
+{{ end }}
+
+{{/* Must be a real content page, not the /entry/ section listing or its
+     paginated pages -- those share the section name but are not articles. */}}
+{{ $isArticle := and (eq .Kind "page") (eq .Section "entry") }}
+{{ $og_title := cond .IsHome site.Title .Title }}
+{{ if eq .Kind "term" }}{{ $og_title = printf "Articles tagged “%s”" .Title }}{{ end }}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="{{ site.Params.theme_color }}">
+
+<meta name="description" content="{{ $description }}">
+
+<!-- Open Graph -->
+<meta property="og:title" content="{{ $og_title }}" />
+<meta property="og:description" content="{{ $description }}" />
+<meta property="og:type" content="{{ cond $isArticle "article" "website" }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:site_name" content="{{ site.Title }}" />
+<meta property="og:locale" content="{{ site.Params.og_locale | default "en_US" }}" />
+<meta property="og:image" content="{{ $image }}" />
+<meta property="og:image:width" content="{{ $imageW }}" />
+<meta property="og:image:height" content="{{ $imageH }}" />
+<meta property="og:image:type" content="{{ $imageType }}" />
+<meta property="og:image:alt" content="{{ $imageAlt }}" />
+
+<!-- Twitter/X. Bluesky, Discord, Slack and Mastodon all read the og: tags above. -->
+<meta name="twitter:card" content="summary_large_image" />
+{{ with site.Params.social.twitter }}
+<meta name="twitter:site" content="@{{ . }}" />
+<meta name="twitter:creator" content="@{{ . }}" />
+{{ end }}
+
+{{- if $isArticle }}
+<!-- Article -->
+<meta property="article:published_time" content="{{ .Date | time.Format site.Params.date_machine }}" />
+<meta property="article:modified_time" content="{{ .Lastmod | time.Format site.Params.date_machine }}" />
+<meta property="article:author" content="{{ .Param "author" }}" />
+{{- with .Param "category" }}
+<meta property="article:section" content="{{ . }}" />
+{{- end }}
+{{- range .GetTerms "tags" }}
+<meta property="article:tag" content="{{ .LinkTitle }}" />
+{{- end }}
+{{- end }}
+
+{{ partial "schema.html" (dict
+     "page" .
+     "isArticle" $isArticle
+     "description" $description
+     "image" $image
+     "imageWidth" $imageW
+     "imageHeight" $imageH
+) }}
+
+{{ template "_internal/google_analytics.html" . }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{/* Always advertise the site feed, not just on the pages that emit one. */}}
+{{ with site.Home.OutputFormats.Get "rss" -}}
+<link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{- end }}
+<link rel="shortcut icon" type="image/svg+xml" href="/icon.svg">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+{{ partialCached "html_head/fonts.html" . }}
+{{- partialCached "html_head/css.html" . -}}

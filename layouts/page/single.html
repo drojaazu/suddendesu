@@ -1,0 +1,19 @@
+{{ define "main" }}
+<article class='record-container'>
+	{{ partial "page/single_header.html" . }}
+
+	<div class='record-body'>
+		{{ with (.Param "images") }}
+		{{ partial "img.html" (dict
+			"page" $
+			"src" (index . 0)
+			"alt" ""
+			"figure" true
+			"eager" true
+		) }}
+		{{ end }}
+		{{ .Content }}
+	</div>
+	{{ partial "page/single_footer.html" . }}
+</article>
+{{ end }}

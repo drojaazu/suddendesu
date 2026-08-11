@@ -1,0 +1,16 @@
+{{- /*
+Content writes captions as the markdown link text -- ![Volume 1](img/foo.png) -- and
+never uses the title slot, so .Text is both the caption and the best available alt.
+Images with no caption get an explicit empty alt so screen readers skip them rather
+than announcing the filename.
+
+All the sizing/format work lives in partials/img.html.
+*/ -}}
+{{- partial "img.html" (dict
+      "page" .Page
+      "src" .Destination
+      "alt" (.Text | plainify)
+      "caption" (.Text | plainify)
+      "class" (.Attributes.class | default "")
+      "figure" .IsBlock
+) -}}

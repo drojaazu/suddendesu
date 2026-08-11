@@ -3,7 +3,7 @@ title: 'Donpachi - Debug Tools and More'
 date: 2017-01-09T21:47:00+09:00
 author: Ryou
 images:
-- img/donpachij_title.png
+- img/donpachij_title.jpg
 category: Disassembly / Analysis
 tags:
 - cave
@@ -240,7 +240,7 @@ By the way, though the two end-of-game lines above are not used in the code, the
 
 ![](img/donpachij_flames1.png)
 
-![](img/1484015685_donpachij_flames2.png)
+![](img/donpachij_flames2.png)
 
 Here we have another strange debugging tool, but this one is not nearly as insane as object 0x30 above. It appears as a cursor, which can be moved around with the P2 joystick. There are three number displays in the lower left. The top two indicate the cursor X/Y position, while the bottom one indicates an offset. Pressing P2 Button 2 increases the offset value; P2 Button 3 decreases it. P2 Button 1 will make a flame animation appear at the cursor. The offset determines which flame animation is spawned.
 

@@ -1,0 +1,17 @@
+{{- /*
+Shared implementation for the image shortcodes. Positional arg 0 is the src;
+named params override the defaults.
+
+  {{< figure "img/foo.png" >}}
+  {{< figure src="img/foo.png" caption="..." imgclass="zoom" >}}
+*/ -}}
+{{- $src := or (.Get "src") (.Get 0) -}}
+{{- partial "img.html" (dict
+      "page" .Page
+      "src" $src
+      "alt" (.Get "alt" | default (.Get "caption") | default "")
+      "caption" (.Get "caption" | default "")
+      "class" (.Get "class" | default "")
+      "imgclass" (.Get "imgclass" | default "")
+      "figure" true
+) -}}

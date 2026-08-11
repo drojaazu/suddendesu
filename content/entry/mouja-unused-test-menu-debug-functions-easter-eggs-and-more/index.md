@@ -1,9 +1,10 @@
 ---
 title: 'Mouja - Unused Test Menu, Debug Functions, Easter Eggs, and More...'
+og_description: "Let's look at Mouja, the cat themed coin-matching puzzler: an unused test menu, leftover debug functions, easter eggs and more still buried in the code."
 date: 2015-11-09T17:41:00+09:00
 author: Ryou
 images:
-- img/mouja_title.png
+- img/mouja_title.jpg
 category: Disassembly / Analysis
 tags:
 - easter egg

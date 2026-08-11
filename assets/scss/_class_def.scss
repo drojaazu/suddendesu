@@ -1,0 +1,78 @@
+.pixel-font {
+	font-family: $font-pixel;
+}
+
+.icon {
+	width: 0.75em;
+	height: 0.75em;
+	margin: 0.2em;
+	vertical-align: middle;
+	margin-top: 0;
+	margin-bottom: 0;
+	//display: inline-block;
+	fill: $color-crt-white;
+}
+
+.embed {
+	text-align: center;
+}
+
+.error
+{
+	text-align: center;
+	h1 {
+		font-size: 4em;
+		font-weight: normal;
+		line-height: 1.2;
+	}
+	p {
+		margin-bottom: 1rem;
+	}
+	margin-bottom: 1rem;
+}
+
+.kyoutai {
+	padding: 0;
+	display: inline-block;
+	border: 8px solid #161616;
+	border-radius: 12px;
+	border-collapse: separate;
+	background-clip: padding-box;
+	overflow: hidden;
+
+	img {
+		display:block;
+	}
+}
+
+.tinyimg {
+	
+	img {
+		border: none !important;
+		border-radius: 0 !important;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		// transform: scale(4);
+	}
+}
+
+img.zoom {
+	transition: transform 0.2s, background-color 0.2s;
+	cursor: zoom-in;
+	border: none !important;
+	border-radius: 0 !important;
+	image-rendering: pixelated;
+	image-rendering: -moz-crisp-edges;
+
+	&:active {
+		border: 2px solid $color-black !important;
+		border-radius: 2px;
+		background: $color-white url($path-img+'body_bg.png');;
+		transform: scale(2);
+		cursor: zoom-out;
+		padding: 0.25rem;
+
+		backface-visibility: hidden;
+	}
+
+}

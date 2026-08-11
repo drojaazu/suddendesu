@@ -3,7 +3,7 @@ title: 'Unused Ending in Momoko 120%'
 date: 2015-01-25T00:57:00+09:00
 author: Ryou
 images:
-- img/momoko_title.png
+- img/momoko_title.jpg
 category: Disassembly / Analysis
 tags:
 - jaleco

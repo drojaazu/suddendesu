@@ -1,8 +1,0 @@
-{{ define "main" }}
-<h1 class="callout record-title">{{ .Title }}</h1>
-{{ .Content }}
-{{ range .Pages }}
-{{ partial "entry/listing.html" . }}
-{{ end }}
-{{ partial "pagination" . }}
-{{ end }}

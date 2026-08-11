@@ -1,0 +1,11 @@
+{{- /*
+Demote every heading written in markdown by one level, so that the article title
+rendered by the template can be the page's single <h1>.
+
+Articles are written with `#` as the top-level section heading; without this hook
+a page ends up with no <h1> for its own title and several sibling <h1>s in the body.
+Levels are clamped at 6. The visual sizes are restored in _record.scss so this is a
+semantics-only change.
+*/ -}}
+{{- $level := int (math.Min (add .Level 1) 6) -}}
+<h{{ $level }} id="{{ .Anchor | safeURL }}"{{ with .Attributes.class }} class="{{ . }}"{{ end }}>{{ .Text }}</h{{ $level }}>

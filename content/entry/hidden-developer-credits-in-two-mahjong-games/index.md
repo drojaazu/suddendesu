@@ -3,7 +3,7 @@ title: 'Hidden Developer Credits in Two Mahjong Games'
 date: 2015-02-04T00:38:00+09:00
 author: Ryou
 images:
-- img/ojankoy_title.png
+- img/ojankoy_title.jpg
 category: Disassembly / Analysis
 tags:
 - hidden credits

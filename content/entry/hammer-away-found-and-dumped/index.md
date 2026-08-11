@@ -3,7 +3,7 @@ title: 'Unreleased Sega arcade prototype "Hammer Away" found and dumped'
 date: 2014-11-03T23:18:00+09:00
 author: Ryou
 images:
-- img/hammeraway1.png
+- img/hammeraway_title.jpg
 category: News
 tags:
 - sega

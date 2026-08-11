@@ -1,5 +1,6 @@
 ---
 title: 'King of Fighters XI - Time Release Menu (and maybe more)'
+og_description: "KOF XI hides a Time Release menu that instantly unlocks characters otherwise gated behind hundreds of hours of operation, and maybe some debugging tools."
 author: Ryou
 date: 2021-04-12T12:59:00+09:00
 images:

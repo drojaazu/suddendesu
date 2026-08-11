@@ -3,7 +3,7 @@ title: 'Hidden Menu in Miyasu Nonki No Quiz 18kin'
 date: 2015-02-27T20:00:00+09:00
 author: Ryou
 images:
-- img/quiz18k_title.png
+- img/quiz18k_title.jpg
 category: Disassembly / Analysis
 tags:
 - debug tool

@@ -3,7 +3,7 @@ title: 'Aurail - Invincibility and level select'
 date: 2020-04-05T02:12:00+09:00
 author: Ryou
 images:
-- img/aurailjd_title.png
+- img/aurailjd_title.jpg
 category: Disassembly / Analysis
 tags:
 - sega

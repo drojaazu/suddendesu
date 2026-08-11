@@ -3,7 +3,7 @@ title: 'Pururun - Test Menus, Unused Data, and Prototype Versions'
 date: 2019-05-02T22:19:00+09:00
 author: Ryou
 images:
-- img/pururun_title.png
+- img/pururun_title.jpg
 category: Disassembly / Analysis
 tags:
 - unused content
@@ -116,8 +116,8 @@ Here is the cheat for the menu. It can be used at pretty much any time, though t
 
 # Graphics Layout Tool
 
-![](img/pururun_mode13-1.png)
-![](img/pururun_mode13-2.png)
+![](img/pururun_mode13_1.png)
+![](img/pururun_mode13_2.png)
 
 
 Another unused program mode is 0x13. When first switching to this mode, we get a blank screen. Pressing P1 Up or Down will bring up a number display in the upper right and some graphics in the middle of the screen. At first it seems like a simplified version of the Parts viewer from the test menu, but it is actually a relatively complex (and cumbersome) tool for visualizing and planning graphics layouts.

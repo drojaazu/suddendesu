@@ -1,0 +1,115 @@
+{{- /*
+Renders an <img> (optionally wrapped in a <figure>) from a page bundle resource,
+so that everything on the site goes through one image path.
+
+What it does:
+  - resolves the src against the page's own resources, falling back to a plain
+    <img> for absolute/remote URLs and anything it cannot find
+  - emits width/height from the real file, which removes layout shift
+  - resizes oversized photos/scans to WebP and gives them a srcset
+  - leaves native-resolution game screenshots completely untouched and tags them
+    with .pixelart, since resampling pixel art is exactly what we don't want
+  - never touches GIFs -- Hugo's image processing would drop the animation
+
+@context {page}    page      required; the page owning the bundle
+@context {string}  src       required; path as written in the content
+@context {string}  alt
+@context {string}  caption   if set (or if figure is true), wraps in a <figure>
+@context {string}  class     class for the <figure>
+@context {string}  imgclass  extra classes for the <img>
+@context {string}  link      href to wrap the image in
+@context {bool}    figure    force a <figure> wrapper
+@context {bool}    eager     skip loading="lazy" (use for above-the-fold covers)
+*/ -}}
+
+{{- $page := .page -}}
+{{- $src := .src -}}
+{{- $alt := .alt | default "" -}}
+{{- $caption := .caption | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $imgclass := .imgclass | default "" -}}
+{{- $link := .link | default "" -}}
+{{- $figure := or .figure (ne $caption "") -}}
+{{- $eager := .eager | default false -}}
+
+{{- $pixelMax := site.Params.image_rules.pixel_max_width | default 640 -}}
+{{- $largeMax := site.Params.image_rules.large_width | default 1200 -}}
+{{- $colWidth := site.Params.image_rules.column_width | default 900 -}}
+{{- $pixelScaleMax := site.Params.image_rules.pixel_scale_max | default 4 -}}
+
+{{- $res := "" -}}
+{{- if not (or (strings.HasPrefix $src "http") (strings.HasPrefix $src "//") (strings.HasPrefix $src "data:")) -}}
+{{- with $page.Resources.GetMatch (strings.TrimPrefix "./" $src) -}}
+{{- if eq .ResourceType "image" -}}{{- $res = . -}}{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Reading .Width forces a decode. A few files in the archive have bad chunk CRCs
+     that browsers happily ignore but Go's decoder rejects, so probe first and fall
+     back to a plain <img> rather than failing the whole build. */}}
+{{- with $res -}}
+{{- $probe := try (.Width) -}}
+{{- with $probe.Err -}}
+{{- warnf "img: cannot decode %q on %s (%s) -- emitting without dimensions" $src $page.Path . -}}
+{{- $res = "" -}}
+{{- end -}}
+{{- end -}}
+
+{{- $attrs := "" -}}
+{{- if $res -}}
+  {{- $isGif := strings.HasSuffix (lower $src) ".gif" -}}
+  {{- $out := $res -}}
+  {{- $srcset := "" -}}
+
+  {{- if and (not $isGif) (gt $res.Width $largeMax) -}}
+    {{- $x1 := $res.Resize (printf "%dx webp q85" $largeMax) -}}
+    {{- $out = $x1 -}}
+    {{- $w2 := mul $largeMax 2 -}}
+    {{- if ge $res.Width $w2 -}}
+      {{- $x2 := $res.Resize (printf "%dx webp q85" $w2) -}}
+      {{- $srcset = printf "%s %dw, %s %dw" $x1.RelPermalink $x1.Width $x2.RelPermalink $x2.Width -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $classes := slice -}}
+  {{- $style := "" -}}
+  {{/* JPEG is a reliable signal that something is not native-resolution pixel art:
+       lossy compression destroys the hard pixel edges, so these are photos, scans
+       or CRT-filtered captures and must keep smooth scaling. */}}
+  {{- $mayBePixelArt := in (slice "png" "gif" "bmp") $res.MediaType.SubType -}}
+  {{- if and $mayBePixelArt (le $res.Width $pixelMax) -}}
+    {{- $classes = $classes | append "pixelart" -}}
+    {{/* Display native-resolution art at the largest whole-number multiple that
+         still fits the column. Non-integer scaling is what makes pixel art mushy,
+         and CSS cannot know the natural size, so the factor is resolved here. */}}
+    {{- $scale := math.Max 1 (math.Min $pixelScaleMax (math.Floor (div (float $colWidth) $res.Width))) -}}
+    {{- if gt $scale 1.0 -}}
+      {{- $style = printf "width:%dpx" (int (mul $res.Width $scale)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $imgclass }}{{ $classes = $classes | append . }}{{ end -}}
+
+  {{- $attrs = printf `src=%q width=%q height=%q alt=%q decoding="async"`
+        $out.RelPermalink (string $out.Width) (string $out.Height) $alt -}}
+  {{- with $style }}{{ $attrs = printf `%s style=%q` $attrs . }}{{ end -}}
+  {{- with $srcset -}}
+    {{- $attrs = printf `%s srcset=%q sizes="(max-width: 1024px) 92vw, 900px"` $attrs . -}}
+  {{- end -}}
+  {{- with $classes -}}
+    {{- $attrs = printf `%s class=%q` $attrs (delimit . " ") -}}
+  {{- end -}}
+{{- else -}}
+  {{- $attrs = printf `src=%q alt=%q decoding="async"` ($src | safeURL) $alt -}}
+  {{- with $imgclass }}{{ $attrs = printf `%s class=%q` $attrs . }}{{ end -}}
+{{- end -}}
+
+{{- if not $eager -}}{{- $attrs = printf `%s loading="lazy"` $attrs -}}{{- end -}}
+
+{{- $img := printf "<img %s />" $attrs | safeHTML -}}
+{{- if $link }}{{ $img = printf `<a href=%q>%s</a>` $link $img | safeHTML }}{{ end -}}
+
+{{- if $figure -}}
+<figure{{ with $class }} class="{{ . }}"{{ end }}>{{ $img }}{{ with $caption }}<figcaption>{{ . | safeHTML }}</figcaption>{{ end }}</figure>
+{{- else -}}
+{{ $img }}
+{{- end -}}

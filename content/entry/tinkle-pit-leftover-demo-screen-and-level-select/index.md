@@ -4,9 +4,8 @@ date: 2015-01-20T22:47:00+09:00
 draft: false
 author: Ryou
 images:
-- img/tinklpit_title.png
-categories:
-- Disassembly / Analysis
+- img/tinklpit_title.jpg
+category: Disassembly / Analysis
 tags:
 - namco
 - debug tool

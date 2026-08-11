@@ -3,7 +3,7 @@ title: 'Burning Force, Part 1 - Unused translation and extra round select option
 date: 2015-12-19T01:10:00+09:00
 author: Ryou
 images:
-- img/burnforc_title.png
+- img/burnforc_title.jpg
 category: Disassembly / Analysis
 tags:
 - namco
@@ -33,7 +33,7 @@ The Japanese text that would normally appear in the screens above comes from a d
 
 But there was another problem too. Even if the strings were referenced, they still wouldn't display properly because part of their metadata is broken. Many games contain a few bytes before the actual text with info like the x/y position to start the text, color or style code, timing, etc. Burning Force does the same:
 
-![](img/burnforc_englishend.png)
+![](img/burnforc_english_end.png)
 
 There are 6 bytes before each string (which are formatted into structures above). The first word is the style/color/palette, the second word is the x/y position and the final word is the length of the string. With that in mind, you'll see each string is marked as 4 bytes long. Clearly that's not correct; it would only show the first four characters of the text and nothing more. The two strings for the boss analysis screen are even shorter, having a length of two.
 

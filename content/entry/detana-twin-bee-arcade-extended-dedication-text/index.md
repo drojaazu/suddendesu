@@ -3,7 +3,7 @@ title: 'Detana! Twin Bee (arcade version) - Extended Dedication Text'
 date: 2017-03-25T22:32:00+09:00
 author: Ryou
 images:
-- img/detatwin_title.png
+- img/detatwin_title.jpg
 category: Disassembly / Analysis
 tags:
 - konami

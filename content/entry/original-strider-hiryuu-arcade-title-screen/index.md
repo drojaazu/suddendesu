@@ -1,9 +1,10 @@
 ---
 title: 'Original Strider Hiryuu arcade title screen'
+og_description: "There's an older version of the title screen, originally seen in magazine shots, still present and accessible in the data."
 date: 2019-11-27T19:43:00+09:00
 author: Ryou
 images:
-- img/striderj_title.png
+- img/striderj_title.jpg
 category: Disassembly / Analysis
 tags:
 - capcom
