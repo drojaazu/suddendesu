@@ -1,9 +1,6 @@
 @mixin header-text {
 	@include crt-text;
-	// Not justified: a wrapped heading gets stretched into huge word gaps, which
-	// is very visible in the title bar on narrow screens.
-	text-align: left;
-	text-wrap: balance;
+	text-align: justify;
 	font-weight: normal;
 }
 
