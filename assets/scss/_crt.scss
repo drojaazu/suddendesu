@@ -36,8 +36,20 @@ $crt-edge-shadow-size: 1.3rem;
 	@include crt-text;
 }
 
+// A single inset shadow reads as a dark border rather than as glass, so this
+// layers three: a hard contact shadow where the glass meets the bezel, a mid
+// stop, and a wide soft falloff across the curve of the tube. Adjacent edges
+// overlap at the corners and darken them more than the edge midpoints -- what a
+// radial vignette would give, without the vertical stretching a radial gradient
+// suffers on a long scrolling page.
+//
+// A light rim along the inside edge was tried and dropped: it cut across the
+// title bar and section banners, reading as a UI border rather than as glass.
 @mixin crt-edges {
-	box-shadow: inset 0 0 $crt-edge-shadow-size $crt-edge-color;
+	box-shadow:
+		inset 0 0 ($crt-edge-shadow-size * 0.5) rgba(0, 0, 0, 1),
+		inset 0 0 ($crt-edge-shadow-size * 1.6) rgba(0, 0, 0, 0.85),
+		inset 0 0 ($crt-edge-shadow-size * 3.5) rgba(0, 0, 0, 0.55);
 }
 
 .crt-edges {

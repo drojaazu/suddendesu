@@ -7,9 +7,9 @@
 
 #maincol {
 	@include margin-auto;
-	max-width: 1024px;
+	max-width: $content-max;
 	@include pad-h(0);
-	@include pad-v(0);
+	@include pad-v($screen-safe, $screen-safe-bottom);
 	min-height: 100%;
 	background-color: $color-grey;
 	background-color: $color-black;
@@ -17,14 +17,79 @@
 	// TODO make the outline color browser specific
 	border: 1.5rem inset rgba(215, 215, 215, 0.15);
 	border-radius: 2rem;
+	position: relative;
+
+	// The overlay below is a viewport-tall sticky element, so at the end of the
+	// page -- and on any page shorter than the viewport -- it would otherwise
+	// hang past the bottom of the column and dim the badge and power button.
+	// `clip` rather than `hidden`: hidden would make this a scroll container and
+	// the overlay would stick to it instead of to the viewport, killing the effect.
+	overflow: clip;
+
+	/*
+		The screen shading is drawn OVER the content instead of under it, so it
+		behaves like glass: images and tables can run the full width of the column
+		and the vignette falls across them, rather than having to stop short of it.
+
+		position:sticky + 100vh + a matching negative margin means it tracks the
+		viewport as you scroll -- the shading belongs to the screen, not to the
+		page -- while occupying no layout space. Being a child of #maincol it
+		inherits the column's content box, so it needs no width calculation of its
+		own and stays aligned at every breakpoint.
+
+		Cost is one composited pseudo-element: no JS, no repaint on scroll.
+	*/
+	&::before {
+		content: '';
+		position: sticky;
+		top: 0;
+		z-index: 2;
+		display: block;
+		height: 100vh;
+		// Being in flow, this would otherwise start below the column's top padding
+		// and leave that strip unshaded. Pull it back up to the padding box edge;
+		// the bottom margin compensates so the pair still nets to zero layout.
+		margin-top: -$screen-safe;
+		margin-bottom: calc(#{$screen-safe} - 100vh);
+		pointer-events: none;
+		// outer radius minus the bezel width, so the rim follows the corners
+		border-radius: 0.5rem;
+		@include crt-edges;
+	}
+
+	/*
+		The overlay above never parks at the end of the column: its negative bottom
+		margin pushes the sticky constraint 100vh past the column's bottom edge, so
+		it runs over instead of stopping, and `overflow: clip` then removes exactly
+		the part that carried the bottom shading. This restores that edge, anchored
+		to the bottom of the column rather than to the viewport.
+	*/
+	&::after {
+		content: '';
+		position: absolute;
+		inset: auto 0 0 0;
+		// Tuned to match the top edge rather than to look right on its own: a flat
+		// 0.9-alpha ramp over the full falloff depth landed much darker and half
+		// again as long as the top, because the layered inset shadow decays on a
+		// curve. These stops approximate that curve.
+		height: $crt-edge-shadow-size * 2.2;
+		z-index: 2;
+		pointer-events: none;
+		background: linear-gradient(
+			to top,
+			rgba(0, 0, 0, 0.8) 0%,
+			rgba(0, 0, 0, 0.45) 30%,
+			rgba(0, 0, 0, 0.15) 65%,
+			rgba(0, 0, 0, 0) 100%
+		);
+	}
 
 	& > header {
 		line-height: 1;
 		padding-top: 1rem;
-	
+
 		// h1 on the home page, div elsewhere -- see partials/doc_header.html
-		& > .site-title
-		{
+		& > .site-title {
 			display: block;
 			@include pad-h(1rem);
 			font-size: 3.5rem;
@@ -38,23 +103,22 @@
 				text-decoration: none;
 			}
 		}
-	
-		& > p[role="doc-subtitle"]
-		{
+
+		& > p[role='doc-subtitle'] {
 			@include pad-h(1.5rem);
 			line-height: 1.5em;
 			font-size: 1.1rem;
 			color: $color-crt-white;
 			margin-bottom: 0.5rem;
 		}
-	
+
 		nav {
 			flex-wrap: wrap;
 			line-height: 1.5em;
 			font-size: 1.2rem;
 			padding: 0;
 			@include pad-h(1rem);
-	
+
 			form {
 				margin-left: auto;
 			}
@@ -63,15 +127,13 @@
 				width: 100%;
 				height: 100%;
 				@include pad-h(0.5em);
-		
+
 				&:hover {
 					background-color: transparentize($color-crt-white, 0.4);
 				}
 			}
-	
 		}
 	}
-	
 }
 
 #maincol > footer {
@@ -83,8 +145,8 @@
 }
 
 #badge {
-	display:flex;
-	max-width: 1024px;
+	display: flex;
+	max-width: $content-max;
 	@include margin-auto;
 	align-items: center;
 	margin-top: 2rem;
@@ -97,16 +159,22 @@
 		border: 1px solid rgba(0, 0, 0, 0.25);
 		box-shadow: 1px 1px rgba(60, 60, 60, 0.5);
 		border-radius: 2px;
-		background: rgb(105,105,105);
-		background: linear-gradient(339deg, rgba(105,105,105,1) 0%, rgba(135,135,135,1) 53%, rgba(179,179,179,1) 100%);
+		background: rgb(105, 105, 105);
+		background: linear-gradient(
+			339deg,
+			rgba(105, 105, 105, 1) 0%,
+			rgba(135, 135, 135, 1) 53%,
+			rgba(179, 179, 179, 1) 100%
+		);
 
-
-		& > span {
-			text-shadow: 1px 1px rgb(60, 60, 60), -1px -1px #bdbdbd;
-			color: #a39e9e;
+		& * > span {
+			text-shadow:
+				1px 1px rgb(60, 60, 60),
+				-1px -1px #bdbdbd;
+			color: #888;
 		}
 
-		& > span:first-child {
+		& * > span:first-child {
 			font-size: 1.5rem;
 			padding-right: 0.25rem;
 			letter-spacing: -2px;
@@ -118,7 +186,7 @@
 	}
 
 	.led {
-		font-size:2rem;
+		font-size: 2rem;
 		margin-left: auto;
 		color: #27c027a8;
 		margin-right: 1rem;
@@ -134,12 +202,10 @@
 		background-color: rgba(0, 0, 0, 0.2);
 		text-align: center;
 		color: rgba(255, 255, 255, 0.5);
-
 	}
 }
 
 #tag-list {
-
 	ul {
 		display: flex;
 		flex-flow: wrap;
@@ -148,7 +214,7 @@
 		justify-content: space-around;
 	}
 	li {
-		display:inline-block;
+		display: inline-block;
 		font-family: $font-pixel;
 		font-size: 1.6rem;
 	}

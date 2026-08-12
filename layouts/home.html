@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{ $entries := where site.RegularPages "Type" "entry" }}
-{{ range (.Paginate $entries 5).Pages.ByDate.Reverse }}
+{{ range (.Paginate $entries 3).Pages.ByDate.Reverse }}
 {{ partial "entry/listing.html" . }}
 {{ end }}
 {{ template "_internal/pagination.html" . }}

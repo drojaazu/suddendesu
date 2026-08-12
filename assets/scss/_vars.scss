@@ -23,12 +23,12 @@ $path-font: '/font/';
 
 $font-monospace: Inconsolata, 'Roboto Mono', monospace;
 $font-condensed: Cuprum;
-$font-sans: 'Nunito Sans', Roboto, sans-serif;
+$font-body: 'Zilla Slab', Georgia, serif;
 $font-pixel: 'pxl', $font-monospace;
 
 $font-size-base: 20px;
 
-$font-family-base: $font-sans;
+$font-family-base: $font-body;
 
 // Colors - monochrome
 $color-white: #d0d0d0;
@@ -57,12 +57,26 @@ $color-text: $color-white;
 $color-darken: rgba(12%, 12%, 14%, 0.4);
 
 // Layout
-// The column is wide so screenshots and disassembly tables have room, but prose
-// set to the full 1024px runs ~100 characters per line. Text is capped separately.
-$content-max: 1024px;
-$measure: 68ch;
+$content-max: 1152px;
 $gutter: 2.2rem;
 $gutter-narrow: 1rem;
+// Breathing room between full-width content and the hard edge of the column.
+// The shading is an overlay now, so this is not about clearing it -- it just
+// stops images and tables butting right up against the bezel.
+$media-gutter: 0.75rem;
+// Clearance between content and the top/bottom screen shading. The vertical
+// falloff is as deep as the horizontal one, but the masthead and footer have no
+// gutter of their own the way prose and media do, so they need it here. Think
+// of it as overscan: you do not put UI in the corners of a tube.
+$screen-safe: 0.75rem;
+// The footer bar sits right on the bottom edge and wants slightly more room
+// than the masthead does at the top.
+$screen-safe-bottom: 1.15rem;
+// Air above a heading. Every block in the article body gets 1.25rem, which is
+// not enough for a heading to read as a break rather than as part of the run of
+// text. Adjacent margins collapse, so these are the resulting gap rather than an
+// addition to it, and they step down with the heading level.
+$heading-lead: 2.25rem;
 
 // Shadows
 $shadow-large: 0 0 6px;

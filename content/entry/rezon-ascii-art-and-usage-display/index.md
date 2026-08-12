@@ -1,5 +1,5 @@
 ---
-title: 'Rezon - ASCII art and Usage Display'
+title: 'Rezon - ASCII Art and Usage Display'
 date: 2015-07-27T22:00:00+09:00
 author: Ryou
 images:

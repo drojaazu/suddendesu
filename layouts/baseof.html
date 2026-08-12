@@ -6,7 +6,8 @@
 </head>
 
 <body>
-  <div id="maincol" class="crt-bg crt-edges">
+  {{/* the screen shading is applied as an overlay by #maincol::before, not here */}}
+  <div id="maincol" class="crt-bg">
     <header>
       {{ partial "doc_header.html" . -}}
     </header>

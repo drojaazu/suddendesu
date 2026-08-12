@@ -35,6 +35,14 @@
 #                           It is not part of the build, so --delete would unlink
 #                           it. .htaccess and robots.txt do not need excluding --
 #                           they are kept in static/ so the build reproduces them.
+#
+#   --chmod=D755,F644       -a preserves local permissions, and this repository
+#                           has restrictive ones (drwxrwx--- / -rw-rw----). Those
+#                           got applied to the docroot itself, leaving it 770 and
+#                           un-traversable by Apache, which then could not read
+#                           .htaccess and returned "You don't have permission to
+#                           access this resource" for the whole site. Publish with
+#                           explicit web-server permissions instead of local ones.
 
 set -euo pipefail
 
@@ -43,7 +51,7 @@ REMOTE_PATH="~/suddendesu/"
 LOCAL_DIR="public"
 PUBLISH_BRANCH="master"
 
-RSYNC_OPTS=(-avz --delete --exclude=.dh-diag)
+RSYNC_OPTS=(-avz --delete --exclude=.dh-diag --chmod=D755,F644)
 
 cd "$(dirname "$(readlink -f "$0")")"
 

@@ -33,12 +33,6 @@
 		max-width: 90%;
 	}
 
-	// Prose is capped at a readable measure; figures, tables and code keep the
-	// full column, which is the whole reason the column is this wide.
-	p, ul, ol, blockquote {
-		max-width: $measure;
-	}
-
 	p, div {
 		@include margin-h($gutter);
 	}
@@ -49,9 +43,10 @@
 	}
 
 	p {
-		// Paragraphs are already separated by a blank line's worth of margin, so an
-		// indent on top of that is doubled-up separation. Justification without
-		// hyphenation opens rivers at this measure.
+		text-align: justify;
+		text-indent: 1em;
+		// Justified text at this measure opens visible rivers without it; this lets
+		// the browser break words rather than stretching the spaces.
 		hyphens: auto;
 	}
 
@@ -84,31 +79,80 @@
 	// Headings are demoted one level by _markup/render-heading.html so the article
 	// title can own the page's <h1>. These sizes keep the rendered result identical
 	// to what the markdown levels used to produce: `#` -> h2, `##` -> h3, etc.
+	/*
+		Heading ladder. Each rung changes the KIND of treatment rather than making a
+		weaker copy of the one above -- four competing background bars would leave
+		you unable to tell which section you are actually in.
+
+			title   dark text on a solid amber bar, full bleed (see .record-title)
+			h2  #   amber text on a scanline bar, full bleed
+			h3  ##  amber text, indented, no background
+			h4  ### bold + amber marker, near body size
+			h5  ####  uppercase and letterspaced
+
+		Amber is the through-line: the title inverts it, h2 sets it on the textured
+		bar, h3 drops the bar and keeps the colour, h4 keeps only a trace of it.
+
+		The top two are full bleed, the rest are indented to the text margin, so that
+		boundary alone says whether you are at a major section or inside one.
+
+		Note `##` is the most-used level in the archive (432 uses, against 387 for
+		`#`), so h3 carries most of the sectioning load and is worth the accent.
+	*/
 	h2 {
 		@include callout;
 		@include pad-v(0.25em);
 		font-size: 2rem;
+		color: $color-link;
+		margin-top: $heading-lead;
 	}
 
 	h3 {
-		font-size: 1.5rem;
+		font-size: 1.6rem;
+		color: $color-link;
+		margin-inline: $gutter;
+		margin-top: $heading-lead - 0.25rem;
 	}
 
 	h4 {
-		font-size: 1.17rem;
+		font-size: 1.25rem;
+		font-weight: 700;
+		margin-inline: $gutter;
+		margin-top: $heading-lead - 0.5rem;
+
+		&::before {
+			content: '\25b8\a0';
+			color: $color-link;
+		}
 	}
 
 	h5 {
 		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+		color: $color-crt-white;
+		margin-inline: $gutter;
 	}
 
 	h6 {
 		font-size: 0.9rem;
+		margin-inline: $gutter;
 	}
 
 	img, table, blockquote, pre {
 		border: 2px solid $color-black;
 		border-radius: $radius-half;
+	}
+
+	// The shading is an overlay now (see #maincol::before) so content no longer has
+	// to clear it, but a small gutter keeps full-width media off the hard edge of
+	// the column rather than butting straight into the bezel.
+	//
+	// The gutter goes on the figure, not the image: a figure is a column flex
+	// container, so an image capped narrower than its figure gets aligned to the
+	// start of the cross axis and sits left rather than centred.
+	figure, .table-scroll {
+		max-width: calc(100% - #{$media-gutter * 2});
 	}
 
 	img {
@@ -142,13 +186,14 @@
 	figure {
 		display: flex;
 		flex-flow: column;
+		// belt and braces against the cross-axis alignment issue above, for images
+		// carrying an explicit inline width (the integer-scaled pixel art)
+		align-items: center;
 		width: fit-content;
-		max-width: 100%;
 		@include margin-auto;
 
 		& > figcaption {
 			@include margin-h(1rem);
-			max-width: $measure;
 		}
 	}
 	
@@ -267,6 +312,7 @@
 	//color: $color-off-white;
 	display: flex;
 	flex-wrap: wrap;
+	font-size: 1.2rem;
 	@include pad-v(0.25em);
 
 	div:last-child {
