@@ -67,3 +67,6 @@ markup:
       wrapStandAloneImageWithinParagraph: false
     renderer:
       unsafe: true
+
+minify:
+  minifyOutput: true

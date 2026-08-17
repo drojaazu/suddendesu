@@ -12,7 +12,7 @@ $path-font: '/font/';
 // Typography
 @font-face {
 	font-family: pxl;
-	src: url($path-font+'spleen_8x16.otf');
+	src: url($path-font + 'spleen_8x16.otf');
 }
 
 // Web fonts are requested from <head> (see partials/html_head/fonts.html) rather
@@ -23,7 +23,7 @@ $path-font: '/font/';
 
 $font-monospace: Inconsolata, 'Roboto Mono', monospace;
 $font-condensed: Cuprum;
-$font-body: 'Zilla Slab', Georgia, serif;
+$font-body: 'Merriweather Sans', serif;
 $font-pixel: 'pxl', $font-monospace;
 
 $font-size-base: 20px;
