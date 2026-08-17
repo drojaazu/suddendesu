@@ -15,7 +15,7 @@ We have something a bit special today: a prototype of a Mega CD game! (*crowd ch
 
 Let's take a look.
 
-<!--more-->
+
 
 First of all, the game was [posted on archive.org here](https://archive.org/details/heavy-nova-prototype-19911102).
 
