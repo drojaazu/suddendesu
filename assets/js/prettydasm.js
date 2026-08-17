@@ -144,7 +144,18 @@
       zero_prefix: false,
       opcode_sizes: false,
       registers: 'pc|r1[0-5]|r[0-9]'
-    }
+    },
+
+    // Basically the same registers as 8086, but with some register name changes
+    // MAME adopts the NEC naming variation, so we account for that here
+    'nec-v': {
+      name: 'NEC V-Series',
+      hex_notation: 'h',
+      hex_postfix: true,
+      zero_prefix: true,
+      opcode_sizes: false,
+      registers: 'ip|[acdb][whl]|[sb]p|[sd]i|[dsp]s|eg'
+    },
   };
 
   // -------------------- INTERNAL CONFIGURATION
@@ -276,13 +287,15 @@
   }
 
   function parse_comment(node) {
-    var split = node.textContent.split(COMMENT_MARKER, 2);
-    if (split.length < 2) return node;
+    var pieces = node.textContent.split(COMMENT_MARKER);
+    if (pieces.length < 2) return node;
 
-    node.textContent = split[0].trim();
+    [opcode, ...comment] = pieces
+    comment = comment.join(COMMENT_MARKER)
+    node.textContent = opcode.trim();
 
     var comment_td = document.createElement('TD');
-    comment_td.setAttribute(HOVER_ATTR, split[1].trim());
+    comment_td.setAttribute(HOVER_ATTR, comment.trim());
     comment_td.innerHTML = comment_content;
     comment_td.className = CSSCLASS_COMMENT;
     comment_td.addEventListener('mouseover', comment_popup);
