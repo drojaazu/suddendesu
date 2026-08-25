@@ -388,7 +388,7 @@ All of these were replaced with graphics, though I don't think an 'Error KO' is 
 
 # Jikken Program
 
-<div class="embeddedContent oembed-provider- oembed-provider-youtube" style="text-align: center;"><iframe allowfullscreen="true" frameborder="0" height="349" scrolling="no" src="//www.youtube.com/embed/1UDw9b5gR7E?wmode=transparent&amp;jqoemcache=CCcTK" width="425"></iframe>
+{{< youtube 1UDw9b5gR7E >}}
 
 ![](img/twinspri_jikken01.png)
 

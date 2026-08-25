@@ -3,7 +3,7 @@ title: 'Unused test menu in Oh! Paipii'
 author: Ryou
 date: 2021-05-05T16:50:00+09:00
 images:
-- img/ohpaipee_title.png
+- img/ohpaipee_title.jpg
 draft: false
 ---
 
