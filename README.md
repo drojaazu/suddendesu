@@ -67,3 +67,8 @@ For large, non-screenshot images (such as scans or photos).
 
 Drops the border and corner radius.
 
+### audio
+
+`{{< audio "audio/sound.wav" >}}`
+
+Embed an audio file.
