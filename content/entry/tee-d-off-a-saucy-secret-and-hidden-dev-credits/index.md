@@ -67,7 +67,7 @@ You can see how the World version goes farther with controlled conditions. This 
 
 ## Re-Recorded Dialogue
 
-There are two vocal clips in the game of a young lady (presumably the same young lady who removes her shirt) saying "Nice Shot" and "Nice On."
+There are two vocal clips in the game of a young lady (presumably the same who removes her shirt) saying "Nice Shot" and "Nice On."
 
 ### Japan
 
