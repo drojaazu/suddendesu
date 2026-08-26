@@ -13,35 +13,125 @@ tags:
 draft: false
 ---
 
-A Tecmo game featuring boobs? Simply unheard of!
+A Tecmo game featuring boobs? Why, that's simply unheard of!
 
-**WARNING: This article is slightly NSFW. Turn back now if you're in a sensitive area or are offended by low resolution pixel breasts.**
+**WARNING: This article is slightly NSFW. Low-resolution pixelated breasts within.**
 
 <!--more-->
-
-# In-Game Nudity
 
 I was discussing Tecmo game history with a Japanese acquaintance on twitter a couple days ago (regarding a certain long-awaited but forthcoming article), and he mentioned something tangentially related:
 
 >There's a Tecmo trackball-based golf game called Tee'd Off, and supposedly during its development, every time you got a hole-in-one, the girl would take off her clothes. Someone found the graphics in the game data, but their account is now private. It seems the guys at the Tecmo office at that time had the nude version. Anyway, it's practically become an urban legend in Japan, so you may want to investigate that. It could be big news.
 
-Well! That's about as intriguing as it gets. Let me just drop everything and have a look real quick...
-
-The girl in question appears normally in the game, though notably not nude, sporting a red top with the Tecmo logo.
+Well, that is downright intriguing. Let me just drop everything and have a look real quick.
 
 ![](img/teedoffj_girl01.png)
 
 ![](img/teedoffj_girl02.png)
 
-She makes an appearance during the attract mode to introduce the courses as well as the game over screen.
+The game does prominently feature a young blonde girl, sporting a red top with a white collar and a Tecmo logo. She is decidedly *not naked* however.
 
 ![](img/teedoffj_scorecard01.png)
 
 ![](img/teedoffj_scorecard02.png)
 
-She also appears on the score card screen, where her animation varies depending on your score. For par, you'll get a wink. Under par, a blown kiss and a wink. And for a hole in one or 3+ under par, a kiss, a wink *and* floating hearts. However, no matter your score, her top remains in place throughout the game.
+She also appears on the score card screen, where her animation varies depending on your score. For par, you'll get a wink. Under par, a blown kiss and a wink. And for a hole in one or 3+ under par, a kiss, a wink *and* floating hearts. No matter your score, her top remains in firmly in place.
 
-But this urban legend does have merit. There are indeed graphics for this young lady in a state of immodesty within the character ROM, and they're easy to spot.
+---
+
+# 2026 UPDATE - The World Version
+
+Not too long after this article was published, a different version of Tee'd Off appeared and was added to MAME. I've finally sat down and taken the time to compare them and... *oh boy.*
+
+From here you can skip down and read the rest of the original chain of research around the girl and her graphics if you'd like, but to summarize: she does indeed have topless graphics, but they are not used by any code and not accesible without hacking. In fact, the tilemap thet arranges the graphics is broken, requiring a patch to display properly. Based on the "urban legend," we supposed that the topless artwork was the reward for getting a hole in one or ≥3 under par, but the concept was cut at some point. Along the way we also discovered huge dev easter egg in the form of a hidden staff roll. That staff roll *should* have featured the girl at the end, but instead displayed a blank screen as it pointed to invalid data.
+
+Now that you're up to speed, let's compare the two dumps.
+
+The original set is Japan region, while the newer set is "not-Japan" - based respectively on the existence and non-existence of a "For use in Japan only" warning screen. As such, the original set was renamed to `teedoffj` while the newer one took its place as `teedoff`.
+
+The new set is probably the World release, though the MAME source notes that it was found in the USA. There's nothing in it to indicate a specific region, so "not Japan" is the most accurate. But we'll just refer to it as World to make life easier, as MAME does.
+
+It's also literally newer: the Japan set has a date of 1986 on the title screen while the World set has 1987.
+
+After some analysis, we identified three major changes across the revision:
+
+## Re-Tuned Ball Hit Strength
+
+The World version reworked the hit-strength ramp tables. The same range of values is sampled more coarsely (from 113 steps to 97) so a given trackball input lands further up the ramp and launches the ball anywhere from 10 to 20% harder. The distance responds to launch strength roughly as its square, so that modest increase compounds through into a shot that travels a little over twice as far. The cap was lowered too: the game clamps the strength index well short of the end of the ramp, limiting a full-power shot to about 92% of what the Japan version could reach (which makes sense if your balls are going farther on what is less actual physical strength on the trackball).
+
+It's best understood with a visual example:
+
+{{< youtube -Y4x8pVWW6o >}}
+
+You can see how the World version goes farther with controlled conditions. This is the result of the hit strength tuning.
+
+## Re-Recorded Dialogue
+
+There are two vocal clips in the game of a young lady (presumably the same young lady who removes her shirt) saying "Nice Shot" and "Nice On."
+
+### Japan
+
+{{< audio "audio/jp_11_voice_nice_shot.wav" >}}
+
+{{< audio "audio/jp_13_voice_nice_on.wav" >}}
+
+### World 
+
+{{< audio "audio/world_11_voice_nice_shot.wav" >}}
+
+{{< audio "audio/world_13_voice_nice_on.wav" >}}
+
+The clips in the Japan version are spoken quicky and in a thick katakana-english accent, with reverb applied. It's feels muddy.
+
+The World version, however, has the girl speak a little slower and enunciate better. There is still some Japanese accent, but it's much clearer and resonant.
+
+## Rectified Staff Roll
+
+The hidden staff roll had a couple small amendments. The PLANNER title became PLANNING; SHINICHIROU became SHINICHIROH to match the same romanization as SAITOH earlier in the list; INOKOSI became INOKOSHI; and finally, an addition of COPYRIGHT 1987. Nothing major, just some standardization and a copyright.
+
+Wait, they updated the hidden easter egg...?
+
+## Restored Breasts
+
+Now we get to the real interesting piece.
+
+The takeaways from the analysis of the Japan set was that the topless graphics existed, but the tilemap that displayed them was broken; that the graphics/map were not used by any code, so we couldn't know what context they would appear; and that the Game Over screen after the secret staff roll displayed a unique I Love You string and called the code to display the girl, but referenced a non-existent entry in her animation table.
+
+Given that, we could say confidently that the boobs were broken, in either a half-complete or half-removed state, and that there wasn't enough context to determine where they would have appeared.
+
+Somewhat shockingly, the World version *has the boobs fixed and fully implemented in the code,* restoring them to glory.
+
+It turns out the nudity is not a bonus for a hole in one; in fact, you'll never see it during gameplay at all.
+
+*It is intended to be part of the hidden easter egg only.*
+
+![](img/teedoff_world_iloveyou_nude_anim.gif)
+
+Remember that missing ninth entry in her animation table? Well, it's present in the World version, along with some additional code at 0x1EC4 on the sub CPU side that arranges the smaller hearts into a larger heart around her.
+
+So... there we have it. The truth of Tee'd Off's titties has been fully exposed. 
+
+## What Does It Mean?
+
+This is all kind of crazy. I went into this expecting the World version to have minimal changes and to not have more than a sentence or two to write about, but instead we have gameplay changes, content updates, and fixes to a developer easter egg.
+
+It raises the question: are these regional changes or a later revision? Is the Japanese version a location test or (dare I say it...) a prototype of some sort?
+
+It's hard to say. It could be argued that the changes to hit strength and dialogue audio are localization, but they could just as easily be a newer revision and we happen to only dumps of two revisions split across region as well.
+
+The only thing that can be stated as a fact is that the World version is a later release due to the easter egg bugfixes and, more bluntly, the subsequent year on its title screen.
+
+I lean towards our Japanese dump being some kind of pre-release. The fact that the easter egg is straight up broken is a sign that they weren't done with everything, that they had enough time to work in this bit of hidden content but then had to cut a release quickly for a trade show or location test or something like that. That would make the World version we have the full release then and implies there is a similarly final Japanese version floating around out there somewhere.
+
+Who knows. Might just be wishful thinking on my part as I always want more prototypes.
+
+In any case, that concludes the 2026 update and the analysis of the newer World dump. The rest of the article is the original from nearly 4 years ago. If it's your first time, feel free to skip the boobs part since that is now solved, but check out the staff roll section below it.
+
+---
+
+# In Search of Lost Boobs
+
+It seems this urban legend does have some real merit. There are indeed graphics for this young lady in a state of immodesty within the character ROM, and they're easy to spot.
 
 ![](img/teedoff_gfxviewer.png)
 
@@ -209,9 +299,9 @@ Hmm. We have our text, but the lady has disappeared entirely. Maybe there are ot
 
 I'll spare you the next couple hours of reverse engineering that occurred, as it was basically just a lot of poking the code with the debugger and seeing how it reacts. But the result is this: there is a hidden staff roll within the game, and when that is enabled, our bit 4 on 0xC06F is set.
 
-How to trigger the staff roll? It's surprisingly simple: on the very first course, for the very first shot, let it time out. Then, on course 10, once again on the very first shot, let it time out again. And that's it.
+How to trigger the staff roll? It's surprisingly simple: **on the very first course, for the very first shot, let it time out. Then, on course 11, once again on the very first shot, let it time out again.**
 
-You'll still need to make it through all 22 courses in the game, which will bring you to the usual ending screen.
+And that's it. You'll still need to make it through all 22 courses in the game, which will bring you to the usual ending screen.
 
 ![](img/teedoffj_credits.png)
 
@@ -221,7 +311,9 @@ However, after the Tecmo logo scrolls down, the music will change, a couple of s
 
 ![](img/teedoffj_eegg02.png)
 
-<div class="embeddedContent oembed-provider- oembed-provider-youtube" style="text-align: center;"><iframe allowfullscreen="true" frameborder="0" scrolling="no" src="//www.youtube.com/embed/e8x--WppFlc?wmode=transparent&amp;jqoemcache=KRCcs" title="Tee'd Off - Hidden Staff Credits" width="60%" style="aspect-ratio: 3 / 4"></iframe></div>
+{{< youtube e8x--WppFlc >}}
+
+<div class="embeddedContent oembed-provider- oembed-provider-youtube" style="text-align: center;"><iframe allowfullscreen="true" frameborder="0" scrolling="no" src="//www.youtube.com/embed/?wmode=transparent&amp;jqoemcache=KRCcs" title="Tee'd Off - Hidden Staff Credits" width="60%" style="aspect-ratio: 3 / 4"></iframe></div>
 
 One of the graphics at the bottom is an origami crane, and the other is an icon reading MAR. It's unclear what exactly they relate to, but I'm sure they mean something to someone on the staff.
 
