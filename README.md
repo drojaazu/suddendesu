@@ -7,10 +7,9 @@ This is the source for the blog at sudden-desu.net.
 Requires at least [Hugo](https://gohugo.io/) 0.164.0, extended edition. Run `hugo` from the
 root of the project to generate the site in the public subdirectory.
 
-The minimum is enforced in `hugo.yaml` (`module.hugoVersion.min`), so an older Hugo will
-fail with a clear error rather than silently producing different output. Note that the
-Hugo packaged by Debian stable is older than this; the dev server needs a build from
-[the releases page](https://github.com/gohugoio/hugo/releases) or `snap`.
+# Contributing
+
+We welcome original articles that relate to the site's topics: digital archaeology, software and game disassemblies and analysis, emulation, data preservation, Japanese gaming culture and history, and so on. Please create a new *entry* as outlined below and submit a PR for review.
 
 # Content
 
@@ -68,12 +67,3 @@ For large, non-screenshot images (such as scans or photos).
 
 Drops the border and corner radius.
 
-# Layout
-
-The site no longer uses a separate theme directory. Templates, styles and scripts
-live at the project root (`layouts/`, `assets/`, `static/`) using Hugo's current template
-structure (`_partials/`, `_shortcodes/`, `_markup/`).
-
-# Contributing
-
-We welcome original articles that relate to the site's topics: digital archaeology, software and game disassemblies and analysis, emulation, data preservation, Japanese gaming culture and history, and so on. Please create a new entry as outlined above and submit a PR for review.
