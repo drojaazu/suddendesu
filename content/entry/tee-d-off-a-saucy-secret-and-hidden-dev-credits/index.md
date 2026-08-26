@@ -313,8 +313,6 @@ However, after the Tecmo logo scrolls down, the music will change, a couple of s
 
 {{< youtube e8x--WppFlc >}}
 
-<div class="embeddedContent oembed-provider- oembed-provider-youtube" style="text-align: center;"><iframe allowfullscreen="true" frameborder="0" scrolling="no" src="//www.youtube.com/embed/?wmode=transparent&amp;jqoemcache=KRCcs" title="Tee'd Off - Hidden Staff Credits" width="60%" style="aspect-ratio: 3 / 4"></iframe></div>
-
 One of the graphics at the bottom is an origami crane, and the other is an icon reading MAR. It's unclear what exactly they relate to, but I'm sure they mean something to someone on the staff.
 
 After the credits end, we are shown the game over screen like usual. And look, our I Love You text is there!
