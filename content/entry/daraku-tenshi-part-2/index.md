@@ -12,7 +12,7 @@ tags:
 draft: false
 ---
 
-We've looked at [secrets of the game's data in part 1](entry/daraku-tenshi-fallen-angels-part-1). Now let's look at what didn't even make it past the planning stage, at what could have been...
+We've looked at [secrets of the game's data in part 1](/entry/daraku-tenshi-fallen-angels-part-1). Now let's look at what didn't even make it past the planning stage, at what could have been...
 
 <!--more-->
 
@@ -647,6 +647,9 @@ Below I have translated some choice parts of the website that provide some insig
 
 The page introduces some of the characters that didn't make it into the final version. Itō also hints that there were a number of issues with development (some of which really pique one's interest), but doesn't go into detail about what exactly happened. The page links to a gallery of artwork for these characters, but two of three pages simply read "Under Construction," while the remaining one for Lapis has only one working image link.
 
+This page was also the source of the single-frame of sprites for these characters that have been floating around for years. Other sites have said these were found in the game's data; that is not true. They are from Ito's website.
+
+![](img/Botu13.gif) ![](img/Botu04.GIF) ![](img/Botu14.jpeg) ![](img/Botu15.gif)
 
 >どれだけヒットした名作ゲームでも、どんな良作ゲームでも、無事発売に漕ぎ着けるには幾多の問題、難関を乗り換えて、 今あなたの目の前に存在するわけです。それは一言では言い表せない様々な理由（言訳）があるわけです
 >
