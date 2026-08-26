@@ -12,7 +12,7 @@ tags:
 draft: false
 ---
 
-We've looked at [secrets of the game's data in part 1](entry/daraku-tenshi-fallen-angels-part-1). Now let's look at what didn't even make it past the planning stage, at what could have been...
+We've looked at [secrets of the game's data in part 1](/entry/daraku-tenshi-fallen-angels-part-1). Now let's look at what didn't even make it past the planning stage, at what could have been...
 
 <!--more-->
 
