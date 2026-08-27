@@ -29,13 +29,13 @@ Well, that is downright intriguing. Let me just drop everything and have a look 
 
 ![](img/teedoffj_girl02.png)
 
-The game does prominently feature a young blonde girl, sporting a red top with a white collar and a Tecmo logo. She is decidedly *not naked* however.
+The game does prominently feature a young blonde girl who is presumably our caddie, sporting a red top with a white collar and a Tecmo logo. She is decidedly *not naked* however.
 
 ![](img/teedoffj_scorecard01.png)
 
 ![](img/teedoffj_scorecard02.png)
 
-She also appears on the score card screen, where her animation varies depending on your score. For par, you'll get a wink. Under par, a blown kiss and a wink. And for a hole in one or 3+ under par, a kiss, a wink *and* floating hearts. No matter your score, her top remains in firmly in place.
+She also appears on the score card screen, where her animation varies depending on your score. For par, you'll get a wink from Caddie-chan. Under par, a blown kiss and a wink. And for a hole in one or 3+ under par, a kiss, a wink, *and* floating hearts. But no matter your score, her top remains in firmly in place.
 
 ---
 
@@ -47,27 +47,27 @@ From here you can skip down and read the rest of the original chain of research 
 
 Now that you're up to speed, let's compare the two dumps.
 
-The original set is Japan region, while the newer set is "not-Japan" - based respectively on the existence and non-existence of a "For use in Japan only" warning screen. As such, the original set was renamed to `teedoffj` while the newer one took its place as `teedoff`.
+The original set is Japan region, while the newer set is "not-Japan" - respectively based on the existence and non-existence of a "For use in Japan only" warning screen. As such, the original set was renamed to `teedoffj` while the newer one took its place as `teedoff`.
 
-The new set is probably the World release, though the MAME source notes that it was found in the USA. There's nothing in it to indicate a specific region, so "not Japan" is the most accurate. But we'll just refer to it as World to make life easier, as MAME does.
+The MAME source includes a comment that the new set was found in the US, but as there is nothing in it to indicate a specific region, they went with a World designation, and that's how we'll refer to it.
 
-It's also literally newer: the Japan set has a date of 1986 on the title screen while the World set has 1987.
+Another notable difference is the date: the Japan set has a date of 1986 on the title screen while the World set has 1987.
 
-After some analysis, we identified three major changes across the revision:
+After some analysis, we identified three major changes in the World version:
 
 ## Re-Tuned Ball Hit Strength
 
-The World version reworked the hit-strength ramp tables. The same range of values is sampled more coarsely (from 113 steps to 97) so a given trackball input lands further up the ramp and launches the ball anywhere from 10 to 20% harder. The distance responds to launch strength roughly as its square, so that modest increase compounds through into a shot that travels a little over twice as far. The cap was lowered too: the game clamps the strength index well short of the end of the ramp, limiting a full-power shot to about 92% of what the Japan version could reach (which makes sense if your balls are going farther on what is less actual physical strength on the trackball).
+The hit-strength ramp tables were reworked. The same range of values is sampled more coarsely (from 113 steps to 97) so a given trackball input lands further up the ramp and launches the ball anywhere from 10 to 20% harder. The distance responds to launch strength roughly as its square, so that modest increase compounds through into a shot that travels a little over twice as far. The cap was lowered too: the game clamps the strength index well short of the end of the ramp, limiting a full-power shot to about 92% of what the Japan version could reach (which makes sense if your balls are going farther on what is less actual physical strength on the trackball).
 
 It's best understood with a visual example:
 
 {{< youtube -Y4x8pVWW6o >}}
 
-You can see how the World version goes farther with controlled conditions. This is the result of the hit strength tuning.
+You can see how the World version goes farther in controlled conditions. This is the result of the hit strength tuning.
 
 ## Re-Recorded Dialogue
 
-There are two vocal clips in the game of a young lady (presumably the same who removes her shirt) saying "Nice Shot" and "Nice On."
+There are two vocal clips in the game of a young lady (presumably our Caddie-chan) saying "Nice Shot" and "Nice On."
 
 ### Japan
 
@@ -81,7 +81,7 @@ There are two vocal clips in the game of a young lady (presumably the same who r
 
 {{< audio "audio/world_13_voice_nice_on.wav" >}}
 
-The clips in the Japan version are spoken quicky and in a thick katakana-english accent, with reverb applied. It's feels muddy.
+The clips in the Japan version are spoken quicky and in a thick katakana-english accent, with reverb applied. It feels a bit muddy.
 
 The World version, however, has the girl speak a little slower and enunciate better. There is still some Japanese accent, but it's much clearer and resonant.
 
@@ -89,17 +89,19 @@ The World version, however, has the girl speak a little slower and enunciate bet
 
 The hidden staff roll had a couple small amendments. The PLANNER title became PLANNING; SHINICHIROU became SHINICHIROH to match the same romanization as SAITOH earlier in the list; INOKOSI became INOKOSHI; and finally, an addition of COPYRIGHT 1987. Nothing major, just some standardization and a copyright.
 
-Wait, they updated the hidden easter egg...?
+Wait, they updated the hidden easter egg? Does that mean...?
 
 ## Restored Breasts
 
 Now we get to the real interesting piece.
 
-The takeaways from the analysis of the Japan set was that the topless graphics existed, but the tilemap that displayed them was broken; that the graphics/map were not used by any code, so we couldn't know what context they would appear; and that the Game Over screen after the secret staff roll displayed a unique I Love You string and called the code to display the girl, but referenced a non-existent entry in her animation table.
+The remaining mysteries from the original analysis of the Japan set were:
 
-Given that, we could say confidently that the boobs were broken, in either a half-complete or half-removed state, and that there wasn't enough context to determine where they would have appeared.
+ - the topless graphics existed, but the tilemap that displayed them was broken, possibly half-finished or half-removed
+ - the topless graphics/tilemap were not used by any code, so it was impossible to know exactly context they were displayed
+ - the Game Over screen after the secret staff roll displayed a unique "I Love You" string and called the code to display the girl, but referenced a non-existent entry in her animation table which resulted in her not actually appearing
 
-Somewhat shockingly, the World version *has the boobs fixed and fully implemented in the code,* restoring them to glory.
+The World version answers all of these at once.
 
 It turns out the nudity is not a bonus for a hole in one; in fact, you'll never see it during gameplay at all.
 
@@ -107,25 +109,27 @@ It turns out the nudity is not a bonus for a hole in one; in fact, you'll never 
 
 ![](img/teedoff_world_iloveyou_nude_anim.gif)
 
-Remember that missing ninth entry in her animation table? Well, it's present in the World version, along with some additional code at 0x1EC4 on the sub CPU side that arranges the smaller hearts into a larger heart around her.
+Yes, the World version *has the boobs fixed and fully implemented in the code,* restoring them to their rightful glory. The broken tilemap is fixed, the 9th entry in her animation table is present, and there is even additional code at 0x1EC4 on the sub CPU side that arranges the smaller hearts into a larger heart around her.
 
-So... there we have it. The truth of Tee'd Off's titties has been fully exposed. 
+This means that *the nudity is accessible without any hacking on the World version.* You simply need to activate the easter egg.
+
+So... there we have it. The truth of Tee'd Off's titties has been fully exposed, once and for all.
 
 ## What Does It Mean?
 
-This is all kind of crazy. I went into this expecting the World version to have minimal changes and to not have more than a sentence or two to write about, but instead we have gameplay changes, content updates, and fixes to a developer easter egg.
+This is all kind of crazy. I went into this expecting the World version to have minimal changes and to not have more than a sentence or two to write about. Instead we have gameplay changes, content updates, and fixes to a developer easter egg.
 
-It raises the question: are these regional changes or a later revision? Is the Japanese version a location test or (dare I say it...) a prototype of some sort?
+It raises the question: are these just regional changes or a later revision? Is the Japanese version a location test or (dare I say it...) a prototype of some sort?
 
 It's hard to say. It could be argued that the changes to hit strength and dialogue audio are localization, but they could just as easily be a newer revision and we happen to only dumps of two revisions split across region as well.
 
 The only thing that can be stated as a fact is that the World version is a later release due to the easter egg bugfixes and, more bluntly, the subsequent year on its title screen.
 
-I lean towards our Japanese dump being some kind of pre-release. The fact that the easter egg is straight up broken is a sign that they weren't done with everything, that they had enough time to work in this bit of hidden content but then had to cut a release quickly for a trade show or location test or something like that. That would make the World version we have the full release then and implies there is a similarly final Japanese version floating around out there somewhere.
+I lean towards our Japanese dump being some kind of pre-release. The fact that the easter egg is straight up broken is a sign that they weren't done with everything, that they had enough time to work in this bit of hidden content but then had to cut a release quickly for a trade show or location test or something like that. And the World version has an updated year, which is not something you usually see on a regional varient, but on a newer revision. That would make the World version we have the full release then and implies there is a similarly final Japanese version floating around out there somewhere.
 
-Who knows. Might just be wishful thinking on my part as I always want more prototypes.
+But who knows. Might just be my obsession with prototypes talking.
 
-In any case, that concludes the 2026 update and the analysis of the newer World dump. The rest of the article is the original from nearly 4 years ago. If it's your first time, feel free to skip the boobs part since that is now solved, but check out the staff roll section below it.
+In any case, that concludes the 2026 update and the analysis of the newer World dump. The rest of the article is the original from nearly 4 years ago. If it's your first time seeing this article, feel free to skip the boobs part since that is now solved, but check out the staff roll section below it.
 
 ---
 
@@ -259,7 +263,7 @@ So it seems there was some truth to that "urban legend" after all: there is inde
 
 But wait, there's more...
 
-# Hidden Dev Credits
+# Hidden Staff Roll
 
 The first thing that actually caught my eye when I first started disassembling the game was the group of messages at 0x2FBF in the main CPU ROM:
 
