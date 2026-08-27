@@ -29,7 +29,7 @@ Well, that is downright intriguing. Let me just drop everything and have a look 
 
 ![](img/teedoffj_girl02.png)
 
-The game does prominently feature a young blonde girl who is presumably our caddie, sporting a red top with a white collar and a Tecmo logo. She is decidedly *not naked* however.
+The game does prominently feature a young blonde girl who is apparently our caddie, sporting a red top with a white collar and a Tecmo logo. She is decidedly *not naked* however.
 
 ![](img/teedoffj_scorecard01.png)
 
@@ -43,7 +43,7 @@ She also appears on the score card screen, where her animation varies depending 
 
 Not too long after this article was published, a different version of Tee'd Off appeared and was added to MAME. I've finally sat down and taken the time to compare them and... *oh boy.*
 
-From here you can skip down and read the rest of the original chain of research around the girl and her graphics if you'd like, but to summarize: she does indeed have topless graphics, but they are not used by any code and not accesible without hacking. In fact, the tilemap thet arranges the graphics is broken, requiring a patch to display properly. Based on the "urban legend," we supposed that the topless artwork was the reward for getting a hole in one or ≥3 under par, but the concept was cut at some point. Along the way we also discovered huge dev easter egg in the form of a hidden staff roll. That staff roll *should* have featured the girl at the end, but instead displayed a blank screen as it pointed to invalid data.
+From here you can skip down and read the rest of the original chain of research around the girl and her graphics if you'd like, but to summarize: she does indeed have topless graphics, but they are not used by any code and not accesible without hacking. In fact, the tilemap thet arranges the graphics is broken, requiring a patch to display properly. Based on the "urban legend," we supposed that the topless artwork was the reward for getting a hole in one or ≥3 under par, but the concept was cut at some point. Along the way we also discovered a huge developer easter egg in the form of a hidden staff roll. That staff roll has code that *should* have featured the girl at the end, but instead displayed a blank screen as it pointed to invalid data.
 
 Now that you're up to speed, let's compare the two dumps.
 
@@ -83,7 +83,7 @@ There are two vocal clips in the game of a young lady (presumably our Caddie-cha
 
 The clips in the Japan version are spoken quicky and in a thick katakana-english accent, with reverb applied. It feels a bit muddy.
 
-The World version, however, has the girl speak a little slower and enunciate better. There is still some Japanese accent, but it's much clearer and resonant.
+The World version, however, has her speak a little slower and enunciate better. There is still some Japanese accent, but it's much clearer and resonant.
 
 ## Rectified Staff Roll
 
@@ -99,7 +99,7 @@ The remaining mysteries from the original analysis of the Japan set were:
 
  - the topless graphics existed, but the tilemap that displayed them was broken, possibly half-finished or half-removed
  - the topless graphics/tilemap were not used by any code, so it was impossible to know exactly context they were displayed
- - the Game Over screen after the secret staff roll displayed a unique "I Love You" string and called the code to display the girl, but referenced a non-existent entry in her animation table which resulted in her not actually appearing
+ - the Game Over screen after the secret staff roll displayed a unique "I Love You" string and called the code to display Caddie-chan, but referenced a non-existent entry in her animation table which resulted in her not actually appearing
 
 The World version answers all of these at once.
 
@@ -141,7 +141,7 @@ It seems this urban legend does have some real merit. There are indeed graphics 
 
 That's a promising start to unraveling this mystery. The graphics remain, but does the code/data actually reference them?
 
-After a few hours of reverse engineering, we find that the tilemaps for the young lady's graphics are located in the sub CPU ROM, referenced in rudimentary animation scripts that contain simple positioning and timing information. Those scripts are then referenced in a pointer table at 0x174D.
+After a few hours of reverse engineering, we find that the tilemaps for Caddie-chan's graphics are located in the sub CPU ROM, referenced in rudimentary animation scripts that contain simple positioning and timing information. Those scripts are then referenced in a pointer table at 0x174D.
 
 ```
 ptrtblGirlAnims
@@ -329,6 +329,6 @@ Do you remember the animation pointer table we discussed in the first section? I
 
 What does this mean? Something was removed, or it never worked in the first place. Considering we already have proof of nudity being removed and given the nature of the text on this screen, my bet is it was another nude image, likely a variation on one of the existing animations. The code here does not set things up for the floating hearts, so if it was the blowing kiss animation, it wasn't exactly the same as what we have on the score card screen.
 
-We could change the reference to the hole-in-one animation, but it would not be centered on the screen (as the girl normally is on the game over screen). We could copy the existing animation again, reposition it, and move the pointer table somewhere else and add the ninth entry... but that just seems unnecessary work at this point. We don't know *for sure* what this "I Love You" screen displayed, so for us to display any of the girl animations here is no longer restoration but creating something new. That's not really something I'm interested in doing.
+We could change the reference to the hole-in-one animation, but it would not be centered on the screen (as she normally is on the game over screen). We could copy the existing animation again, reposition it, and move the pointer table somewhere else and add the ninth entry... but that just seems unnecessary work at this point. We don't know *for sure* what this "I Love You" screen displayed, so for us to display any of the girl animations here is no longer restoration but creating something new. That's not really something I'm interested in doing.
 
 Besides, we've restored her in the score card screen, and I think that resolves things pretty thoroughly. So I'm calling the mystery of Tee'd Off's titties resolved.
