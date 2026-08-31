@@ -12,19 +12,19 @@ tags:
 draft: false
 ---
 
-With perhaps the most honest title in all of video gaming, *Armadillo Racing* is exactly that. But behind its Global Village Coffeehouse-on-LSD tribal aesthetic lurks... a couple of garden-variety dev tools. Ho-hum.
+With perhaps the most honest title in all of video gaming, *Armadillo Racing* is exactly that. But behind its Global Village Coffeehouse-on-LSD tribal aesthetic lurks... a couple of garden-variety dev tools.
 
 <!--more-->
 
 I've had the pleasure of playing Armadillo Racing in [its original cabinet](https://x.com/GiGO_akiba_ac/status/1541597248563191809) on the retro games floor of GiGO Akihabara 3-gou (perhaps the best thing GiGO has ever done). It's.. fine. Cute. I went [back to playing Rave Racer](https://x.com/suddendesu/status/2058031166813520245?s=20) pretty quick though.
 
-So what is it hiding away? Well... not much.
+So what is it hiding under that scaly armor?
 
 # Dev Test Menu
 
 ![](img/adillorj_dev_menu.png)
 
-Turns out the menu I though I found was already described in the MAME source and [already covered on TCRF](https://tcrf.net/Armadillo_Racing). So we won't elaborate, but briefly...
+Turns out this menu [that I thought I found](https://x.com/suddendesu/status/1358690114033995778?s=20) was already [described in the MAME source](https://github.com/mamedev/mame/blob/master/src/mame/namco/namcos22.cpp) and [already covered on TCRF](https://tcrf.net/Armadillo_Racing). So we won't elaborate, but briefly...
 
 The Namco S22 hardware had a connector edge for dev control panel, it seems, and MAME emulates this with a Machine Configuration adding those inputs back in for some games. In Armadillo Racing, pressing Dev Right whie on the service menu brings up a secondary menu with some graphics tests. From there, the Dev stick and two buttons work pretty intuitively.
 
@@ -64,4 +64,6 @@ So who were N.Aoshima and R.Kaku? It looks like Aoshima appears similarly in Cyb
 
 R.Kaku was much easier to track down: 加来量一 KAKU Ryōichi. There's an interview with him [here](https://www.mygaime.com/post/interview-with-ryoichi-kaku-shohei-nakanowatari-from-bandai-namco-research-inc).
 
-Well, that was one of the shortest articles I've written in some time... The next one will be more interesting, I promise.
+---
+
+Well, that was one of the shortest articles I've written in some time... but we have several bigger, more interesting articles in the works. Keep an eye out on Patreon!
