@@ -15,4 +15,4 @@ draft: false
 
 ([Source](http://fileformats.archiveteam.org/wiki/Atari_File_Management_Subsystem))
 
-<!--more-->
+<!-->
