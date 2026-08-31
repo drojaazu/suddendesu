@@ -16,7 +16,7 @@ With perhaps the most honest title in all of video gaming, *Armadillo Racing* is
 
 <!--more-->
 
-I've had the pleasure of playing Armadillo Racing in [its original cabinet](https://x.com/GiGO_akiba_ac/status/1541597248563191809) on the retro games floor of GiGO Akihabara 3-gou (perhaps the best thing GiGO has ever done). It's.. fine. Cute. I went [back to playing Rave Racer](https://x.com/suddendesu/status/2058031166813520245?s=20) pretty quick though.
+I've had the pleasure of playing Armadillo Racing in [its original cabinet](https://x.com/GiGO_akiba_ac/status/1541597248563191809) on the retro games floor of GiGO Akihabara 3-gou (perhaps the best thing GiGO has ever done). It's.. fine. Cute. I went [back to playing Rave Racer](https://x.com/suddendesu/status/2058031166813520245?s=20) pretty quickly though.
 
 So what is it hiding under that scaly armor?
 
@@ -56,9 +56,9 @@ At 0xA7BC is this string:
 PROGRAMED by N.Aoshima & R.Kaku
 ```
 
-It is not attached to any routines that display text, though it is used by the code as a cold/warm boot flag. On cold boot, it is copied to the head of work RAM; if the game resets and the text is there, it skips the slow RAM initialization and the "For us in Japan only" warning.
+It is not attached to any routines that display text, though it is used by the code as a cold/warm boot flag. On cold boot, it is copied to the head of work RAM; if the game resets and the text is there, it skips the slow RAM initialization and the "For use in Japan only" warning.
 
-You actually see these relatively often in retro games: short, hidden developer names that never appear on screen but are actually used by code as sentinels, syncs, or validity checks. This was a time when staff rolls in games were not guarantees, and even if a game has one, you may not be allowed to use your real name. So hiding your name in the data *and* having the code use it in such an integral code path acts as proof you worked on it and didn't just hex edit your name into some blank space in the ROM.
+You actually see these relatively often in retro games: short, hidden developer names that never appear on screen but are actually used by code as sentinels, syncs, or validity checks. This was a time when staff rolls in games were not guaranteed, and even if a game had one, you may not have been allowed to use your real name. So hiding your name in the data *and* having it used in an integral code path acts as proof you worked on the project and didn't just hex edit your name into some blank space in the ROM.
 
 So who were N.Aoshima and R.Kaku? It looks like Aoshima appears similarly in Cyber Commando and Tokyo Wars (and possibly other Namco games from the era). Moby Games lists a [Nobuyuki Aoshima](https://www.mobygames.com/person/1313019/nobuyuki-aoshima/) who apparently worked for Namco in the early 2000's... and there are [several Japanese patents owned by Namco](https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=200903097053042472) related to 3D games with his his name on them. Notably, these patents are from the mid 1990s at right around the same time the games with the Aoshima credit were release. So I think it's a pretty safe bet that N.Aoshima is 青島信行 AOSHIMA Nobuyuki.
 
