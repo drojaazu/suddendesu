@@ -1,0 +1,881 @@
+---
+title: 'Keio Yūgekitai Leftover Source Code'
+date: 2025-02-08T00:50:10+09:00
+author: Name
+images:
+- img/cover.png
+category: Disassembly / Analysis
+tags:
+- [developer]
+- debug tool
+- prototype
+- unused content
+- easter egg
+- copy warning
+- hidden credits
+- input code
+draft: true
+---
+
+We can learn a lot from disassembling game data, but there is still much guesswork involved. Only source code can tell us the true story of how a game works under the hood. Source code, however, is extremely rare, especially for Japanese games. So it's a real treat when we are able to have a look at the original comments, variable names and structure of such games.
+
+Today is one of those lucky days! Let's have a look at some source code for Keio Yūgekitai (Keio Flying Squadron in the west) for the Sega Mega CD.
+
+<!--more-->
+
+# SCRATCHPAD:
+
+Looks like the dk*.bin files get loaded to sub at 0x9000
+
+And the keio*.bin files too
+
+## HOW DID THIS HAPPEN
+
+The short answer is: unsanitized buffers.
+
+The longer answer of how did this happen specifically with Keio Yūgekitai is a little bit more difficult tyo answer. My initial thought was that certain chunks of data were being positioned at certain offsets to reduce copying around in memory. As an example, let's say there's a 2 megabit buffer (like there is in the Mega CD, a space shared between the Main and Sub CPUs) but the file you're loading from disc is only around 5kb. However, you need the 2kb from the end of that file to be positioned at the 1 megabit boundary, as that is where it will be expected. Well, you could load that 5k file to offset zero, then have some code copy the 2kb over to the 1mbit offset... or you could have a file that is larger, with the 3k data at the front and then a bunch of zeroes that pads things out to the 1mb boundary, and yoru 2kb data can appear there.
+
+Realistically that's not a great example with such small sizes, but in some cases it may be more efficient to load a slightly larger file with the data already "in position" than to copy it all to where it needs to be.
+
+In such cases the dummy data used for padding may be sourced from someplace in RAM (unsanitized) rather than filled with a zeroes (sanitized).
+
+That would be a fair assumption about Keo Yūgekitai, but after some (admittedly brief) analysis, that doesn't seem to be the case. It may be because of it appears in a chunk which may also be used for RAM.
+
+
+KEIO3B FINAL
+looks like this is the key:
+0x000049aa     Start     Stop   Length  Section name
+0x000049d5  FFFF0800 FFFF0807 00000008  head
+0x000049f8  FFFF0808 FFFF080F 00000008  jtbl
+0x00004a1b  FFFF0810 FFFF228F 00001A80  map
+0x00004a3d  FFFF5600 FFFFB207 00005C08  main
+0x00004a60  FFFFB240 FFFFCF9F 00001D60  ram
+0x00004a82  FFFFD000 FFFFD753 00000754  tab
+0x00004aa6 Program entry point : FFFF0808
+
+note that Main is at 0xff5600
+and there's some space between the end of map and the beginning of mame
+this is our unsanitized buffer
+basically, any area where there is space not filled up, is an unsanitized buffer
+
+
+---
+
+We kind of buried the lede with that introduction, so let's start from the beginning: The source code for Keio Yūgekitai has not been released or leaked. However, there are relatively large chunks of it tucked away in the data of some files on the disc:
+
+![](img/keio_example_hex.jpg1)
+
+Moreover, the game was released in three regions. With each region being a different build, each version has different bits of source code in the data. And! There were two demo versions, one for Japan and one for Europe, with their own different chunks of source code. So altogether we have five discs to investigate!
+
+# Introduction
+
+For those are not sofware developers or are otherwise not familiar with lower-level programming, we should clarify some things. Feel free to skip this section if you're already well-versed in programming and exciting concepts like buffer hygiene.
+
+## Source Code vs Machine Code
+
+Source code is the text written by the programmer, the words that represent the instructions for the computer. It is written in a wide range of programming languages, like C, Java, Rust, BASIC, COBOL, assembly, etc. But ultimately the words are for us humans, a way for our inefficient meat brains to communicate with the machine and for others who read the code to understand the intentions of the programmer.
+
+The computer, of course, doesn't think in words, but in a blindingly fast series of electrical voltage changes that represent binary values: on or off, 1 or 0, yes or no. While one can write a program entirely in binary data (and people did in the early days of computing), it is extremely difficult given the complexity of modern computing.
+
+To get our human-readable program into something the computer can use, the *source code* is fed into a compiler which generates *machine code*. During this step, all of that extra human information, like variable names and comments and filenames, is discarded with no way of recovering it. From a copyright point of view, this is good since people cannot simply copy the data, easily modify it, and resell it. From a research and preservation standpoint, however, we lose all the explanation for the data.
+
+That's why so many articles on this site are filled with cautious conjecture: "maybe it worked like this, perhaps this was called from there..." Because none of the names or comments exist anymore to give us context as to why the code is doing what it is doing, and we rely solely on educated guesses.
+
+## Unsanitized Buffers
+
+So if machine code and binary data does not have comments or variable names or other human-oriented "words," what do we mean when we said earlier that chunks of source code were found "tucked away in the data of some files"? In summary, the final versions of some binary files, be they machine code or graphics or whatever, may go through some processing wherein data is shuffled around or spaced out such that it appears at a certain offset in memory when it is loaded. The space that fills in these spaces is called padding, and in some cases it can contain junk data.
+
+Consider, for example, loading files from an old 2x CD-ROM like the Mega CD. You may want some data file to be loaded to memory offset 0x20000, and then another file at 0x21000, and another at 0x22000. You could have the code load three files in order, but the process of seeking and loading each of those files separately is probably much higher than simply seeking to one large file and streaming it all in one go. So, instead of three separate files, you concatenate them all into one, spaced out in chunks of 0x1000 so that one the one file is loaded, each appears where it is expected in memory. Each file is a little less than 0x1000 bytes in size, so there is a bit of padding at the end of the first and second files to get them to that expected length.
+
+That padding is still binary data, even though it goes unused by the program. What *is* that data then? Well, a modern, well-written program that does the concatenation would pre-allocate a buffer (a temporary storage area for doing work on data, like copying) with the total space for the output file and fill it with something safe and meaningless, like zeros. But an older, naively-written program may just start copying directly into the buffer and skip ahead to the next offset boundary within memory or on the disk without actually touching the data within the space that will be used as padding. That means that *if there was already data present in the padding space, it will end up in the final output.*
+
+This is called using an *unsanitized buffer.* Just because some memory or disk space is marked as available doesn't mean it doesn't have data already there. When you delete a file, the data is still present on the disk; the filesystem has just marked that area as free to use. When you close a word processor, for example, large chunks of the text may still be in memory, just marked as no longer in use. (At least for older operating systems; modern OSes are smarter in this regard.) So it's possible, unintentionally or maliciously, to read leftover data that doesn't "belong" to the program.
+
+And this seems to be the case for Keiō Yūgekitai. When padding out some data files for their build, whatever tool they were using seems to have *not* sanitized its buffers. And lucky for us, the data within those buffers held chunks of source code!
+
+Actually, finding bits of source code like this is a pretty common occurance when examining old software. TCRF has [a whole category for this very situation](https://tcrf.net/Category:Games_with_uncompiled_source_code), and there's a great article on OS/2 Museum that looks at [fragments of Microsoft emails that were found within sector padding on the diskettes of an old version of the MS C compiler](https://www.os2museum.com/wp/careful-with-that-buffer/).
+
+# In Keio's Case...
+
+(((With Keio Yūgekitai, the culprit was likely a duo of the compiler and the linker. This is the tool that takes each of the compiled pieces of machine code and wires them together, positioning them at certain expected offsets within memory.)))
+
+
+Let's have a look at this bit of "junk data" text that appears in `keio3b.bin` on the Japanese final version:
+
+```
+    Start     Stop   Length  Section name
+ FFFF0800 FFFF0807 00000008  head
+ FFFF0808 FFFF080F 00000008  jtbl
+ FFFF0810 FFFF228F 00001A80  map
+ FFFF5600 FFFFB207 00005C08  main
+ FFFFB240 FFFFCF9F 00001D60  ram
+ FFFFD000 FFFFD753 00000754  tab
+Program entry point : FFFF0808
+```
+
+As a reminder, this itself is some "junk data" that we are lucky to have. It was pure chance that it was included in the file, and it's somewhat ironic that it helps us understand how it got to be there in the first place.
+
+It is part of a report shown after a build that explains where the linker put certain sections of the code into memory. In particular, it details the memory map from one of the gameplay stages that runs from Main CPU side (e.g. Mega Drive) Work RAM.
+
+Look carefully at the Stop offset compared to the Start offset of the next section. For `head` and `jtbl`, we have a logical layout, with each small section taking up 8 bytes and following one another.
+
+Now look at the Stop address of `map` and the Start address of `main`. There is a large gap that is unaccounted for, from 0xFFFF2290 to 0xFFFF55FF. There is something similar happening from the end of `main` to the beginning of `ram`, and from `ram` to `tab`.
+
+The Start values listed here are not arbitrary and would have been defined in a linker script by the programmers. The end offset doesn't matter as much, so long as the data fits in its allocated space. So that means if a chunk of data doesn't fill out its entire space, the remainder must be filled to reach the next Start offset.
+
+In modern times, we would fill that gap with zeroes or 0xFF or some meaningless randomly generated values. But instead of actually filling that space, the linker can be "clever" and just jump ahead in RAM (that is, the RAM on the development machine where the code is being compiled, not the Mega Drive/CD) to where the next section begins.
+
+And therein lies the problem. That area of RAM that it has skipped over may have some old data in it, like in our "holding tank" example above. And that old data may be the text of some source code that was recently opened...
+
+So in the end, we have a number of data files that have "holes" in between sections of usable data that have the remnants of data in RAM on the development machine, and in a number of cases those remnants happen to be source code and other text related to the games development.
+
+Now let's have a look at it!
+
+# Source Code
+
+From here, we'll look at each file that has source code present, then later we'll look at symbol listings, then finally other text that is not directly related to the game's development.
+
+There's no particular order going forward, except perhaps in a subjective descending ranking of interesting-ness.
+
+## `dk3.bin` (Japan Final version)
+
+Let's begin on the Japan Final version, in file `dk3.bin`:
+
+Japan Final - dk3.bin
+
+```
+		;*** Scroll Chararcter Work ***
+		lea.l	EnemyChrWork(pc),a5
+		move.w	#EneWrkMax-1,d0
+sccl01:		move.w	d0,-(sp)
+		move.w	(a5),d1
+		andi.w	#StsScrBit,d1
+		beq	sccj01
+		move.w	ChrY(a5),d0
+		bsr	WhereScrBlock
+		bcc	sccj01
+	if	EnemyDebug
+		subq.w	#1,ChrX(a5)
+;		add.w	d0,ChrY(a5)
+	else
+		lea.l	MapScrAdd(pc),a1
+		asl.w	#2,d0
+		lea.l	(a1,d0.w),a1
+		move.w	(a1)+,d0
+		add.w	d0,ChrX(a5)
+		move.w	(a1)+,d0
+		add.w	d0,ChrY(a5)
+	endif
+sccj01:		move.w	(sp)+,d0
+		lea.l	ChrSize(a5),a5
+		dbra.w	d0,sccl01
+sccj02:		rts
+*************************************************************************
+*									*
+*	指定キャラクタが現在どのスクロール位置にいるか調べる		*
+*									*
+*************************************************************************
+*	in	d0 = Ｙ座標
+*	out	d0 = スクロール位置
+*		c : ok  cc : bad
+*	break	d0
+WhereScrBlock	equ	*
+		movem.l	d1-d3/a0-a2,-(sp)
+		lea.l	MapAScrWork(pc),a2
+		move.w	CutSize(a2),d2		* d2 Cut Size
+		addq.w	#1,d2
+		move.l	MapCu
+```
+
+What we have here is M68000 assembly language. This is as low level as you can get while still maintaining the concept of "words readable by a human." Each command here directly corresponds to an opcode: a single, primitive command that the CPU can perform. These are extremely simple actions like: move this byte to this location in memory, store this value in a register, add these two numbers together, and so on.
+
+But this is how most console games of the era were developed. Using a higher level language like C wouldn't become more common until the 32-bit era rolled around. There were tools to make life easier for developers, like symbols and macros, but it was still quite complex.
+
+Let's talk a little more about assembly language in terms of what we see above, so we can get a better understanding of what is going on.
+
+### Subroutine Comments
+
+We have the tail end of one function and the beginning of another, called `WhereScrBlock`, which we'll examine first. In C or JavaScript or many other high level languages, a function might be declared something like this:
+
+```
+int add_numbers(int num1, int num2)
+	int out = num1 + num2
+	return out
+```
+
+We can see that it takes two values (num1 and num2), does some work with them, and returns a value back to the caller. The point here is that we, as humans, can easily identify all the pieces going in and coming out.
+
+In assembly, we have no such concept of a function definition. It's much more difficult to write "[self-documenting code](https://en.wikipedia.org/wiki/Self-documenting_code)" at such a low level, so we need to explain to those who read it what our intention is, what goes in, what comes out, and what side effects occur along the way. This helps not only those who see our code but our future selves when we revisit the program weeks or months later for bug fixes.
+
+So the header comment for `WhereScrBlock` above says (in Japanese) that it "finds at which scroll position the specified character is currently located." Below that we have comments indicating the in parameters, out parameters and the break list. The in and out parameters are pretty simple to understand: they are the arguments to the function and the values it returns. Here it says the Y coordinate will be expected in the D0 register, and the scroll position will be available in the D0 register when complete. It also says the Carry flag will be set if there were no problems and will be cleared if there was an error.
+
+### Break List
+
+Finally, it says that register D0 will be "broken." The *break list*, also called the clobber list, is a list of all registers that will be modified by the function at some point.
+
+In `WhereScrBlock` above, it's pretty obvious that D0 will be modified since it will hold the output value, but let's say we have a more complex function wherein some additional storage space is needed to do some calculation. Aside from D0 which will also hold the output at the end, we also decide to use registers D1 and D2 for this calculation.
+
+At the end of the calculation, value is in D0 as expected, but D1 and D2 were modified along the way. Since these changes are not part of the final result, we call this a side effect. In the comments, we warn those who intend to call this function that registers D1 and D2 will be modified, i.e. broken. So if they're using D1 or D2 for their own code, they first need to push it on to the stack to preserve it.
+
+### Symbols
+
+Now what about the subroutine above it? Its beginning is cut off, so we don't know what it's called. Skipping ahead a little bit, there are also several large symbol lists within the Keiō Yūgekitai data. In programming, a *symbol* is any named element that is stored somewhere in memory. This can of course mean variables but also subroutine names and memory offsets. In the example above, `WhereScrBlock` is a symbol which will eventually be located somewhere in the final program code. `EnemyChrWork` is also a symbol, as is `MapScrAdd`.
+
+When a program is compiled to machine code, these symbol names disappear, as we discussed earlier. To aid in debugging (especially when dealing with embedded hardware like a retro game console), symbol lists were often generated during the build process. These tells the programmer where each symbol ended up in memory. That way the developer could set a breakpoint at an address that corresponded to a certain subroutine, or could debug a system crash by seeing where the CPU choked and deduce in what part of the code there was a problem.
+
+Such symbol lists appear in a few of the Keio files. If we have a look at `keio6.bin` on the Japan Final version, we find our subroutine from the example above:
+
+```
+ FFFF85D2  WhereScrBlock
+```
+
+It tells us the code begins at 0xFF85D2, which is within Work RAM on the Main CPU side, which is exactly where we would expect to find it. We're interested in is what surrounds it:
+
+```
+FFFF82E0  SearchWork
+FFFF84FA  VecSwap
+FFFF858A  ScrollChrWork
+FFFF85D2  WhereScrBlock
+FFFF8AE6  PlayerDeadDemo
+FFFF8B46  OptTurnUp
+FFFF8BF8  OptMove
+```
+
+The symbol appearing directly before it is `ScrollChrWork`, which is almost certainly the name of the routine that is cut off in our example. Indeed, there is a comment there that seems to confirm it:
+
+```
+;*** Scroll Chararcter Work ***
+```
+
+In this way, symbol tables are *extremely* useful for code disassembly. Even just the name of a routine can be a huge clue in figuring out what it does and how it works.
+
+So ultimately what we have here is a portion of the code from `ScrollChrWork` and `WhereScrBlock`. Neat!
+
+### Macros, Directives and Preprocessing
+
+Something that that may have caught your eye in that example is this line:
+
+```
+	if	EnemyDebug
+		subq.w	#1,ChrX(a5)
+;		add.w	d0,ChrY(a5)
+	else
+		lea.l	MapScrAdd(pc),a1
+		asl.w	#2,d0
+		lea.l	(a1,d0.w),a1
+		...
+```
+
+Does that mean there is some debug function hidden away that we can coax into working? Well, no, unfortunately. This looks to be a *directive*, a command that applies to the compiler and not to the code itself. When the compiler works on this file, it first goes through a *preprocessing* stage where it finds all the compiler-specific commands and processes them first before continuing to code compilation. This is things like the directives that we just mentioned, but also *macros*, which are small chunks of code that are given a name to be re-used throughout the code: basically, shortcuts so the programmer doesn't have to repeat the same chunk of commands over and over. With assembly source code like this, we see a mix of CPU level commands and "psuedo" commands like directives and macros.
+
+In the example above, if EnemyDebug is defined, the next two lines are included while everything between `else` and `endif` is excluded. If it is not defined, then the opposite happens. As such, the alternate code is never included in the final binary. We would never have known about this if we didn't happen to have this fragment of code.
+
+(It looks like, in this particular case, EnemyDebug simply subtracted 1 from the X position of the sprite in each iteration. We can imagine this made the enemy act "dumb," simply moving to the left of the screen with no other movement.)
+
+If you've survived the wall of text so far, congratulations. From here things won't be so dense as we'll look more at the content of the code rather than trying to do a course on "assembly language development for game consoles in the early 1990s."
+
+
+
+Japan Demo - keio3.bin
+
+
+```
+*************************************************************************
+*									*
+*	慶応遊撃隊　　−天津船編−					*
+*									*
+*					ステージごとの特殊処理		*
+*									*
+*				92.6.19 (Fri) Version 1.00 T.Yamaki	*
+*									*
+*************************************************************************
+stage	group
+	section	map,stage
+	include	flags.i
+	include	keio.i
+	include	equates.i
+	include	macro.i
+	include	scroll.i
+	include	pat1.i
+	include	enemy.i
+	include	cmu.i
+	include	se.i
+	include	syswrk.i
+***********[ Public Symbol ]**********
+	;**** routine ****
+;	xdef	MapEffect
+	xdef	EffStage1
+	xdef	MapInitialize1
+***********[ External Symbol ]**********
+	;**** routine ****
+	xref	CrtOn,CrtOff
+	xref	VramTrans
+	xref	Vsync,Scroll
+	xref	EnemyClear
+	xref	VTransGo
+	xref	PalTop,MoveMemory
+	xref	CramTrans
+	xref	CheckOrders2
+	xref	VTransSetDma
+	xref	fadectl
+	xref	MpABlkTab
+	xref	BosMusStart
+	xref	SEOut
+	;**** work ****
+	xref	TSWork
+	xref	BGTop
+	xref	ScrCnt
+	xref	EneTabTop	* 敵キャラ発生テーブル
+	xref	EnemyMax	* 敵キャラの画面上の数最大値
+	xref	EnemyCnt	* 敵キャラの画面上の数
+	xref	EnemyOdr
+	xref	HScrBuf
+	xref	BosDead
+	xref	ScrStop
+	xref	PalWait1,PalWait2,PalWait3
+	xref	PalCnt1,PalCnt2,PalCnt3
+Mp1PanmSpd	equ	8
+AnmStart	equ	12290	; パレットアニメストップ
+AnmStop		equ	13312	; パレットアニメストップ
+*************************************************************************
+*									*
+*	マ　ッ　プ　１　の　イ　ニ　シ　ャ　ラ　イ　ズ			*
+*									*
+*************************************************************************
+MapInitialize1	equ	*
+		ori.w	#IntStageBat,IntEffect
+		move.w	#1,PalWait1	; パレットアニメ１のウエイト
+		move.w	#1,PalWait2
+		move.w	#1,PalWait3
+		clr.w	PalCnt1		; パレットアニメ１のポインタ
+		clr.w	PalCnt2
+		clr.w	PalCnt3
+		clr.w	TraiCnt		; １ＵＰの為のたらいカウンタ
+		rts
+*************************************************************************
+*									*
+*		マ　ッ　プ　１　の　特　殊　処　理			*
+*									*
+*************************************************************************
+EffStage1	equ	*
+		;**** ボスの音楽スタート ****
+	if	DiscFlag
+		cmpi.w	#13200-60*2,ScrCnt
+		bne	m1ej10
+		bsr	BosMusStart
+		;**** びっくりしたー ****
+m1ej10:		cmpi.w	#4600,ScrCnt
+		bne	m1ej11
+		move.w	#SEbikuri,d0
+		bsr	SEOut
+		;**** 何、あれ？ ****
+m1ej11:		cmpi.w	#13750,ScrCnt
+		bne	m1ej12
+		move.w	#SENani,d0
+		bsr	SEOut
+m1ej12:
+	endif
+		;**** スクロールフラグの操作 ****
+		lea.l	TSWork,a0
+		lea.l	TSBRegs(a0),a1		; flag 0
+		move.w	ScrCnt,d0
+		cmpi.w	#768,d0
+		bne	m1ej02
+		move.w	#1,(a1)
+		clr.w	Mp1PalAnm
+		clr.w	Mp1NPos
+		move.w	#1,Mp1Wait
+		bra	m1ej01
+m1ej02:		cmpi.w	#1024,d0
+		bne	m1ej03
+		move.w	#2,(a1)
+		bra	m1ej01
+m1ej03:		cmpi.w	#1280,d0
+		bne	m1ej04
+		move.w	#3,(a1)
+		bra	m1ej01
+m1ej04:		cmpi.w	#4096,d0
+		bne	m1ej05
+		move.w	#4,(a1)
+		bra	m1ej01
+m1ej05:		cmpi.w	#5376,d0
+		bne	m1ej06
+		move.w	#5,(a1)
+		bra	m1ej01
+m1ej06:		cmpi.w	#8704,d0
+		bne	m1ej07
+		move.w	#6,(a1)
+		bra	m1ej01
+m1ej07:		cmpi.w	#13824,d0
+		bne	m1ej01
+		move.w	#7,(a1)
+m1ej01:		move.w	ScrCnt,d0
+		cmpi.w	#AnmStart,d0
+		blt	m1pj01
+		cmpi.w	#AnmStop,d0
+		bhi	m1pj01
+		subq.w	#1,Mp1Wait
+		bne	m1pj01
+		move.w	#Mp1PanmSpd,Mp1Wait
+		lea.l	ColorRam,a1
+		move.l	PalTop,a0
+		lea.l	12*32*4(a0),a0
+		move.w	Mp1NPos,d0
+		asl.w	d0
+		lea.l	(a0,d0.w),a0
+		;*** Set Palet Data ***
+		move.w	00(a0),$0b*2(a1) 	; b
+		move.w	32(a0),$0c*2(a1)	; c
+		move.w	64(a0),$0d*2(a1) 	; d
+		move.w	96(a0),$0e*2(a1)	; e
+		;*** Next Palet Calc ***
+		move.w	Mp1NPos,d0
+		addq.w	#1,d0
+		cmpi.w	#6,d0
+		bne	m1pj21
+		moveq.l	#0,d0
+m1pj21:		move.w	d0,Mp1NPos
+		move.w	#1,HPalTrans
+m1pj01:		rts
+Mp1PalAnm:	dc.w	0
+Mp1NPos:	dc.w	0
+Mp1Wait:	dc.w	1
+;************************************************
+;*		ＳＥベロシティテーブル		*
+;************************************************
+	xdef	SEVelTab
+SEVelTab	equ	*
+		dc.b	$e0	;  0 ヒット１
+		dc.b	$d0	;  1 ヒット２
+		dc.b	$80	;  2 ショット１
+		dc.b	$80	;  3 ショット２
+		dc.b	$c0	;  4 爆発１
+		dc.b	$ff	;  5 爆発２
+		dc.b	$ff	;  6 爆発３(生物用)
+		dc.b	$80	;  7 ボム
+		dc.b	$ff	;  8 オプション発生
+		dc.b	$ff	;  9 もーらい
+		dc.b	$ff	; 10 オプションショット
+		dc.b	$ff	; 11 パワーアップ
+		dc.b	$ff	; 12 アイテム
+		dc.b	$ff	; 13 ダメージ
+		dc.b	$ff	; 14 やっちゃえ
+		dc.b	$ff	; 15 きゃん
+		dc.b	$ff	; 16 ポチの声
+		dc.b	$ff	; 16 牛
+		dc.b	$ff	; 17 びっくりしたー
+		dc.b	$ff	; 18 何、あれ？
+		dc.b	$ff	; 19
+		dc.b	$ff	; 20
+		dc.b	$ff	; 21
+		dc.w	-1
+TraiCnt:	dc.w	0
+:		dc.w	EneBom
+		dc.w	0
+		dc.w	0
+		dc.w	PEBom
+		dc.w	ETAPri
+*************************************************
+*　		子宝壱号Ｅパターン		*
+*************************************************
+KodaChr:	dc.w	EneKoTakaraB
+		dc.w	272
+		dc.w	064
+		dc.w	PEKoTakaraAA
+		dc.w	0
+HouLife:	dc.w	0
+		end
+```
+
+This is the largest continuous chunk of source code we have available. Moreover, it starts from the beginning of the file and covers parts of Stage 1. Cool!
+
+Right at the top we have a plate comment:
+
+```
+*************************************************************************
+*									*
+*	慶応遊撃隊　　−天津船編−					*
+*									*
+*					ステージごとの特殊処理		*
+*									*
+*				92.6.19 (Fri) Version 1.00 T.Yamaki	*
+*									*
+*************************************************************************
+```
+The first line reads "Keio Yūgekitai - Amatsubune-hen", the heavenly ship chapter. I guess this is the 
+
+
+宿敵、宝船の追撃
+shukuteki, takarabune no tsuigeki
+
+Saturn version is called:
+慶応遊撃隊 活劇編
+
+There are also two novels, with these titles:
+慶応遊撃隊 １ ２ 方舟編 宝玉編
+
+
+
+
+
+This is a bit interesting, since it implies the game could be built to run on a system without a disc. When set, it skips music and some sound effect playback
+0x000059d3 	if	DiscFlag
+
+
+
+
+## `keio1.bin` (Japan Final version)
+
+```
+ブルーチン			*
+*									*
+*************************************************************************
+*	In	d1.w	0 : ダメージ時
+*			1 : 死んだ時
+*************************************************************************
+*									*
+*	敵キャラが死んだとき呼ばれるサブルーチン			*
+*									*
+*************************************************************************
+DeadSubTab	equ	*
+		dc.l	DeadKoya	; 1
+		dc.l	DeadBos		; 2
+		dc.l	DeadUshi	; 3
+		dc.l	DeadOchya	; 4
+		dc.l	DeadSubMarine	; 
+```
+
+Here we have a pointer table to code, called `DeadSubTab`. The description text reads, "Subroutine called when an enemy character dies," and above it it indicated that these subroutines take D1 as an argument, where 0 indicates the enemy has been damaged and 1 indicated the enemy has died.
+
+[TODO seems a bit incongruous, routines say Dead, description says its for dead characters, so why the modifier for damage?]
+
+
+
+
+```
+**********************************************************
+*									*
+*		      敵、弾に当たった瞬間の処理			*
+*									*
+*********************************************************
+```
+
+
+
+"Enemy, handling the moment it hits the bullet"
+
+
+
+
+
+Japan Demo - keio6.bin
+
+```
+0x0000e080 ***********
+0x0000e08d *	子宝参号のホーミング		*
+0x0000e0a8 *****************************************
+0x0000e0d8 PEMKodaHom	equ	*
+0x0000e0ec 		bclr.b	#7,ChrEMT(a5)
+0x0000e104 		beq	khmj01
+0x0000e114 		;***** fast *****
+0x0000e12b 		move.b	#6,ChrRev2H(a5)	
+```
+
+
+Japan Demo - keio7.bin
+
+```
+0x000066ec dmbj10:		rts
+0x00006702 *****************************************
+0x0000672d *	出目金に乗ったたぬき
+```
+
+```
+0x0000c1cb <ﾎリターン ****
+0x0000c1de 		lea.l	WapChrWork(pc),a5
+0x0000c1f9 		move.w	#WapChrSiz,d0
+0x0000c211 		bsr	SearchChrWork
+0x0000c226 		bcs	fotj01
+0x0000c236 		;**** 武器の種類の設定 ***
+0x0000c256 ;		move.w	WapShotSts(a4),d0
+0x0000c273 ;		and.w	#$ff,d0
+0x0000c285 		move.w	#PatONShot,d2		* ノーマル弾
+0x0000c2ab ;		cmpi.w	#ShotNrm,d0
+0x0000c2c2 ;		beq	fotj03
+0x0000c2d1 ;		move.w	#PatO3WShot,d2		* ３ＷＡＹ
+0x0000c2f7 *		cmpi.w	#Shot3Way,d0
+0x0000c30f *		bne	fotj03
+0x0000c31e fotj03:
+0x0000c32b 		;**** 武器のパワーの設
+0x0000e082 ムに変更＆弾のバンク転送 ***
+0x0000e0a2 		move.w	d0,WapShotSts(a4)
+0x0000e0be 		bsr	WeaponBankTrans
+0x0000e0d7 		;*** ＳＥ出力 ***
+0x0000e0ee 		move.w	#SEpowup,d0
+0x0000e104 		bsr	SEOut
+0x0000e111 		move.w	#SEMorai,d0
+0x0000e127 		bsr	SEOut
+0x0000e136 		;*** 自キャム
+```
+
+
+
+Japan Demo - keio2.bin
+
+```
+押されているか調べる
+	xdef	EneHit
+******[ External Symbol ]********
+	;**** func ****
+	xref	MoveCalcVec
+;	xref	MoveCalcVec8
+	xref	HitCheck
+	xref	ChrFormPut
+	xref	ChrWorkClr
+	xref	SearchWork
+	xref	SearchChrWork
+	xref	GetShotBut
+	xref	GetBomBut
+	xref	GetAtkBut
+	xref	GetKeyVec
+	xref	ChgVec64
+	xref	DamageEnemy	* 弾が当った時の処理
+	xref	ClearMemory
+	xref	Sin,Cos
+	xref	HEneCheck
+	xref	HEneShotCheck	* 敵キャラ弾接触チェック
+	xref	VTransSetDma,VTransGo
+	xref	BGTop
+	xref	SEOut,SEOutP
+	xref	GetPointVec
+	xref	TurnUpSLevUp	* ショットレベルＵＰのアイテムを出現させる
+	xref	Random
+	xref	HomSearchEnemy
+	xref	ShotClear
+	xref	HomingFast,HomingNext,MyHomingNext
+	xref	EneScrCheck
+	xref	RedOut,ColorRet
+	xref	
+```
+
+"Find out if [] is being pushed"
+
+The xref commands here are like the `extern` keyword in C, indicating that these functions are not in this file but will be present when everytyhing is linked together.
+
+Japan Demo - title.bin
+
+
+```
+0x00004a58 dm6l01:
+0x00004a61 	Scroll	SUp,0,ScrSpr	; 18
+0x00004a7c 	Wait	1
+0x00004a85 	Scroll	SUp,0,ScrSpr
+0x00004a9b 	Wait	1
+0x00004aa4 	Scroll	SUp*2,0,ScrSpr
+0x00004abc 	Wait	1
+0x00004ac5 	Scroll	SUp*2,0,ScrSpr
+0x00004add 	Wait	1
+0x00004ae6 	Scroll	SUp*3,0,ScrSpr
+0x00004afe 	Wait	1
+0x00004b07 	Scroll	SUp*2,0,ScrSpr
+0x00004b1f 	Wait	1
+0x00004b28 	Scroll	SUp*2,0,ScrSpr
+0x00004b40 	Wait	1
+0x00004b49 	Scroll	SUp,0,ScrSpr
+0x00004b5f 	Wait	1
+0x00004b68 	Scroll	SUp,0,ScrSpr
+0x00004b7e 	Wait	1
+0x00004b89 	Scroll	SDown,0,ScrSpr
+0x00004ba1 	Wait	1
+0x00004baa 	Scroll	SDown,0,ScrSpr
+0x00004bc2 	Wait	1
+0x00004bcb 	Scroll	SDown*2,0,ScrSpr
+0x00004be5 	Wait	1
+0x00004bee 	Scroll	SDown*2,0,ScrSpr
+0x00004c08 	Wait	1
+0x00004c11 	Scroll	SDown*3,0,ScrSpr
+0x00004c2b 	Wait	1
+0x00004c34 	Scroll	SDown*2,0,ScrSpr
+0x00004c4e 	Wait	1
+0x00004c57 	Scroll	SDown*2,0,ScrSpr
+0x00004c71 	Wait	1
+0x00004c7a 	Scroll	SDown,0,ScrSpr
+0x00004c92 	Wait	1
+0x00004c9b 	Scroll	SDown,0,ScrSpr
+0x00004cb3 	Wait	1
+0x00004cbe 	Loop	_i,dm6l01
+0x00004cd5 	AnmEnd	$0
+0x00004ce1 	AnmEnd	$1
+0x00004ced 	AnmEnd	$2
+0x00004cf9 	AnmEnd	$3
+0x00004d0b ;****************************************
+0x00004d36 ;*					*
+0x00004d40 ;*		ＤＭ０７		*
+0x00004d51 ;*					*
+0x00004d5b ;****************************************
+0x00004d86 ;	爆弾たぬき
+0x00004d96 	ClrScr				* Screen CleaLNK
+```
+
+```
+0x000053bc 	Wait	60*4
+0x000053ce 	Jump	SkipAdr
+0x000053e5 ;****************************************
+0x00005410 ;*					*
+0x0000541a ;*		ＰＲ０１		*
+0x0000542b ;*					*
+0x00005435 ;****************************************
+0x00005460 ;	蘭未のプロフィール
+0x00005478 Count	set	0
+0x00005487 Demo0Scr:
+0x00005492 	PckRead	DatDummy1,DatDummy2
+0x000054b2 	SkipSet	SkipAdr
+0x000054c4 reset:
+0x000054cc ;	CDPlay	MusVisOpen		* ＣＤプレイ
+0x000054ef 	ClrScr			* Screen Clear
+0x00005509 	MemSetC	BgAdr		* a0 = chip
+0x00005526 	MemSetC	AnmAdr1		* animetion adress
+0x0000554c 	MemSetC	ColAdr		* color adress
+0x0000556d 	MemSetC	MapAdrA		* map adress
+0x0000558d 	MemSetC	MapAdrB		* map adress
+```
+
+
+So far we've looked at source code from the game itself, but in the USA version, within keio5.bin, we have something pretty unique.
+
+This appears to be the full (kind of) C++ source code for `smapcv`, a tool used during development to apparently convert between the standard SEGA2D format to the game's internal tilemap format.
+
+This is interesting because SEGA2D is more well-known publicly as a tool used in Sega Saturn development, yet here we see the format being used in the development of a Mega CD game.
+
+
+
+USA Final - keio5.bin
+
+```
+0x00006146 //	smapcv [sega2d file] [keio map file] [opt]
+0x00006181 #include	<global.h>
+0x00006196 #include	<iostream.h>
+0x000061ad #include	<fstream.h>
+0x000061c3 #include	<stdio.h>
+0x000061d7 #include	<alloc.h>
+0x000061eb #include	"sega2d.h"
+0x00006200 #include	"cvga.h"
+0x00006213 #include	"keiomap.h"
+0x00006229 #include	"yamlib.h"
+0x00006244 int main(int argc, char **argv)
+0x00006268 	SEGA2D_Header		SEGA_Head;
+0x00006284 	SEGA2D_MapHeader	SEGA_MapHead;		/* マップデータヘッダー		*/
+0x000062c2 	SEGA2D_PageHeader	SEGA_PageHead;		/* ページデータヘッダー		*/
+0x00006302 	SEGA2D_CGHeader		SEGA_CGHead;		/* ＣＧデータヘッダー		*/
+0x0000633d 	SEGA2D_PaletHeader	SEGA_PalHead;		/* パレットデータヘッダー	*/
+0x0000637e 	KM_ScrHeader		KM_sh;
+0x00006399 	if (argc < 3) {
+0x000063ab 		cout << "smapcv [sega2d file] [keio map file] [option]¥n";
+0x000063e9 		cout << "¥t-s1,1¥n";
+0x00006401 		return 1;
+0x00006416 	ifstream	fSMap(argv[1], ios::in | ios::nocreate | ios::binary);
+0x00006458 	if (!fSMap) {
+0x00006468 		cout << argv[1] << " file not open.¥n";
+0x00006493 		return 1;
+0x000064a8 	// ヘッダーの読み込み
+0x000064c2 	fSMap.read((char*)&SEGA_Head, sizeof(SEGA_Head));
+0x000064f6 	SEGA_Head.sID[15] = 0;
+0x0000650f 	cout << "file ID : " << SEGA_Head.sID << endl;
+0x00006544 	LongEndianChg(&(SEGA_Head.dwMapDataOfs));			/* Map data			*/
+0x00006583 	LongEndianChg(&(SEGA_Head.dwMapDataSize));
+0x000065b0 	LongEndianChg(&(SEGA_Head.dwPageDataOfs));			/* Page data		*/
+0x000065f0 	LongEndianChg(&(SEGA_Head.dwPageDataSize));
+0x0000661e 	LongEndianChg(&(SEGA_Head.dwCGDataOfs));			/* CG data			*/
+0x0000665b 	LongEndianChg(&(SEGA_Head.dwCGDataSize));
+0x00006687 	LongEndianChg(&(SEGA_Head.dwPaletDataOfs));			/* Palet data		*/
+0x000066c9 	LongEndianChg(&(SEGA_Head.dwPaletDataSize));
+0x000066f8 	LongEndianChg(&(SEGA_Head.dwAtribDataOfs));			/* Attrib data		*/
+0x0000673b 	LongEndianChg(&(SEGA_Head.dwAtribDataSize));
+0x00006772 	// マップデータの読み込み
+0x00006790 	cout << hex << SEGA_Head.dwMapDataOfs << endl;
+0x000067c1 	fSMap.seekg(SEGA_Head.dwMapDataOfs, ios::beg);
+0x000067f2 	fSMap.read((char*)&SEGA_MapHead, sizeof(SEGA_MapHead));
+0x0000682e 	WordEndianChg(&(SEGA_MapHead.wHPageSize));
+0x0000685b 	WordEndianChg(&(SEGA_MapHead.wVPageSize));
+0x0000688a 	cout << "X size  : " << SEGA_MapHead.wHPageSize << endl;
+0x000068c5 	cout << "Y size  : " << SEGA_MapHead.wVPageSize << endl;
+0x00006904 //			SEGA_MapHead.wHPageSize;
+0x00006923 //			SEGA_MapHead.wVPageSize;
+0x00006946 	fSMap.close();
+0x0000695b 	KM_sh.wMapX = SEGA_MapHead.wHPageSize;
+0x00006984 	KM_sh.wMapY = SEGA_MapHead.wVPageSize;
+0x000069b1 	return	0;
+```
+
+# Everything Else
+
+Japan Final - dk3.bin
+
+```
+0x00005dde ｯ様で、定義ファイルに記述された削除すべきコード領
+0x00005e11 域がOrig 中に含まれていなくても、Orig と New  とが同じファイルになるとは
+0x00005e5b 限りません。
+0x00005e6d 8.  変更の規則
+0x00005e7f  1. 新しいフォントファイルに存在する文字コードが元のフォントファイルにな
+0x00005ec9     ければ、そのコードのフォントデータは空 (00h  で埋めたもの)  になりま
+0x00005f13     す。
+0x00005f1f  2. 元のフォントファイルがもつコード領域テーブルは、昇順に並んでいる必要
+0x00005f69     はありません。また、重複する領域があり、同一コードのフォントが複数存
+0x00005fb3     在する場合、通常は一番最後に現れたフォントデータのほうを新しいフォン
+0x00005ffd     トファイルへ写します。これは $fontx.sys のフォント登録の動作と一致し
+0x00006047     ています。-f オプションを指定すると、 一番はじめに現れたフォントデー
+0x00006091     タを写します。こちらのほうが少し処理が速くなります。
+0x000060cf 9.  注意
+0x000060db   WCDAT.SYS(なるい氏(NIFTY-Serve  NBG01416)作のコンソールドライバ)を使っ
+0x00006125 ていて、  タイムスタンプが   "93-02-10   00:53"   よりも古いものならば、
+0x0000616f JBACK15A.LZH に収められた新しいものに取り替えておいてください。"-"  によ
+0x000061b9 ってテーブル定義ファイルの読み込みを標準入力からに指定したときに、誤動作
+0x00006203 をしてしまいます。
+0x0000621b 10.  開発環境
+0x0000622c   実行ファイルはLSI-C86 Ver.3.30 試食版でコンパイルしました。
+0x0000626b   動作確認は IBM PS/55note N23SX、IBM DOS J5.02C/V 上で行いました。
+0x000062b4 11.  著作権・改変・再配布について
+0x000062d9   パブリックドメインである getopt.c 以外のソースコード、ドキュメント、お
+0x00006323 よび実行ファイルについては、著作権は黒崎浩行に属します。
+0x0000635d   改変・再配布は自由に行ってください(むしろ改変・再配布が妨げられること
+0x000063a6 のないよう希望します)。 ただし、改変されたものの配布に際してはソースコー
+0x000063f0 ド、ドキュメント、および実行ファイル中に改変者名を明記してください。
+0x0000643a 12.  無保証
+0x00006449   私はこのプログラムの使用によって生じた損害について一切の責任を負いかね
+0x0000649f 13.  バージョン履歴
+0x000064b6 0.01 (Feb 14 1993 04:25)
+0x000064d0         最初のバージョン
+0x000064ea 0.02 (Feb 14 1993 18:37)
+0x00006504         Makefileを修正
+0x0000651c         元のフォントファイルのヘッダの整合性を確認する
+0x00006554         テーブル定義ファイルの行数制限チェック
+0x00006584         show2tbl.sed を添付
+0x000065a1 0.03 (Feb 15 1993 05:58)
+0x000065bb         テーブル定義中、開始コードが終了コードより大きく指定されていたら
+0x00006605         中断する
+0x00006617         showtbl.pl を添付
+0x00006632         和文ドキュメントを添付
+0x00006652 0.04 (Feb 15 1993 21:00)
+0x0000666c         -O オプション(コード領域テーブル定義の最適化)を追加
+0x000066a9         -f オプション(元のフォントファイル中に同一コードのフォントが複数
+0x000066f3         存在するときに最初のフォントを新しいフォントファイルへ写す)を追
+0x0000673c         加、デフォルトの動作を変更
+0x00006760         modfxtbl.c に書いていた英文ドキュメントを削除(和文ドキュメントと
+0x000067aa         の一致を図るのが面倒くさくなったので)
+0x000067d9 0.05 (Feb 16 1993 18:34)
+0x000067f3         -a・-d オプション (定義ファイルを追加用・削除用とみなす) を追加
+0x0000683c 0.06 (Feb 27 1993 23:59)
+0x00006856         Borland C++ Ver.3.0 でもコンパイルできるようにした。
+0x00006894         (showtbl.pl) djgpp版のようにintが16ビットでないjperlを使うとコー
+0x000068de         ド領域テーブルが正常に表示されないのを修正。
+0x00006914         上記に応じて C ソースでも文字コードを代入する変数をunsigned int
+0x0000695d         型から unsigned short int 型に変えた。
+0x0000698d 1.00 (Apr 29 1993)
+0x000069a1         新規フォントファイルと同名ファイルがある場合は無条件に中断するこ
+0x000069eb         とにした。
+0x00006a03 14.  謝辞
+0x00006a10   $fontx.sys の著作者である lepton 氏に感謝します。
+```
+
+
+The pattern that emerges is that the data seems to begin around [] and end near 0x7000. 
