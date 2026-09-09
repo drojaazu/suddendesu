@@ -752,7 +752,7 @@ The value at 0x20F48C counts the number of strips passed in a *tick*. So in a wa
 
 A tick, in this case, is a full iteration of the game's main loop. The video updates at 60 Hz, but the main loop only runs at 30. So in order to be accurate with our terminology, a frame is a video screen update, 60 times a second; a tick is a main loop iteration, 30 times a second.
 
-That accounts for the 30 is the multiplier 
+That accounts for the 30 as the multiplier 
 
 Determining the meaning of 96 is less obvious. If we sample both the "strips per tick" value and the raw speed over time, and then divide each raw speed value by 96, we would find that value aligns very closely with the strips per frame value. That tells us that 96 is a constant corresponding to the "length" of each strip.
 
@@ -920,7 +920,7 @@ The feels like they were off to a great start with solid gameplay, but ended up 
 
 There may be a reason for it.
 
-In [Game Machine #388])(https://onitama.tv/gamemachine/pdf/19900915p.pdf), the cover story is Sega's announcement of their new, powerful arcade hardware, the System 32. The first sentence proclaims that this will be not just the first 32-bit Sega video game, but the first 32-bit CPU used in any arcade machine *in the world.* Planning for a 32-bit machine began with the release of the 16-bit Mega Drive in 1988, it explains, with the logic being that the arcade should always be a step ahead of the home consoles.
+In [Game Machine #388](https://onitama.tv/gamemachine/pdf/19900915p.pdf), the cover story is Sega's announcement of their new, powerful arcade hardware, the System 32. The first sentence proclaims that this will be not just the first 32-bit Sega video game, but the first 32-bit CPU used in any arcade machine *in the world.* Planning for a 32-bit machine began with the release of the 16-bit Mega Drive in 1988, it explains, with the logic being that the arcade should always be a step ahead of the home consoles.
 
 The last section announces only one game: a driving simulator, still in development, with a target sales date of January 1991. It further says the game won't be ready for display at the 28th AM Show in early October, and Sega will only have the system board on display.
 
