@@ -1,5 +1,5 @@
 ---
-title: 'Rad Mobile'
+title: 'Rad Mobile - Input Codes, Broken Gameplay Elements, and Cut Content'
 og_description: "There's more to Rad Mobile than the Sonic rear-view mirror ornament: Input codes, buggy and half finished functionality, and lots of unused content."
 date: 2026-09-09T23:45:00+09:00
 author: Ryou
@@ -249,9 +249,7 @@ It is lacking the number ordinal at the end, however. The round text is still ab
 
 But something I personally find more interesting abot the flyer is that it has an early version of the System 32 hardware logo on the front.
 
-![Older, printed on the Rad Mobile flyer](img/system32_old.svg)
-
-![The final logo, printed on flyers for all later games](img/system32_new.svg)
+![Older, printed on the Rad Mobile flyer](img/system32_old.svg)![The final logo, printed on flyers for all later games](img/system32_new.svg)
 
 I think I prefer the final version, with its Helvetica-esque industrial-machinery-repair-manual aesthetic.
 
@@ -624,9 +622,9 @@ You were probably playing Gale Racer, where the can throw was fixed and even the
 
 # BONUS: All Traffic Variants
 
-Because I needed to narrow down what exactly the car variants were for the can throw (before I realized it was just the rivals), I ended up enumerating them all. So here's a handy reference sheet:
+Because I needed to narrow down what exactly the car variants were for the can throw (before I realized it was just the rivals), I ended up enumerating them all.
 
-![[(click for full size version)](img/radmu_traffic_types.jpg)](img/radmu_traffic_types_thumb.jpg)
+[So here's a handy reference sheet](img/radmu_traffic_types.jpg).
 
 # Unused Barrel Roll Crash
 
