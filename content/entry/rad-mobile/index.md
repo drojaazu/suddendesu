@@ -1,25 +1,19 @@
 ---
 title: 'Rad Mobile'
-date: 2026-09-04T00:45:08+09:00
-# author defaults to Params.author in hugo.yaml; set this only for guest posts
+og_description: "There's more to Rad Mobile than the Sonic rear-view mirror ornament: Input codes, buggy and half finished functionality, and lots of unused content."
+date: 2026-09-09T23:45:00+09:00
 author: Ryou
 images:
-- img/cover.png
+- img/radm_title_crt.jpg
 category: Disassembly / Analysis
-# Uncomment any tags that apply.
 tags:
-# - (developer name)
-# - debug tool
-# - prototype
-# - unused content
-# - easter egg
-# - no copy warning
-# - hidden credits
-# - input code
-draft: true
+- sega
+- unused content
+- input code
+draft: false
 ---
 
-Sega's first game on a 32-bit CPU, the first appearance of Sonic the Hedgehog in a game
+Yeah everyone knows Rad Mobile because of the Sonic the Hedgehog rear-view mirror ornament, but there's a lot more underneath its hood.
 
 <!--more-->
 
