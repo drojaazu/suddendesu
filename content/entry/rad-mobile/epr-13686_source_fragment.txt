@@ -1,0 +1,344 @@
+Rad Mobile / Rad Mobile (US) -- developer residue recovered from epr-13686.bin
+==============================================================================
+ROM            epr-13686.bin  (32768 bytes)
+MAME sets      radm, radmu -- ROM region "user2", loaded flat by a single
+               ROM_LOAD, so there is no interleave and no byte swap
+Board          Deluxe cabinet motion-control PCB (Z80); not emulated by MAME
+SHA1           e0788dc7a7d214d9c4d26b24e44c1a0dc9ae477c
+CRC32          0x317A2857
+
+Live Z80 program   ROM 0x0000-0x2AFF  (intact)
+Residue            ROM 0x2B00-0x7FFF  (21504 bytes raw / 21080 recoverable)
+
+FRAMING
+    Every 256-byte page from 0x2B00 to 0x7FFF begins with exactly 8 zero
+    bytes.  85 pages x 8 = 680 bytes are destroyed *in place* -- surrounding
+    data is not shifted, which the clipped words prove:
+        ROM 0x32F8  "... LD  (ENC_1),HL<CR>"
+        ROM 0x3300  "NC_1S),HL"          <- the 8 bytes "<LF>\t\tLD\t(E" are gone
+    No page below 0x2B00 has the pattern, so the live program is unaffected.
+
+ENCODING
+    Shift-JIS (CP932).  ASCII for mnemonics, double-byte kanji/kana for the
+    comments, MS-DOS CRLF, hard tabs.  Not JIS X 0201 half-width katakana, not
+    EUC-JP, not high-bit-set ASCII, not packed or RLE'd.  This file is UTF-8;
+    CRLF has been normalised to LF.
+
+THE SOURCE WINDOW IS ROTATED
+    ROM 0x315A-0x4159 is exactly 0x1000 bytes = 16 pages' worth of payload
+    (3968 recoverable bytes).  It is a 4 KB window of the source that has been
+    rotated: the text at 0x4159 continues directly into the text at 0x315A --
+        "... LD (CTC1_W),A<TAB>;"  +  "8253 CH2 MODE SET ..."
+    -- which is confirmed by the 8253 control word 0x9A (channel 2) two lines
+    above and by the "LD (CTC1_2),A" that follows.  The real discontinuity is
+    the CP/M end-of-file pair 0x1A 0x1A at ROM 0x360D-0x360E.  Section 1 below
+    is rotated to start at 0x360F, which makes the whole 4 KB read as one
+    continuous listing.  (This rotation is what The Cutting Room Floor
+    describes as "the last few lines of code were inexplicably moved to the
+    top".)
+
+RESIDUE MAP
+    0x2B00-0x2D56   Intel-HEX object output for THIS ROM (see section 3)
+    0x2D57-0x3159   8086 MS-DOS machine code (PC-9801 host tooling)
+    0x315A-0x4159   Z80 assembler source, rotated 4 KB window (section 1)
+    0x415A-0x4AFF   8086 MS-DOS machine code
+    0x4AF7          "MIFES" / 0x4B08 "4.10" -- MIFES 4.10, the PC-9801
+                    Japanese text editor the source was being edited in
+    0x4C5B-0x4CAB   source crumb in the editor's buffer (section 2)
+    0x4C9E-0x6C50   MIFES data: function-key legends, macro names (cmasm,
+                    ccompile, cdelnum, cisearch, ckeisen, cnumber, cvinput,
+                    print), menu strings, "A:\MIFES.$A$/$B$/$C$", "MILIB",
+                    "miprof.$_$", "A:\ICE", "SRC\*.SRC"
+    0x6BA6-0x6BC4   source crumb (section 2)
+    0x6C51-0x7FFF   MIFES message catalogue (Japanese UI/error strings) plus
+                    the editor's tag buffer holding a few Z80 symbol names
+==============================================================================
+
+
+SECTION 1 -- Z80 assembler source, 4 KB window, rotated to the
+             0x1A 0x1A seam at ROM 0x360F.  Reading order is
+             0x360F..0x4159 then 0x315A..0x360E, so the trailing
+             <EOF><EOF> is the 0x1A 0x1A pair the rotation was keyed to.
+             3968 bytes recovered, 128 bytes lost in 16 marked gaps.
+==============================================================================
+a
+		inc	hl
+nd_sgm5:	push	hl
+		ld	de,(dlt2_max)
+		or	a
+		sbc	hl,de
+		pop	hl
+		ld	de,0
+		ld	(dlt2),de	
+		ret	c
+		ld	(dlt2_max),hl
+		ld	(dlt2_max_d),hl
+		ret
+
+;///////////////////////////////////////////////;
+;	積商ル－チン　ゼア
+;;;;;;;; 8 BYTES LOST AT ROM 0x3700  ->  (4 double-byte kana)   [unknown] ;;;;;;;;
+ンプルより
+;///////////////////////////////////////////////;
+;
+;	HL = HL * DE  ,  HL = HL / DE
+;
+;       SAMPLE 2-8 	by S.OOHIRA
+
+MULT:   CALL	HOHL
+        PUSH	BC
+	LD	A,16            ;COUNTER SET
+	LD	B,H             ;LOAD BC,HL
+	LD	C,L
+;;;;;;;; 8 BYTES LOST AT ROM 0x3800  ->  \r\n\tLD\tHL,   [forced] ;;;;;;;;
+0000
+LOOP:	SRL	D               ;SRL	HL
+	RR	E
+	JR	NC,BCSHFT
+	ADD	HL,BC
+BCSHFT:
+	SLA	C               ;SLA 	BC
+	RL	B
+	DEC	A
+	JR	NZ,LOOP
+SKIP:	POP	BC
+	SRL	C               ;SIGN MINUS -> HL= -HL
+	JR	NC,STOCK
+;
+	LD	A,H
+	CPL          		;HL 
+;;;;;;;; 8 BYTES LOST AT ROM 0x3900  ->  <- ABS H   [forced] ;;;;;;;;
+L
+	LD	H,A
+	LD	A,L
+	CPL
+	LD	L,A
+	INC	HL
+;
+STOCK:	LD	(0E000H),HL
+	RET
+;
+;
+;       HL = HL / DE      DE = HL MOV DE
+;
+;
+DIV:	LD	A,E       	;IF DE=0 , NOT DIVISION
+	OR	D
+	RET	Z
+;
+	CALL	HOHL
+	PUSH	BC
+	LD	BC,0000
+	PUSH	HL            
+;;;;;;;; 8 BYTES LOST AT ROM 0x3A00  ->    ;LOAD    [probable] ;;;;;;;;
+IX,HL
+	POP	IX
+	LD	A,16            ;COUNTER SET
+DLOOP:	ADD	IX,IX         	;SLA	BCIX
+	RL	C
+	RL	B
+	OR	A               ;CARRY OFF
+	LD	H,B
+	LD	L,C
+	SBC	HL,DE
+	JR 	C,CONT
+	LD	B,H
+	LD	C,L
+	INC	IX
+CONT:   DEC	A
+	JR	NZ,DLOOP
+	PUSH	IX        
+;;;;;;;; 8 BYTES LOST AT ROM 0x3B00  ->        ;L   [probable] ;;;;;;;;
+OAD HL,IX
+	POP	HL
+	LD	D,B             ;LOAD BC,DE
+	LD	E,C
+	JR	SKIP
+;
+;       HL = ABS(HL)  ,  DE = ABS(DE)
+;       C=0 ･･･ HL*DE or HL/DE -> PLUS
+;	C=1 ･･･ HL*DE or HL/DE -> MINUS
+;
+HOHL:	LD	C,0     	;SET PLUS SIGN
+ 	LD	A,H
+	OR	A
+	JP	P
+;;;;;;;; 8 BYTES LOST AT ROM 0x3C00  ->  ,HODE      [forced] ;;;;;;;;
+       ;IF HL >= 0 , GOTO HODE
+	CPL          		;HL <- ABS HL
+	LD	H,A
+	LD	A,L
+	CPL
+	LD	L,A
+	INC	HL
+	INC	C               ;SET MINUS SIGN
+HODE:   LD	A,D
+	OR	A
+	RET	P               ;IF DE >= 0 , RETURN
+	CPL                     ;DE <- ABS DE
+;;;;;;;; 8 BYTES LOST AT ROM 0x3D00  ->  \r\n\tLD\tD,A   [forced] ;;;;;;;;
+
+	LD	A,E
+	CPL
+	LD	E,A
+	INC	DE
+	LD	A,1
+	XOR	C               ;C = SIGN * MINUS
+	LD	C,A
+	RET
+
+;///////////////////////////////////////////////////
+;	ＰＰＩ　初期設定  			   /
+;///////////////////////////////////////////////////
+
+PPIINIT:
+;;;;;;;; 8 BYTES LOST AT ROM 0x3E00  ->  \tLD\tA,10   [forced] ;;;;;;;;
+001010B	;RESET.
+		LD	(PPI0_W),A
+
+		LD	A,10001011B	;RESET.
+		LD	(PPI1_W),A
+		RET
+
+;///////////////////////////////////////////////////
+;	ＣＴＣ　　初期設定			   / 	
+;///////////////////////////////////////////////////
+
+CTCINIT:	LD	A,24H
+;;;;;;;; 8 BYTES LOST AT ROM 0x3F00  ->   \t\tLD\t(C   [forced] ;;;;;;;;
+TC0_W),A	;8253 CH0 MODE SET
+ 		LD	A,040H
+ 		LD	(CTC0_0),A	;4ms INTERUPT CLK
+ 
+		ld	hl,clk_sfty1_l1
+ 		LD	A,l
+ 		LD	(CTC0_1),A	;SAFTY CLOCK 1
+ 		LD	A,H  
+ 		LD	(CTC0_1),A	;SAFTY CLOCK 1
+ 		LD	A,0b4H
+ 		LD	(CTC0_W),A	;8253 CH2 MODE SET  "MO
+;;;;;;;; 8 BYTES LOST AT ROM 0x4000  ->  DE 2"\r\n\t   [forced] ;;;;;;;;
+	ld	hl,clk_sfty2_l1
+ 		LD	A,l
+ 		LD	(CTC0_2),A	;SAFTY CLOCK 2
+ 		LD	A,h
+ 		LD	(CTC0_2),A	;SAFTY CLOCK 2
+
+		LD	A,24H
+		LD	(CTC1_W),A	;8253 CH0 MODE SET
+		LD	A,1H
+		LD	(CTC1_0),A	;8253 CH0 15KHz CLOCK
+
+		LD	A,5AH
+		LD	(CTC1_W),A	;8253 CH1
+;;;;;;;; 8 BYTES LOST AT ROM 0x4100  ->   MODE SE   [forced] ;;;;;;;;
+T
+		LD	A,7FH
+		LD	(CTC1_1),A	;POWER 127/255 SET
+
+		LD	A,9AH
+		LD	(CTC1_W),A	;8253 CH2 MODE SET
+		LD	A,7FH
+		LD	(CTC1_2),A	;POWER 127/255 SET
+  		RET
+
+;///////////////////////////////////////////////////
+;	encoder 積分値　初期設定		   / 	
+;;;;;;;; 8 BYTES LOST AT ROM 0x3200  ->  \r\n;/////   [forced] ;;;;;;;;
+//////////////////////////////////////////////
+		
+ENCINIT:	LD	HL,(IENC0)	;レゾルバ０
+		LD	A,H
+		AND	00001111B
+		LD	H,A
+		LD	(ENC_0),HL
+		LD	(ENC_0S),HL
+
+ 		LD	HL,(IENC1)	;レゾルバ１
+ 		LD	A,H
+ 		AND	00001111B
+ 		LD	H,A
+		LD	(ENC_1),HL
+;;;;;;;; 8 BYTES LOST AT ROM 0x3300  ->  \r\n\t\tLD\t(E   [forced] ;;;;;;;;
+NC_1S),HL
+		RET
+
+;-----------------------------------------------------------------------------
+;O	*RAD MOBILE DELUXE CABINET MOVING CONTROL.			     O
+;O			CABINET DESIGN	BY	ASATA.HIRAI		     O
+;O			MECHANIC DESIGN	BY	MASAO.YOSHIMOTO		     O
+;;;;;;;; 8 BYTES LOST AT ROM 0x3400  ->  \r\n;O\t\t\t\t   [probable] ;;;;;;;;
+    AND NORIAKI.UEDA   		     O
+;O			CABINET.PRODUCT	BY	MASAKI.MATSUNO 		     O
+;O					    AND	FUTOSHI.ITOH		     O
+;O			ELECTRIC DESIGN	BY	MASAYUKI.OSADA   	     O
+;O                                          AND NOBUYUKI.KADOI               O
+;;;;;;;; 8 BYTES LOST AT ROM 0x3500  ->  \r\n;O\t\t\tHA   [forced] ;;;;;;;;
+RDWARE DESIGN	BY	MASAYUKI.OSADA		     O
+;O									     O
+;O		MOTOR CONTROLER PROGRAM	BY	MASAYUKI.OSADA    	     O
+;O		GAME		PROGRAM BY	AM R&D 3rd.		     O
+;O									     O
+;--------------------------------------------------------------------
+;;;;;;;; 8 BYTES LOST AT ROM 0x3600  ->  --------   [forced] ;;;;;;;;
+-
+
+<EOF><EOF>
+
+SECTION 1b -- the 16 destroyed page heads inside the source window
+==============================================================================
+Each 8-byte loss, and what the surrounding text forces it to have been.
+"forced" = only one 8-byte filling is consistent with the code and the
+listing's own house style; "probable" = length and style fit but the exact
+whitespace is a guess.  These are NOT substituted into section 1.
+
+0x3200  [forced  ]  "\r\n;/////"            closes the banner rule to the same 51 columns as its opening line
+0x3300  [forced  ]  "\r\n\t\tLD\t(E"        LD (ENC_1),HL / LD (ENC_1S),HL
+0x3400  [probable]  "\r\n;O\t\t\t\t"        ;O <tabs> AND NORIAKI.UEDA
+0x3500  [forced  ]  "\r\n;O\t\t\tHA"        ;O   HARDWARE DESIGN BY MASAYUKI.OSADA
+0x3600  [forced  ]  "--------"              closes the 77-column rule under the credit banner
+0x3700  [unknown ]  (4 double-byte kana)    comment reads 積商ル－チン　ゼア [4 kana] ンプルより
+0x3800  [forced  ]  "\r\n\tLD\tHL,"         zeroes the shift-add accumulator: LD HL,0000
+0x3900  [forced  ]  "<- ABS H"              ;HL <- ABS HL, same comment as in HOHL
+0x3A00  [probable]  "  ;LOAD "              ;LOAD IX,HL
+0x3B00  [probable]  "      ;L"              ;LOAD HL,IX
+0x3C00  [forced  ]  ",HODE   "              JP P,HODE -- the branch target exists later in the listing
+0x3D00  [forced  ]  "\r\n\tLD\tD,A"         CPL / LD D,A / LD A,E
+0x3E00  [forced  ]  "\tLD\tA,10"            PPIINIT: LD A,10001010B, matching PPI1's 10001011B
+0x3F00  [forced  ]  " \t\tLD\t(C"           LD (CTC0_W),A
+0x4000  [forced  ]  "DE 2"\r\n\t"           the comment is ;8253 CH2 MODE SET  "MODE 2" -- "MO" is NOT a label
+0x4100  [forced  ]  " MODE SE"              ;8253 CH1 MODE SET
+
+
+SECTION 2 -- source crumbs elsewhere in the residue (editor buffers)
+==============================================================================
+
+--- ROM 0x4C5B-0x4CAB  editor buffer: cabinet-error handler ---
+err_cabi:      	LD	HL,INP_0	;right limit sw on then o.c err cancel.		BIT	0,(HL)
+
+--- ROM 0x6BA6-0x6BC4  editor buffer: equate line ---
+bank_mon	equ	wnd+0ah		;ＳＹＳ３
+
+--- ROM 0x7060-0x7092  editor tag/search buffer: symbol crumbs ---
+sENC_1S␀TC1_2␀\x90␀␀\x8a\x92␀\xf5>\x8a2␀
+U=\x8ass00001111␀
+
+
+SECTION 3 -- Intel-HEX object output for this ROM, left in the buffer
+==============================================================================
+The residue opens with the linker's Intel-HEX records for the motor program
+itself.  Every fully-preserved record has a valid checksum AND matches the
+live code in this same ROM byte for byte, which is what identifies the
+residue as the developer's own build host.  Records at 0x27D0 and 0x2830 are
+clipped by the 8-byte page losses and are not listed.
+
+:10279000CB2CCB1DC3C827E52A40C2CB2CCB1DCBED   ; load 0x2790..0x279F  checksum=OK  matches ROM=yes
+:1027A0002CCB1DCB2CCB1DCB2CCB1D545D2A40C27A   ; load 0x27A0..0x27AF  checksum=OK  matches ROM=yes
+:1027B000B7ED52D1192240C2CB2CCB1DCB2CCB1D57   ; load 0x27B0..0x27BF  checksum=OK  matches ROM=yes
+:1027C000CB2CCB1DCB2CCB1D2248C2226CC22A485D   ; load 0x27C0..0x27CF  checksum=OK  matches ROM=yes
+:1027E000C5012000EDB02A46C22248C2226CC2298F   ; load 0x27E0..0x27EF  checksum=OK  matches ROM=yes
+:1027F0002929292240C2C9DD2152C2DD7E00DD34F3   ; load 0x27F0..0x27FF  checksum=OK  matches ROM=yes
+:1028000000FE00C28C28DD3600002100C61120C663   ; load 0x2800..0x280F  checksum=OK  matches ROM=yes
+:10281000012000EDB02120C61102C6012000EDB05C   ; load 0x2810..0x281F  checksum=OK  matches ROM=yes
+:102820002A56C22200C6210000ED5B00C619ED5BEE   ; load 0x2820..0x282F  checksum=OK  matches ROM=yes
+:10284000C619ED5B0AC619ED5B0CC619ED5B0EC629   ; load 0x2840..0x284F  checksum=OK  matches ROM=yes

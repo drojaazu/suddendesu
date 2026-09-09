@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="999.23816"
+   height="381.11636"
+   viewBox="0 0 999.23816 381.11636"
+   font-family="Cuprum, 'Trebuchet MS', 'DejaVu Sans', sans-serif"
+   version="1.1"
+   id="svg71"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <!-- ===================================================================
+       Rad Mobile (Sega System 32) - Flicky mirror-ornament input window.
+       Geometry is driven by two numbers: COL0 = 104 (x of frame +0) and
+       COL  = 68  (pixels per frame).  x(frame n) = 104 + 68*n.
+       Frames shown: start+0 .. start+12.  Absolute frames are the measured
+       radmu trace (Start pressed at frame 411).
+       =================================================================== -->
+  <defs
+     id="defs1">
+    <rect
+       x="188.46344"
+       y="274.30301"
+       width="158.73129"
+       height="72.891708"
+       id="rect79" />
+    <style
+       id="style1">
+      .h1   { font-size: 27px; font-weight: 700; fill: #e1850a; }
+      .h2   { font-size: 15px; fill: #9aa0ab; }
+      .lane { font-size: 13px; fill: #c8ccd4; text-anchor: end; }
+      .fnum { font-size: 15px; fill: #e6e8ec; text-anchor: middle; }
+      .fabs { font-size: 11px; fill: #6f7681; text-anchor: middle; }
+      .note { font-size: 13.5px; fill: #d8dbe1; }
+      .noteb{ font-size: 13.5px; fill: #e1850a; font-weight: 700; }
+      .foot { font-size: 12.5px; fill: #8b919c; }
+      .mono { font-family: 'DejaVu Sans Mono', 'Courier New', monospace; }
+    </style>
+    <marker
+       id="arrow"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="7"
+       markerHeight="7"
+       orient="auto-start-reverse">
+      <path
+         d="M 0,0 10,5 0,10 Z"
+         fill="#e1850a"
+         id="path1" />
+    </marker>
+  </defs>
+  <rect
+     width="999.23816"
+     height="381.11636"
+     fill="#16161c"
+     id="rect1"
+     x="0"
+     y="0"
+     style="stroke-width:0.817441" />
+  <!-- ============================ titles ============================ -->
+  <!-- column highlights: the deciding latch (+4) and the gate (+11) -->
+  <g
+     id="column-highlights"
+     transform="matrix(1,0,0,0.90297119,0,-78.08104)">
+    <rect
+       x="376"
+       y="96"
+       width="68"
+       height="270"
+       fill="#e1850a"
+       opacity="0.09"
+       id="rect2" />
+    <rect
+       x="852"
+       y="96"
+       width="68"
+       height="270"
+       fill="#e1850a"
+       opacity="0.09"
+       id="rect3" />
+    <text
+       x="937.89105"
+       y="241.11668"
+       text-anchor="middle"
+       font-size="11.814px"
+       fill="#e1850a"
+       font-weight="700"
+       letter-spacing="1"
+       id="text3"
+       transform="scale(0.94512751,1.0580583)"
+       style="stroke-width:0.945128">CODE CHECK</text>
+  </g>
+  <!-- ===================== frame grid and numbering ===================== -->
+  <g
+     stroke="#282a33"
+     stroke-width="1"
+     id="g16"
+     transform="matrix(1,0,0,0.98259695,0,-107.28401)">
+    <line
+       x1="104"
+       y1="118"
+       x2="104"
+       y2="366"
+       id="line3" />
+    <line
+       x1="172"
+       y1="118"
+       x2="172"
+       y2="366"
+       id="line4" />
+    <line
+       x1="240"
+       y1="118"
+       x2="240"
+       y2="366"
+       id="line5" />
+    <line
+       x1="308"
+       y1="118"
+       x2="308"
+       y2="366"
+       id="line6" />
+    <line
+       x1="376"
+       y1="118"
+       x2="376"
+       y2="366"
+       id="line7" />
+    <line
+       x1="444"
+       y1="118"
+       x2="444"
+       y2="366"
+       id="line8" />
+    <line
+       x1="512"
+       y1="118"
+       x2="512"
+       y2="366"
+       id="line9" />
+    <line
+       x1="580"
+       y1="118"
+       x2="580"
+       y2="366"
+       id="line10" />
+    <line
+       x1="648"
+       y1="118"
+       x2="648"
+       y2="366"
+       id="line11" />
+    <line
+       x1="716"
+       y1="118"
+       x2="716"
+       y2="366"
+       id="line12" />
+    <line
+       x1="784"
+       y1="118"
+       x2="784"
+       y2="366"
+       id="line13" />
+    <line
+       x1="852"
+       y1="118"
+       x2="852"
+       y2="366"
+       id="line14" />
+    <line
+       x1="920"
+       y1="118"
+       x2="920"
+       y2="366"
+       id="line15" />
+    <line
+       x1="988"
+       y1="118"
+       x2="988"
+       y2="366"
+       id="line16" />
+  </g>
+  <text
+     class="lane"
+     x="92"
+     y="28.66243"
+     id="text16">frame</text>
+  <g
+     id="g29"
+     transform="translate(0,-83.33757)">
+    <text
+       class="fnum"
+       x="138"
+       y="112"
+       id="text17">+0</text>
+    <text
+       class="fnum"
+       x="206"
+       y="112"
+       id="text18">+1</text>
+    <text
+       class="fnum"
+       x="274"
+       y="112"
+       id="text19">+2</text>
+    <text
+       class="fnum"
+       x="342"
+       y="112"
+       id="text20">+3</text>
+    <text
+       class="fnum"
+       x="410"
+       y="112"
+       id="text21">+4</text>
+    <text
+       class="fnum"
+       x="478"
+       y="112"
+       id="text22">+5</text>
+    <text
+       class="fnum"
+       x="546"
+       y="112"
+       id="text23">+6</text>
+    <text
+       class="fnum"
+       x="614"
+       y="112"
+       id="text24">+7</text>
+    <text
+       class="fnum"
+       x="682"
+       y="112"
+       id="text25">+8</text>
+    <text
+       class="fnum"
+       x="750"
+       y="112"
+       id="text26">+9</text>
+    <text
+       class="fnum"
+       x="818"
+       y="112"
+       id="text27">+10</text>
+    <text
+       class="fnum"
+       x="886"
+       y="112"
+       id="text28">+11</text>
+    <text
+       class="fnum"
+       x="954"
+       y="112"
+       id="text29">+12</text>
+  </g>
+  <!-- =================== lane 1: input latch refreshes =================== -->
+  <!-- update_inputs (0x00070300) stores the I/O word to 0x20F018 once per
+       main-loop iteration.  It does NOT run during frames +5..+10. -->
+  <g
+     id="lane-latch"
+     transform="translate(0,-109.33757)">
+    <text
+       class="lane"
+       x="92"
+       y="170"
+       id="text44">update_inputs</text>
+    <text
+       class="lane"
+       x="92"
+       y="186"
+       font-size="11"
+       fill="#6f7681"
+       id="text45">writes 0x20F018</text>
+    <rect
+       x="104"
+       y="150"
+       width="884"
+       height="34"
+       fill="#1d1e26"
+       stroke="#2f313c"
+       id="rect45" />
+    <!-- the six frames with no scan at all: the loop is building the race -->
+    <rect
+       id="dead-zone"
+       x="444"
+       y="150"
+       width="408"
+       height="34"
+       fill="#3a2020"
+       stroke="#7a3030"
+       stroke-dasharray="5, 4" />
+    <text
+       x="648"
+       y="172"
+       text-anchor="middle"
+       font-size="13px"
+       fill="#e08c8c"
+       id="text46">no input update for six frames</text>
+    <!-- latch ran (green ticks) -->
+    <g
+       fill="#5bbf7a"
+       id="g52">
+      <rect
+         x="130"
+         y="157"
+         width="16"
+         height="20"
+         rx="2"
+         id="rect46" />
+      <rect
+         x="198"
+         y="157"
+         width="16"
+         height="20"
+         rx="2"
+         id="rect47" />
+      <rect
+         x="266"
+         y="157"
+         width="16"
+         height="20"
+         rx="2"
+         id="rect48" />
+      <rect
+         x="334"
+         y="157"
+         width="16"
+         height="20"
+         rx="2"
+         id="rect49" />
+      <rect
+         x="402"
+         y="157"
+         width="16"
+         height="20"
+         rx="2"
+         id="rect50" />
+      <rect
+         x="878"
+         y="157"
+         width="16"
+         height="20"
+         rx="2"
+         id="rect51" />
+      <rect
+         x="946"
+         y="157"
+         width="16"
+         height="20"
+         rx="2"
+         id="rect52" />
+    </g>
+    <!-- frame +11 latch runs AFTER the gate, so it is too late to help -->
+    <text
+       x="886"
+       y="196"
+       text-anchor="middle"
+       font-size="10.5px"
+       fill="#6f7681"
+       id="text52"
+       style="font-size:9.33333px"><tspan
+         x="886"
+         y="196"
+         id="tspan74"
+         style="font-size:9.33333px">(Update runs</tspan><tspan
+         x="886"
+         y="207.66666"
+         id="tspan75"
+         style="font-size:9.33333px"><tspan
+   style="font-weight:bold;font-size:9.33333px"
+   id="tspan76">after</tspan> code check)</tspan></text>
+  </g>
+  <!-- ================= lane 2: the Start button itself ================= -->
+  <g
+     id="lane-start"
+     transform="translate(0,-109.33757)">
+    <rect
+       x="104"
+       y="216"
+       width="884"
+       height="34"
+       fill="#1d1e26"
+       stroke="#2f313c"
+       id="rect53" />
+    <!-- frames on which Start may still be held and the egg still fires -->
+    <rect
+       id="safe-hold"
+       x="104"
+       y="216"
+       width="272"
+       height="34"
+       fill="#2b4a33"
+       stroke="#5bbf7a" />
+    <text
+       x="240"
+       y="238"
+       text-anchor="middle"
+       font-size="13.5px"
+       fill="#a9e5bd"
+       id="text54">Start may still be held</text>
+    <!-- everything from +4 on: too late -->
+    <rect
+       id="too-late"
+       x="376"
+       y="216"
+       width="612"
+       height="34"
+       fill="#3a2020"
+       stroke="#7a3030" />
+    <text
+       x="682"
+       y="238"
+       text-anchor="middle"
+       font-size="13.5px"
+       fill="#e08c8c"
+       id="text55">Start button recoded as pressed</text>
+  </g>
+  <!-- =========== the sample that the gate actually reads =========== -->
+  <g
+     id="sample-arrow"
+     transform="matrix(1.0002383,0,0,0.93579517,-0.15531626,-97.33946)">
+    <!-- from the +4 latch down and across to the gate at +11 -->
+    <path
+       d="M 410.03632,185.95163 V 311.11331 H 664.65775 885.96469 V 294.99945 277.16791"
+       fill="none"
+       stroke="#e1850a"
+       stroke-width="2.55301"
+       marker-end="url(#arrow)"
+       id="path55" />
+    <text
+       x="640"
+       y="298"
+       text-anchor="middle"
+       class="noteb"
+       id="text56">the code check reads the input sample (now 7 frames stale)</text>
+  </g>
+  <!-- ======================= event markers ======================= -->
+  <g
+     id="markers"
+     transform="translate(0,-113.81712)">
+    <!-- +0 : Start pressed -->
+    <line
+       x1="138"
+       y1="332"
+       x2="138"
+       y2="366"
+       stroke="#e6e8ec"
+       stroke-width="2"
+       id="line56" />
+    <circle
+       cx="138"
+       cy="330"
+       r="5"
+       fill="#e6e8ec"
+       id="circle56" />
+    <!-- +3 : last frame Start may be held -->
+    <line
+       x1="342"
+       y1="332"
+       x2="342"
+       y2="366"
+       stroke="#5bbf7a"
+       stroke-width="2"
+       id="line57" />
+    <circle
+       cx="342"
+       cy="330"
+       r="5"
+       fill="#5bbf7a"
+       id="circle57" />
+    <!-- +4 : the deciding latch -->
+    <line
+       x1="410"
+       y1="332"
+       x2="410"
+       y2="366"
+       stroke="#e1850a"
+       stroke-width="2.5"
+       id="line58" />
+    <circle
+       cx="410"
+       cy="330"
+       r="5"
+       fill="#e1850a"
+       id="circle58" />
+    <!-- +11 : the gate -->
+    <line
+       x1="886"
+       y1="332"
+       x2="886"
+       y2="366"
+       stroke="#e1850a"
+       stroke-width="2.5"
+       id="line59" />
+    <circle
+       cx="886"
+       cy="330"
+       r="5"
+       fill="#e1850a"
+       id="circle59" />
+  </g>
+  <!-- ======================== callouts ======================== -->
+  <g
+     id="callouts"
+     transform="translate(0,-109.33757)">
+    <text
+       class="note"
+       x="32"
+       y="392"
+       id="text59"><tspan
+   style="fill:#e1850a;fill-opacity:1"
+   id="tspan6">+0</tspan> Start pressed - the main loop leaves attract and begins building the race.</text>
+    <text
+       class="note"
+       x="32"
+       y="414"
+       id="text60"><tspan
+   style="fill:#e1850a;fill-opacity:1"
+   id="tspan7">+3</tspan> Last frame on which Start may still be down - must be released before the next VBLANK!</text>
+    <text
+       class="note"
+       x="32"
+       y="436"
+       id="text63"><tspan
+   style="fill:#e1850a;fill-opacity:1"
+   id="tspan83">+4</tspan> Final <tspan
+   class="mono"
+   id="tspan62"
+   style="font-size:10.6667px">update_inputs</tspan> before the stall - whatever it latches into <tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'DejaVu Sans Mono', 'Courier New', monospace;-inkscape-font-specification:'DejaVu Sans Mono, Courier New, monospace'"
+   id="tspan77">0x20F018</tspan> here will be used for the code check.</text>
+    <text
+       class="note"
+       x="32"
+       y="458"
+       id="text65">+5 … +10 Six frames of task installation, the Sonic ornament DMA at <tspan
+   class="mono"
+   id="tspan65"
+   style="font-size:10.6667px">0x669E8,</tspan> and graphics setup. <tspan
+   style="font-weight:bold"
+   id="tspan81">The I/O chip is never read.</tspan></text>
+    <text
+       class="note"
+       x="32"
+       y="480"
+       id="text69"><tspan
+   style="fill:#e1850a;fill-opacity:1"
+   id="tspan82">+11 </tspan><tspan
+   class="mono"
+   id="tspan67"
+   style="font-size:10.6667px">task__mirror_ornament__init</tspan> reaches the code check at <tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'DejaVu Sans Mono', 'Courier New', monospace;-inkscape-font-specification:'DejaVu Sans Mono, Courier New, monospace'"
+   id="tspan78">0x73DA8.</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text79"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.6667px;font-family:'DejaVu Sans Mono', 'Courier New', monospace;-inkscape-font-specification:'DejaVu Sans Mono, Courier New, monospace';text-align:center;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect79);display:inline;fill:#000000;stroke-width:3.77953;-inkscape-stroke:none"
+       x="57.785866"
+       y="0"
+       transform="translate(-22.059334,-8.6319132)"><tspan
+         x="201.71468"
+         y="291.10074"
+         id="tspan2"><tspan
+           style="font-family:Cuprum, 'Trebuchet MS', 'DejaVu Sans', sans-serif;-inkscape-font-specification:'Cuprum, Trebuchet MS, DejaVu Sans, sans-serif';fill:#c8ccd4"
+           id="tspan1">3 frames at 60 Hz
+</tspan></tspan><tspan
+         x="210.21973"
+         y="326.2978"
+         id="tspan5"><tspan
+           style="font-size:32px;fill:#c8ccd4"
+           id="tspan3">≈</tspan><tspan
+           style="font-size:32px;fill:#c8ccd4"
+           id="tspan4"> 50ms</tspan></tspan></text>
+  </g>
+</svg>
