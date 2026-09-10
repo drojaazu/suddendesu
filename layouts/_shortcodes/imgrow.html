@@ -1,0 +1,36 @@
+{{- /*
+Images side by side in a single row. One image per line of the inner content,
+with an optional caption after a "|". See partials/img.html.
+
+  {{< imgrow >}}
+  img/foo.png | Caption for foo
+  img/bar.png
+  {{< /imgrow >}}
+
+Pixel art is integer-scaled against an even share of the column rather than the
+whole column, so a row of screenshots fits without resampling.
+*/ -}}
+{{- $items := slice -}}
+{{- range split .Inner "\n" -}}
+  {{- with trim . " \t\r" -}}
+    {{- $parts := split . "|" -}}
+    {{- $items = $items | append (dict
+          "src" (trim (index $parts 0) " \t")
+          "caption" (trim (delimit (after 1 $parts) "|") " \t")
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $colWidth := site.Params.image_rules.column_width | default 900 -}}
+{{- $share := div $colWidth (math.Max 1 (len $items)) | int -}}
+<div class="imgrow">
+{{- range $items }}
+{{ partial "img.html" (dict
+      "page" $.Page
+      "src" .src
+      "alt" .caption
+      "caption" .caption
+      "colwidth" $share
+      "figure" true
+) }}
+{{- end }}
+</div>

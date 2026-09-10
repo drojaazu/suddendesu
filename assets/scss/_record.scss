@@ -139,8 +139,8 @@
 		margin-inline: $gutter;
 	}
 
-	img, table, blockquote, pre {
-		border: 2px solid $color-black;
+	img, blockquote, table, pre {
+		outline: 2px solid $color-black;
 		border-radius: $radius-half;
 	}
 
@@ -152,7 +152,7 @@
 	// container, so an image capped narrower than its figure gets aligned to the
 	// start of the cross axis and sits left rather than centred.
 	figure, .table-scroll {
-		max-width: calc(100% - #{$media-gutter * 2});
+		max-width: calc(90% - #{$media-gutter * 2});
 	}
 
 	img {
@@ -197,13 +197,6 @@
 		}
 	}
 	
-	figure.imgbar, div.imgbar {
-		display: flex;
-		justify-content: center;
-		align-items: flex-end;
-		flex-wrap: wrap;
-	}
-
 	figcaption, caption {
 		text-align: left;
 		caption-side: bottom;
@@ -222,19 +215,26 @@
 		td {
 			padding: 0.25em 1em;
 			text-align: left;
-			vertical-align: top;
-			border-left: 2px dotted #000;
+			
+			
 		}
 
-		th:first-child, td:first-child {
-			border:none;
+		td {
+			border-left: 2px dotted #000;
+			vertical-align: top;
 		}
+
+
 
 		tr {
 			display: table-row;
 			vertical-align: inherit;
 		}
 
+		/*
+		th:first-child, td:first-child {
+			border:none;
+		}
 		th:first-child {
 			border-radius: $radius-half 0 0 0;
 		}
@@ -249,13 +249,11 @@
 				border-radius: 0 0 $radius-half 0;
 			}
 		}
+*/
 
 		thead {
 			display: table-header-group;
 			vertical-align: middle;
-			@include invert-bar;
-			font-weight: bold;
-			font-size: 1.1rem;
 		}
 
 		tbody {

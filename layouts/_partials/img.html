@@ -20,6 +20,7 @@ What it does:
 @context {string}  link      href to wrap the image in
 @context {bool}    figure    force a <figure> wrapper
 @context {bool}    eager     skip loading="lazy" (use for above-the-fold covers)
+@context {int}     colwidth  width to integer-scale pixel art against; defaults to the column
 */ -}}
 
 {{- $page := .page -}}
@@ -34,7 +35,7 @@ What it does:
 
 {{- $pixelMax := site.Params.image_rules.pixel_max_width | default 640 -}}
 {{- $largeMax := site.Params.image_rules.large_width | default 1200 -}}
-{{- $colWidth := site.Params.image_rules.column_width | default 900 -}}
+{{- $colWidth := .colwidth | default (site.Params.image_rules.column_width | default 900) -}}
 {{- $pixelScaleMax := site.Params.image_rules.pixel_scale_max | default 4 -}}
 
 {{- $res := "" -}}

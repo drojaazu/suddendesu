@@ -83,25 +83,24 @@ US (`radmu`):
 
 This feels broken. The code itself (hold Wipers + Lights) is so simple that it feels more akin to choosing a different color palette for a character in a fighting game. Yet the timing around the Start button makes it feel like some super-secret easter egg that isn't meant to be found by anyone except the dev who wrote it.
 
-Here is where it the trouble happens (from the `radmu` set):
+Here is where it the trouble happens:
 
-<pre class="pdasm pdasm-arch-v60">
-(Sonic graphics already loaded at this point from an outer function)
-00073D98:  test.b  0x700a[R25]{user_interactive}    ; are we interactive or in attract demo mode?
-00073D9C:  be      0x00073DD5        ; in demo mode; don't do the Flicky code
-00073D9E:  not.h   0x7018[R25], RH0  ; read the raw input latch and invert the bits so active is high
-00073DA3:  and.h   #0x610, RH0       ; filter on Light, Wiper and Start buttons..
-00073DA8:  cmp.h   #0x600, RH0       ; but check that only Light/Wiper are pressed and that Start is clear!
-00073DAD:  bne     0x00073DD5        ; inputs didn't match; keep Sonic and start the game
-00073DAF:  movea.b 0x7e84a{gfx__ornament_flicky}, R10  ; pointer to the Flicky graphics...
-00073DB6:  movz.hw [R10+], R1  ; and the data length in words...
-00073DB9:  movz.hw 0x00103dde, R11
-00073DC0:  movea.w 0x400000(R11), R11
-00073DC8:  movcu.h [R10] R1, [R11] R1  ; overwrite the Sonic graphics in sprite RAM
-00073DCE:  mov.h   #0x14f0, 0x4[R20]   ; and switch to the Flicky palette
+<pre class="pdasm pdasm-arch-nec-v60" data-pdasm-caption="radmu (US)" data-pdasm-bases="R25=208000" data-pdasm-symbols='{"20f00a": "is_credited", "7e84a": "gfx__ornament_flicky"}'>
+00073D98:  test.b  700A[R25]       ; are we interactive or in attract demo mode?
+00073D9C:  be      00073DD5        ; in demo mode; don't do the Flicky code
+00073D9E:  not.h   7018[R25], RH0  ; read the raw input latch and invert the bits so active is high
+00073DA3:  and.h   #610, RH0     ; filter on Light, Wiper and Start buttons..
+00073DA8:  cmp.h   #600, RH0     ; but check that only Light/Wiper are pressed and that Start is clear!
+00073DAD:  bne     00073DD5        ; inputs didn't match; keep Sonic and start the game
+00073DAF:  movea.b 7E84A, R10      ; pointer to the Flicky graphics...
+00073DB6:  movz.hw [R10+], R1      ; and the data length in words...
+00073DB9:  movz.hw 00103DDE, R11
+00073DC0:  movea.w 400000(R11), R11
+00073DC8:  movcu.h [R10]R1, [R11]R1  ; overwrite the Sonic graphics loaded earlier in sprite RAM
+00073DCE:  mov.h   #14F0, 4[R20]   ; and switch to the Flicky palette
 </pre>
 
-The actual code check begins at 0x73D9E: two bitwise operations and a compare. First, a read of raw input, cached from RAM, as we discussed above. Raw I/O like this gives a logically inverted bitmap, where 1 means off and 0 means on; so that gets flipped with a `NOT`.
+The actual code check begins at `0x73D9E`: two bitwise operations and a compare. First, a read of raw input, cached from RAM, as we discussed above. Raw I/O like this gives a logically inverted bitmap, where 1 means off and 0 means on; so that gets flipped with a `NOT`.
 
 Next, the `AND` filters out inputs we don't want to check. In this arrangement, bit 4 is Start, bit 6 is Lights and bit 8 is wiper, giving us a mask of 0x610. The input value is is "pushed through" this mask, resulting in only the set bits (pushed state) of those three buttons. Then, a `CMP` to compare the buttons against the expected input value for the Flicky code: 0x600, which is Lights/Wiper only; the Start bit is clear. The comparison is all-or-nothing: if the Start bit is set, the values do not match, and the Flicky code fails.
 
@@ -249,7 +248,10 @@ It is lacking the number ordinal at the end, however. The round text is still ab
 
 But something I personally find more interesting abot the flyer is that it has an early version of the System 32 hardware logo on the front.
 
-![Older, printed on the Rad Mobile flyer](img/system32_old.svg)![The final logo, printed on flyers for all later games](img/system32_new.svg)
+{{< imgrow >}}
+img/system32_old.svg | Older, printed on the Rad Mobile flyer
+img/system32_new.svg | The final logo, printed on flyers for all later games
+{{< /imgrow >}}
 
 I think I prefer the final version, with its Helvetica-esque industrial-machinery-repair-manual aesthetic.
 
@@ -284,15 +286,16 @@ You may recognize that score in the default list top spot: 99,999,999. That's th
 
 If we were to call the rankings list code directly we would see...
 
-![](img/radmu_ranking_replacement01.png)
-
-![](img/radmu_ranking_replacement02.png)
+{{< imgrow >}}
+img/radmu_ranking_replacement01.png
+img/radmu_ranking_replacement02.png
+{{< /imgrow >}}
 
 ... this. The "TRANS AMERICAN SPEED RACE" marquee scrolling by, but with no background race and no sound. After it's done, it continues to the rest of attract mode. There's no sign of a ranking list here.
 
 Investigating we find there's something peculiar about this the sub-mode jump table:
 
-<pre class="pdasm pdasm-arch-v60">
+<pre class="pdasm pdasm-arch-nec-v60" data-pdasm-caption="radmu (US)" data-pdasm-bases="R25=208000">
 075D94: movz.bw 7006[R25]{sub_mode}, R0
 075D99: jmp     75DA6[PC](R0)  ; the displacement puts the base at 0x75DA6
 075D9D: br      75DAF{mode__ranking__sub0_init}  ; so this branch never gets called
@@ -301,7 +304,7 @@ Investigating we find there's something peculiar about this the sub-mode jump ta
 075DA9: jmp     70E20{run_tasks}
 </pre>
 
-The `JMP` at 0x75D99 sets its base to 0x75DA6. This changes the indexing of the jump table: an index of 0 no longer references the first item anymore, but the third. So the first two entries in the jump table are entire skipped. 
+The `JMP` at `0x75D99` sets its base to 0x75DA6. This changes the indexing of the jump table: an index of 0 no longer references the first item anymore, but the third. So the first two entries in the jump table are entire skipped. 
 
 It turns out the actual ranking screen initialization is in that first jump table entry, the one that is skipped. If we reset the displacement of the jump into the table to realign the indexing, the ranking screen runs instead.
 
@@ -373,7 +376,7 @@ It's the music that plays at the very end, with the American flag background and
 
 A name entry screen was at least on the team's mind, however.
 
-![](img/ranking_font.png)
+{{< noborder "img/ranking_font.png" >}}
 
 The font used on the ranking screen has a few glyphs in the top row that seem to be specifically for name entry: left and right arrows and END. There's also a cute GOOD LUCK and car icon among the selectable characters, proably "decorations" for the name.
 
@@ -397,9 +400,10 @@ LIGHTS, WIPERS, WIPERS, WIPERS, LIGHTS, LIGHTS, LIGHTS, LIGHTS, WIPERS, WIPERS, 
 
 Doing so adds a Sega logo at the bottom and the text "Rad Mobile."
 
-![Before](img/radm_code_before.png)
-
-![After](img/radm_code_after.png)
+{{< imgrow >}}
+img/radm_code_before.png | Before
+img/radm_code_after.png | After
+{{< /imgrow >}}
 
 And... that's it. It doesn't set any flags in RAM, it just calls a display script that loads the Sega graphic and writes the text.
 
@@ -412,9 +416,10 @@ After getting in to the race car, the driver pulls on a pair of black racing glo
 
 ## Lights/Wipers Assist
 
-![](img/radm_hands_low1.png)
-
-![](img/radm_hands_low2.png)
+{{< imgrow >}}
+img/radm_hands_low1.png
+img/radm_hands_low2.png
+{{< /imgrow >}}
 
 ![](img/radm_hands01.png)
 
@@ -563,7 +568,7 @@ It has two code dispatchers to manage these effects: one for the "decision makin
 
 Case 0 of this switch is "Should we throw a can?" This is where things get tricky.
 
-<pre class="pdasm pdasm-arch-v60">
+<pre class="pdasm pdasm-arch-nec-v60">
 06EDA2: test.b  38[R20]{traffic_obj->effect} ; Does the effect byte == 0 (effect id 0, iter 0)?
 06EDA5: bne     6EDCE  ; no - skip the rest of the code
 06EDA7: test.b  27[R20]{traffic_obj->variant}  ; Is the car a rival?

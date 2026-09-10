@@ -48,7 +48,9 @@ $color-crt-theme: $color-crt-amber;
 
 // burn in color: #130e0636
 
-$color-link: #e1850a;
+$color-accent: #e1850a;
+$color-link: $color-accent;
+
 
 $color-background: $color-black;
 $color-text: $color-white;

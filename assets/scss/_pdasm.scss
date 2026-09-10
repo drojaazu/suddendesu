@@ -9,52 +9,126 @@ $pdasm-hex-value: #8abeb7;
 $pdasm-symbol: #de935f;
 
 table.pdasm {
-
-	background: $color-bg-for-light-text;
-
 	// prettydasm replaces the source <pre> with this table (prettydasm.js:251), so
 	// it lands as a direct child of .record-body with no scroll container of its
 	// own. Disassembly must not wrap, so it scrolls in place instead.
 	display: block;
 	width: fit-content;
-	max-width: 100%;
+	min-width: 50%;
+	max-width: 90%;
 	overflow-x: auto;
 	white-space: nowrap;
+	background: $color-bg-for-light-text;
+	/*line-height: 1.25em;*/
+	font-size: 1.1rem;
 
-	& > tr td {
-		@include pad-h(0.5em);
-		border: none;
+	& > tr {
+		td {
+			@include pad(0.5em, 0.1em);
+			border: none;
+			border-bottom: 2px dotted lighten(#00000080, 35);
+		}
+
+		&:last-child td {
+			border: none;
+		}
+
+		td:first-child {
+			width: 1px;
+			color: $color-crt-white;
+		}
+
+		td:nth-child(2) {
+			color: $pdasm-opcode;
+		}
+		td:nth-child(3) {
+			width: 100%;
+		}
 	}
 
-	& > tr td:first-child {
-		color: $color-crt-white;
+	thead,
+	caption {
+		font-family: $font-body;
+		font-size: 0.8rem;
+		vertical-align: middle;
 	}
 
-	& > tr td:nth-child(2) {
-		color: $pdasm-opcode;
-		border-left: 2px dotted #000;
+	thead th {
+		color: $color-accent;
+		border-bottom: 2px dotted $color-crt-white;
 	}
 
 	caption {
-		font-family: $font-body;
 		color: $color-crt-white;
-		@include pad-h(1em);
-
-		font-size: 0.8rem;
-		text-align: right;
+		border-top: 2px dotted $color-crt-white;
+		@include pad(1em, 0.25em);
+		caption-side: bottom;
 	}
+
+	& > tr.pdasm-comment-row {
+		/*background: #8c700082;*/
+		color: $color-text;
+		max-width: 600px;
+		transition: opacity 0.15s ease-in-out;
+		line-height: 1em;
+
+		> td {
+			color: $color-white;
+			border-bottom: none;
+			font-size: 0.8em;
+		}
+
+		> td::before {
+			content: '/* ';
+		}
+
+		> td::after {
+			content: ' */';
+		}
+	}
+
+	.pdasm-arch {
+		float: right;
+	}
+
+	.pdasm-arch::before {
+		content: '';
+		display: inline-block;
+		/* Use your SVG as a mask */
+		-webkit-mask-image: url(#{$path-img}chip.svg);
+		mask-image: url(#{$path-img}chip.svg);
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+
+		/* Apply the fill color here */
+		background-color: currentcolor;
+
+		vertical-align: -0.1em; /* Aligns smoothly with text */
+
+		height: 1em;
+		width: 1em;
+		margin-right: 0.2em;
+	}
+
+	& > tr.pdasm-plain td {
+		color: $color-white;
+	}
+}
+
+.pdasm-comments-toggle {
+	float: right;
+	background: none;
+	border: none;
+	font-size: 0.8em;
+	color: $color-crt-white;
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 .pdasm-size {
 	color: inherit;
-}
-
-.pdasm-plain {
-	color: $color-white !important;
-}
-
-.pdasm-comment svg {
-	fill: $color-text;
 }
 
 .pdasm-hex-value {
@@ -68,18 +142,36 @@ table.pdasm {
 .pdasm-reg {
 	color: $pdasm-register;
 }
-
+.pdasm-xref, .pdasm-symbol {
+text-decoration: underline dotted currentcolor 2px;
+	cursor: pointer;
+}
 .pdasm-symbol {
 	color: $pdasm-symbol;
+
 }
 
-#pdasm-symbolbox,
-#pdasm-commentbox {
-	border: 1px solid $color-white;
-	border-radius: $radius-quarter;
-	background: $color-black;
-	padding: 0.5em;
-	color: $color-text;
-	max-width: 600px;
-	transition: opacity 0.15s ease-in-out;
+.pdasm-comment {
+	* {
+		cursor: pointer;
+	}
+	svg {
+		fill: $color-text;
+	}
+
+	button {
+		background: none;
+		border: none;
+		color: $color-accent;
+		font-size: 0.8em;
+	}
+}
+
+.pdasm-flash > td:first-child { animation: pdasm-flash 0.6s ease-out; }
+@keyframes pdasm-flash {
+  0%, 35% { text-shadow: 0 0 6px #7fc4ff, 0 0 14px #4e9cd6;  }
+  100%    { text-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pdasm-flash > td { animation-duration: 0.01s; background: rgba(78, 156, 214, 0.35); }
 }
