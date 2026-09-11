@@ -232,7 +232,7 @@ Of note are the screenshots included:
 
 The most conspicuous difference is the lack of a rear-view mirror ornament at all. Aside from that, RANK is missing entirely from the upper right, and the ROUND indicator was originally located above the speed readout. Other than things are mostly identical.
 
-What really catches my attention is the single A in the upper right of the screenshot on the right. That's rather... anomalous. I have a suspicion - with zero proof - that this is related to the unfinished name entry system. We'll talk more about that in the next section.
+What really catches my attention is the single A in the upper right of the screenshot on the left. That's rather... anomalous. I have a suspicion - with zero proof - that this is related to the unfinished name entry system. We'll talk more about that in the next section.
 
 There was also an industry flyer for the game:
 
