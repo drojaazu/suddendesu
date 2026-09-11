@@ -38,7 +38,7 @@
 	}
 
 	.record-body {
-		p, div, ul, ol {
+		p, div, ul, ol, figure.diagram {
 			@include margin-h($gutter-narrow);
 		}
 	}
@@ -59,7 +59,7 @@
 	}
 
 	.record-body {
-		p, div, ul, ol {
+		p, div, ul, ol, figure.diagram {
 			@include margin-h(0.6rem);
 		}
 

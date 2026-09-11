@@ -20,7 +20,6 @@ What it does:
 @context {string}  link      href to wrap the image in
 @context {bool}    figure    force a <figure> wrapper
 @context {bool}    eager     skip loading="lazy" (use for above-the-fold covers)
-@context {int}     colwidth  width to integer-scale pixel art against; defaults to the column
 */ -}}
 
 {{- $page := .page -}}
@@ -35,13 +34,17 @@ What it does:
 
 {{- $pixelMax := site.Params.image_rules.pixel_max_width | default 640 -}}
 {{- $largeMax := site.Params.image_rules.large_width | default 1200 -}}
-{{- $colWidth := .colwidth | default (site.Params.image_rules.column_width | default 900) -}}
 {{- $pixelScaleMax := site.Params.image_rules.pixel_scale_max | default 4 -}}
 
 {{- $res := "" -}}
 {{- if not (or (strings.HasPrefix $src "http") (strings.HasPrefix $src "//") (strings.HasPrefix $src "data:")) -}}
 {{- with $page.Resources.GetMatch (strings.TrimPrefix "./" $src) -}}
-{{- if eq .ResourceType "image" -}}{{- $res = . -}}{{- end -}}
+{{- if eq .ResourceType "image" -}}
+{{/* SVGs are images Hugo can neither measure nor resize: serve the file as-is.
+     Not minified either -- Hugo's SVG minifier trims the whitespace around <tspan>s
+     and ignores xml:space, so "+0 Start" renders as "+0Start". */}}
+{{- if reflect.IsImageResourceProcessable . }}{{ $res = . }}{{ else }}{{ $src = .RelPermalink }}{{ end -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
@@ -80,13 +83,11 @@ What it does:
   {{- $mayBePixelArt := in (slice "png" "gif" "bmp") $res.MediaType.SubType -}}
   {{- if and $mayBePixelArt (le $res.Width $pixelMax) -}}
     {{- $classes = $classes | append "pixelart" -}}
-    {{/* Display native-resolution art at the largest whole-number multiple that
-         still fits the column. Non-integer scaling is what makes pixel art mushy,
-         and CSS cannot know the natural size, so the factor is resolved here. */}}
-    {{- $scale := math.Max 1 (math.Min $pixelScaleMax (math.Floor (div (float $colWidth) $res.Width))) -}}
-    {{- if gt $scale 1.0 -}}
-      {{- $style = printf "width:%dpx" (int (mul $res.Width $scale)) -}}
-    {{- end -}}
+    {{/* Ask for the capped upscale and let the figure's max-width trim it, so pixel
+         art fills the column like any other image. CSS cannot know the natural
+         size, so the cap is resolved here; image-rendering: pixelated keeps the
+         edges hard at whatever non-integer factor results. */}}
+    {{- $style = printf "width:%dpx" (int (mul $res.Width $pixelScaleMax)) -}}
   {{- end -}}
   {{- with $imgclass }}{{ $classes = $classes | append . }}{{ end -}}
 

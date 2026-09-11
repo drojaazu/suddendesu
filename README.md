@@ -67,6 +67,11 @@ For large, non-screenshot images (such as scans or photos).
 
 Drops the border and corner radius.
 
+### diagram
+
+For diagrams and graphs (usually large SVGs). No border, and sized as part of the
+text: always exactly as wide as a paragraph, at every screen size.
+
 ### audio
 
 `{{< audio "audio/sound.wav" >}}`

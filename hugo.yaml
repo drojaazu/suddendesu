@@ -32,8 +32,7 @@ Params:
     pixel_max_width: 640
     # above this natural width an image is resized to WebP and given a srcset
     large_width: 1200
-    # the prose column pixel art is scaled to fit, and the cap on that scaling
-    column_width: 900
+    # pixel art is scaled up to fill the column, but never past this factor
     pixel_scale_max: 4
 
 menus:

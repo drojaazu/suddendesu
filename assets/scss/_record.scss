@@ -33,12 +33,12 @@
 		max-width: 90%;
 	}
 
-	p, div {
+	p, div, figure.diagram {
 		@include margin-h($gutter);
 	}
 
 	ul, ol {
-		@include margin-h($gutter);
+		@include margin-h($gutter * 2);
 		padding-inline-start: 1.5em;
 	}
 
@@ -103,6 +103,7 @@
 		@include callout;
 		@include pad-v(0.25em);
 		font-size: 2rem;
+		padding-inline: 2rem;
 		color: $color-link;
 		margin-top: $heading-lead;
 	}
@@ -112,12 +113,13 @@
 		color: $color-link;
 		margin-inline: $gutter;
 		margin-top: $heading-lead - 0.25rem;
+		border-bottom: $color-accent 2px dotted;
 	}
 
 	h4 {
 		font-size: 1.25rem;
 		font-weight: 700;
-		margin-inline: $gutter;
+		margin-inline: 1rem;
 		margin-top: $heading-lead - 0.5rem;
 
 		&::before {
@@ -160,10 +162,10 @@
 		max-width: 100%;
 	}
 
-	// Native-resolution game screenshots. partials/img.html has already sized these
-	// to a whole-number multiple of their natural width, so all that is left is to
-	// stop the browser smoothing them. This is the site's primary content type and
-	// it was previously being interpolated up to 70% of the column.
+	// Native-resolution game screenshots. partials/img.html asks for a capped upscale
+	// that the figure's max-width trims to the column, so the factor is usually not
+	// a whole number; nearest-neighbour keeps the pixels hard regardless. This is
+	// the site's primary content type.
 	img.pixelart {
 		image-rendering: pixelated;
 		image-rendering: -moz-crisp-edges;
@@ -196,7 +198,20 @@
 			@include margin-h(1rem);
 		}
 	}
-	
+
+	// {{< diagram >}}: sized as text, not media. Its inline margins sit in the p
+	// rules (here and in sudden.scss) so it tracks the paragraph width at every
+	// breakpoint; this only undoes the figure's shrink-to-fit and media max-width.
+	figure.diagram {
+		width: auto;
+		max-width: none;
+
+		// !important beats the inline width partials/img.html puts on pixel art
+		& > img {
+			width: 100% !important;
+		}
+	}
+
 	figcaption, caption {
 		text-align: left;
 		caption-side: bottom;

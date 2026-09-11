@@ -1,0 +1,11 @@
+{{- /* Diagram or graph, usually a large SVG. No border, and sized as part of the
+text: exactly as wide as a paragraph. See partials/img.html. */ -}}
+{{- partial "img.html" (dict
+      "page" .Page
+      "src" (or (.Get "src") (.Get 0))
+      "alt" (.Get "alt" | default "")
+      "caption" (.Get "caption" | default "")
+      "class" "diagram"
+      "imgclass" "noborder"
+      "figure" true
+) -}}

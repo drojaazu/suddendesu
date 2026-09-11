@@ -48,8 +48,7 @@ table.pdasm {
 
 	thead,
 	caption {
-		font-family: $font-body;
-		font-size: 0.8rem;
+		font-family: $font-condensed;
 		vertical-align: middle;
 	}
 
@@ -85,6 +84,9 @@ table.pdasm {
 		> td::after {
 			content: ' */';
 		}
+
+ counter-reset: pdasm-mark;
+
 	}
 
 	.pdasm-arch {
@@ -115,6 +117,12 @@ table.pdasm {
 	& > tr.pdasm-plain td {
 		color: $color-white;
 	}
+}
+
+.pdasm-mark { counter-increment: pdasm-mark; }
+.pdasm-mark > td:first-child::after {
+  content: counter(pdasm-mark);
+  vertical-align: super; font-size: 0.65em; margin-left: 0.15em;
 }
 
 .pdasm-comments-toggle {

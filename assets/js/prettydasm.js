@@ -21,7 +21,7 @@ var prettydasm = (() => {
   var prettydasm_exports = {};
   __export(prettydasm_exports, {
     defaults: () => defaults,
-    parseDirective: () => parseDirective,
+    parseCallout: () => parseCallout,
     parseLine: () => parseLine,
     prettify: () => prettify,
     prettifyAll: () => prettifyAll
@@ -462,9 +462,6 @@ var prettydasm = (() => {
     match: P + "-match",
     callout: P + "-callout",
     calloutInline: P + "-callout-inline",
-    region: P + "-region",
-    regionToggle: P + "-region-toggle",
-    collapsed: P + "-collapsed",
     mark: P + "-mark",
     captionText: P + "-caption-text",
     arch: P + "-arch",
@@ -573,17 +570,6 @@ var prettydasm = (() => {
     row.firstChild.textContent = text;
     return row;
   }
-  function renderRegionRow(title, collapsed, id, doc) {
-    const row = fullWidthRow(CSS.region, doc);
-    const btn = doc.createElement("button");
-    btn.type = "button";
-    btn.className = CSS.regionToggle;
-    btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    btn.setAttribute("data-pdasm-region-id", String(id));
-    btn.textContent = title;
-    row.firstChild.appendChild(btn);
-    return row;
-  }
   function renderCaption(options, doc) {
     if (!options.arch || !options.addArchCaption) return null;
     const caption = doc.createElement("CAPTION");
@@ -667,18 +653,6 @@ var prettydasm = (() => {
     }
     return bases;
   }
-  function parseMarks(input) {
-    if (!input) return null;
-    const pieces = Array.isArray(input) ? input : String(input).split(",");
-    const ranges = [];
-    for (const piece of pieces) {
-      const m = /^\s*([^\s-]+)\s*(?:-\s*([^\s-]+))?\s*$/.exec(String(piece));
-      if (!m) continue;
-      const lo = parseHex(m[1]), hi = m[2] ? parseHex(m[2]) : lo;
-      if (!Number.isNaN(lo) && !Number.isNaN(hi)) ranges.push([Math.min(lo, hi), Math.max(lo, hi)]);
-    }
-    return ranges.length ? ranges : null;
-  }
 
   // src/navigate.js
   function indexRows(table) {
@@ -718,11 +692,6 @@ var prettydasm = (() => {
     td.setAttribute("colspan", "4");
     td.textContent = btn.getAttribute("data-pdasm-comment");
     commentRow.appendChild(td);
-    const regionId = row.getAttribute("data-pdasm-region");
-    if (regionId != null) {
-      commentRow.setAttribute("data-pdasm-region", regionId);
-      if (row.classList.contains(CSS.collapsed)) commentRow.classList.add(CSS.collapsed);
-    }
     row.parentNode.insertBefore(commentRow, row);
     btn.setAttribute("aria-expanded", "true");
   }
@@ -738,13 +707,6 @@ var prettydasm = (() => {
     const toggles = Array.from(table.querySelectorAll("." + CSS.commentToggle));
     const allOpen = toggles.length > 0 && toggles.every((b) => b.getAttribute("aria-expanded") === "true");
     btn.setAttribute("aria-pressed", allOpen ? "true" : "false");
-  }
-  function toggleRegion(btn, table) {
-    const id = btn.getAttribute("data-pdasm-region-id");
-    const open = btn.getAttribute("aria-expanded") === "true";
-    for (const row of table.querySelectorAll(`[data-pdasm-region="${id}"]`))
-      row.classList.toggle(CSS.collapsed, open);
-    btn.setAttribute("aria-expanded", open ? "false" : "true");
   }
   var flashTimers = /* @__PURE__ */ new WeakMap();
   function flashTarget(el, table, rowByAddr) {
@@ -786,11 +748,6 @@ var prettydasm = (() => {
       if (all && table.contains(all)) {
         toggleAllComments(table);
         refreshAllButton(table);
-        return;
-      }
-      const region = event.target.closest("." + CSS.regionToggle);
-      if (region && table.contains(region)) {
-        toggleRegion(region, table);
         return;
       }
       const ref = event.target.closest("." + CSS.xref);
@@ -836,6 +793,7 @@ var prettydasm = (() => {
   // src/prettydasm.js
   var LINE = /^\s*([0-9a-f]+):\s+(\S+)(?:\s+(.*))?$/i;
   var COMMENT_MARKER = ";";
+  var MARK_MARKER = "*";
   var defaults = {
     autoProcess: true,
     commentContent: "//",
@@ -849,7 +807,6 @@ var prettydasm = (() => {
     autoSymbols: true,
     autoLabels: true,
     xrefs: true,
-    mark: null,
     caption: null,
     commentsToggle: true
   };
@@ -857,26 +814,25 @@ var prettydasm = (() => {
     const m = LINE.exec(line);
     if (!m) return null;
     let args = m[3] == null ? "" : m[3];
-    let comment = null, callout = null;
+    let comment = null, callout = null, mark = false;
     const cut = args.indexOf(COMMENT_MARKER);
     if (cut >= 0) {
-      const rest = args.slice(cut + 1);
+      let rest = args.slice(cut + 1);
       if (rest.startsWith(COMMENT_MARKER)) callout = rest.slice(1).trim();
-      else comment = rest.trim();
+      else {
+        if (rest.startsWith(MARK_MARKER)) {
+          mark = true;
+          rest = rest.slice(MARK_MARKER.length);
+        }
+        comment = rest.trim();
+      }
       args = args.slice(0, cut).trim();
     }
-    return { address: m[1], opcode: m[2], args: args.trim(), comment, callout };
+    return { address: m[1], opcode: m[2], args: args.trim(), comment, callout, mark };
   }
-  function parseDirective(line) {
+  function parseCallout(line) {
     const t = line.trim();
-    if (!t.startsWith(COMMENT_MARKER + COMMENT_MARKER)) return null;
-    const rest = t.slice(2);
-    if (rest.startsWith(">")) {
-      const collapsed = rest.startsWith(">-");
-      return { kind: "region", title: rest.slice(collapsed ? 2 : 1).trim(), collapsed };
-    }
-    if (rest.startsWith("<")) return { kind: "endRegion" };
-    return { kind: "callout", text: rest.trim() };
+    return t.startsWith(COMMENT_MARKER + COMMENT_MARKER) ? t.slice(2).trim() : null;
   }
   function readOptions(elem, options) {
     const opts = { ...defaults, ...options };
@@ -894,7 +850,6 @@ var prettydasm = (() => {
     opts.arch = found ? found.arch : null;
     opts.symbols = parseSymbolMap(opts.symbols, doc);
     opts.bases = parseBases(opts.bases);
-    opts.mark = parseMarks(opts.mark);
     const table = doc.createElement("TABLE");
     table.className = CSS.table;
     if (found) table.classList.add("pdasm-arch-" + found.id);
@@ -902,43 +857,28 @@ var prettydasm = (() => {
     table.pdasmSource = source;
     const caption = renderCaption(opts, doc);
     if (caption) table.appendChild(caption);
-    let previous = null, region = null, regions = 0;
-    const addRow = (row) => {
-      if (region) {
-        row.setAttribute("data-pdasm-region", String(region.id));
-        if (region.collapsed) row.classList.add(CSS.collapsed);
-      }
-      table.appendChild(row);
-    };
+    let previous = null;
     const lines = source.split("\n");
     while (lines.length && lines[0].trim() === "") lines.shift();
     while (lines.length && lines[lines.length - 1].trim() === "") lines.pop();
     for (const line of lines) {
-      const directive = parseDirective(line);
-      if (directive) {
-        if (directive.kind === "endRegion") region = null;
-        else if (directive.kind === "region") {
-          region = null;
-          table.appendChild(renderRegionRow(directive.title, directive.collapsed, ++regions, doc));
-          region = { id: regions, collapsed: directive.collapsed };
-        } else addRow(renderCalloutRow(directive.text, doc, false));
+      const callout = parseCallout(line);
+      if (callout !== null) {
+        table.appendChild(renderCalloutRow(callout, doc, false));
         previous = line.trim();
         continue;
       }
       const parsed = parseLine(line);
       if (parsed && opts.autoLabels && opts.symbols) {
         const name = opts.symbols.get(parseInt(parsed.address, 16));
-        if (name && previous !== name + ":") addRow(renderLabelRow(name, doc));
+        if (name && previous !== name + ":") table.appendChild(renderLabelRow(name, doc));
       }
       if (parsed) {
         const row = renderRow(parsed, doc, opts);
-        if (opts.mark) {
-          const addr = parseInt(parsed.address, 16);
-          if (opts.mark.some(([lo, hi]) => addr >= lo && addr <= hi)) row.classList.add(CSS.mark);
-        }
-        if (parsed.callout) addRow(renderCalloutRow(parsed.callout, doc, true));
-        addRow(row);
-      } else addRow(renderUnformattedRow(line, doc));
+        if (parsed.mark) row.classList.add(CSS.mark);
+        if (parsed.callout) table.appendChild(renderCalloutRow(parsed.callout, doc, true));
+        table.appendChild(row);
+      } else table.appendChild(renderUnformattedRow(line, doc));
       previous = line.trim();
     }
     const head = renderHead(opts, table.querySelector("." + CSS.commentToggle) !== null, doc);

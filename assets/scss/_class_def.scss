@@ -54,6 +54,12 @@
 	}
 }
 
+// {{< noborder >}}. Media in .record-body gets an outline, not a border.
+img.noborder {
+	outline: none;
+	border-radius: 0;
+}
+
 img.zoom {
 	transition:
 		transform 0.2s,

@@ -6,9 +6,6 @@ with an optional caption after a "|". See partials/img.html.
   img/foo.png | Caption for foo
   img/bar.png
   {{< /imgrow >}}
-
-Pixel art is integer-scaled against an even share of the column rather than the
-whole column, so a row of screenshots fits without resampling.
 */ -}}
 {{- $items := slice -}}
 {{- range split .Inner "\n" -}}
@@ -20,8 +17,6 @@ whole column, so a row of screenshots fits without resampling.
     ) -}}
   {{- end -}}
 {{- end -}}
-{{- $colWidth := site.Params.image_rules.column_width | default 900 -}}
-{{- $share := div $colWidth (math.Max 1 (len $items)) | int -}}
 <div class="imgrow">
 {{- range $items }}
 {{ partial "img.html" (dict
@@ -29,7 +24,6 @@ whole column, so a row of screenshots fits without resampling.
       "src" .src
       "alt" .caption
       "caption" .caption
-      "colwidth" $share
       "figure" true
 ) }}
 {{- end }}

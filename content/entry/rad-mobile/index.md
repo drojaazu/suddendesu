@@ -23,7 +23,7 @@ One of the first things you learn in Sega Fandom 101 is that Rad Mobile is the f
 
 He appears as a rear-view mirror ornament, dangling and spinning as you wind your way across the USA.
 
-What is slightly less known ist that there also exists graphics for a different character: Flicky, Sega's erstwhile unofficial mascot.
+What is slightly less known is that there also exists graphics for a different character: Flicky, Sega's erstwhile unofficial mascot.
 
 ![](img/radmu_ornament_frames.png)
 
@@ -37,7 +37,7 @@ So how fast is that? Well with breakpoint magic, we find that there are 11 frame
 
 The Flicky code check uses the input latch in RAM. This means it is not polling the I/O device directly, but relying on a cached copy of the button state from whenever it was last updated. On many games, that update occurs every VBLANK period, which is to say, on every frame. But Rad Mobile only updates those inputs on every *main loop iteration* which is a key difference. Of the 11 frames that pass from the title screen Start to the Flicky code check, there is only a 3 frame window where Start can be held.
 
-![](img/radmu_flicky_timing_web.svg)
+{{< diagram "img/radmu_flicky_timing_web.svg" >}}
 
 Your window for letting go of the start button is about 50 milliseconds - faster than the blink of an eye and about the same speed as a nerve signal travelling from your toe to your brain. Ironically, you would need to be Sonic the Hedgehog himself to release the Start button fast enough.
 
@@ -85,14 +85,14 @@ This feels broken. The code itself (hold Wipers + Lights) is so simple that it f
 
 Here is where it the trouble happens:
 
-<pre class="pdasm pdasm-arch-nec-v60" data-pdasm-caption="radmu (US)" data-pdasm-bases="R25=208000" data-pdasm-symbols='{"20f00a": "is_credited", "7e84a": "gfx__ornament_flicky"}'>
-00073D98:  test.b  700A[R25]       ; are we interactive or in attract demo mode?
+<pre class="pdasm pdasm-arch-nec-v60" data-pdasm-caption="radmu (US)">
+00073D98:  test.b  700A[R25]{is_credited}   ; are we interactive or in attract demo mode?
 00073D9C:  be      00073DD5        ; in demo mode; don't do the Flicky code
 00073D9E:  not.h   7018[R25], RH0  ; read the raw input latch and invert the bits so active is high
 00073DA3:  and.h   #610, RH0     ; filter on Light, Wiper and Start buttons..
 00073DA8:  cmp.h   #600, RH0     ; but check that only Light/Wiper are pressed and that Start is clear!
 00073DAD:  bne     00073DD5        ; inputs didn't match; keep Sonic and start the game
-00073DAF:  movea.b 7E84A, R10      ; pointer to the Flicky graphics...
+00073DAF:  movea.b 7E84A{gfx__ornament_flicky}, R10      ; pointer to the Flicky graphics...
 00073DB6:  movz.hw [R10+], R1      ; and the data length in words...
 00073DB9:  movz.hw 00103DDE, R11
 00073DC0:  movea.w 400000(R11), R11
@@ -264,7 +264,7 @@ But there are numerous remnants of a traditional score keeping system in the dat
 
 ## Scorekeeping
 
-At 0x70AD4 (World) / 0x70B2A (US) is a function that takes a BCD value (binary coded decimal: a number that is used like human-readable base 10 within a computer-native, binary system) and adds that to a running value. In other words, it adds a number to a player's score. It also evaluates whether the new score is greater than the high score, putting the player at the top. Notably, for a reason we'll discuss in the next section, it clambs the maximum high score at 99,999,999. Immediately after that function is that prints the score at the top of the screen, with the high score a little further to its right - that classic style you see in so many arcade games of the 1980s.
+At `0x70AD4` (World) / `0x70B2A` (US) is a function that takes a BCD value (binary coded decimal: a number that is used like human-readable base 10 within a computer-native, binary system) and adds that to a running value. In other words, it adds a number to a player's score. It also evaluates whether the new score is greater than the high score, putting the player at the top. Notably, for a reason we'll discuss in the next section, it clambs the maximum high score at 99,999,999. Immediately after that function is that prints the score at the top of the screen, with the high score a little further to its right - that classic style you see in so many arcade games of the 1980s.
 
 Both routines are completely unused, and both are actually red herrings. Both appear functionally identical in Hard Dunk, where they also go unused. And several of the utilities nearby, which are things like common math routines, are also present in other System 32 games.
 
@@ -304,7 +304,7 @@ Investigating we find there's something peculiar about this the sub-mode jump ta
 075DA9: jmp     70E20{run_tasks}
 </pre>
 
-The `JMP` at `0x75D99` sets its base to 0x75DA6. This changes the indexing of the jump table: an index of 0 no longer references the first item anymore, but the third. So the first two entries in the jump table are entire skipped. 
+The `JMP` at `0x75D99` sets its base to `0x75DA6`. This changes the indexing of the jump table: an index of 0 no longer references the first item anymore, but the third. So the first two entries in the jump table are entire skipped. 
 
 It turns out the actual ranking screen initialization is in that first jump table entry, the one that is skipped. If we reset the displacement of the jump into the table to realign the indexing, the ranking screen runs instead.
 
@@ -425,7 +425,7 @@ img/radm_hands_low2.png
 
 The hand raises into view but stays low in the frame, the forefinger extended.
 
-This animation actually has code associated with it. There is a jump table at 0x74979 (US)/0x74923 (World) which switches on the state of the hands task. The first four entries in this table are init/loop pairs using this hand graphic: the first set animates it on the left side, and the second on right.
+This animation actually has code associated with it. There is a jump table at `0x74979` (US)/`0x74923` (World) which switches on the state of the hands task. The first four entries in this table are init/loop pairs using this hand graphic: the first set animates it on the left side, and the second on right.
 
 The code doesn't just animate the frames, though. The first sets the Wipers bit on the players controls, while the second sets the Lights bit. In other words, it's simulating a button press. This could be read a couple ways: an example of the button usage during the attract mode, perhaps, or my preferred take: you waited too long in the dark or rain and the driver is now doing it *for you.*
 
@@ -564,7 +564,7 @@ US (`radmu`)
 
 Each car on the road has an "effect" attached to it. This can be environmental effects, like splashes from the rain or dust from the desert drawn on the back of the car; or it can be race events, like a barrel roll into a crash and the chance to throw a can out the window.
 
-It has two code dispatchers to manage these effects: one for the "decision making" phase (game logic) and one for the "application of those decisions" phase (drawing to the screen, playing sounds, etc). The one at 0x6ED5B (World) / 0x6EDB1 (US) is for game logic, switching on the effect type and state to determine if the car should do something special.
+It has two code dispatchers to manage these effects: one for the "decision making" phase (game logic) and one for the "application of those decisions" phase (drawing to the screen, playing sounds, etc). The one at `0x6ED5B` (World) / `0x6EDB1` (US) is for game logic, switching on the effect type and state to determine if the car should do something special.
 
 Case 0 of this switch is "Should we throw a can?" This is where things get tricky.
 
@@ -699,11 +699,11 @@ We have a US and World dump of Rad Mobile; conspicuously missing is a Japan regi
 
 One almost certainly exists. Both dumps carry a standard "This Game Is For Japan Only" screen with working (but unused) code. The flyer for the game (as we saw above) was distributed with both English and Japanese. And perhaps most compelling, the existence of the RIVAL marker written in katakana among the graphics:
 
-![](img/radm_rival.png)
+{{< noborder "img/radm_rival.png" >}}
 
 There is also a Japanese version of the "Trans American Race" marquee that scrolls in the attract mode.
 
-![](img/radm_marquee_jp.png)
+{{< noborder "img/radm_marquee_jp.png" >}}
 
 アメリカ大陸横断レース *America Tairiku Oudan Race*
 
@@ -721,17 +721,17 @@ The raw speed value is stored at `0x20F4A0`. This is the *actual* speed of the c
 
 Here is how the World release does it:
 
-```
-0676C2:  movz.hw $74a0[R25]{raw_speed}, R0
-0676C7:  cmp.h   #$140, R0                   ; 320
-0676CC:  bl      $000676e1                   ; below 320: fall straight through to the shift
-0676CE:  sub.h   #$140, R0
-0676D3:  mul.h   #$d4, R0                    ; x 212
-0676D8:  shl.h   #$fa, R0                    ; >> 6
-0676DC:  add.h   #$140, R0                   ; + 320
-0676E1:  shl.h   #$fe, R0                    ; >> 2
-0676E5:  jsr     $00070bf0{gfx__draw_number}
-```
+<pre class="pdasm pdasm-arch-nec-v60" data-pdasm-caption="radm (World)">
+0676C2:  movz.hw 74a0[R25]{raw_speed}, R0
+0676C7:  cmp.h   #140, R0             ; compare raw speed to 320
+0676CC:  bl      000676e1               ; below 320: fall straight through to the shift
+0676CE:  sub.h   #140, R0
+0676D3:  mul.h   #d4, R0                ; multiply speed by 212
+0676D8:  shl.h   #fa, R0                ; >> 6 (divide by 64)
+0676DC:  add.h   #140, R0             ; add 320
+0676E1:  shl.h   #fe, R0                ; >> 2 (divide by 4)
+0676E5:  jsr     00070bf0{gfx__draw_number}
+</pre>
 
 We can rewrite this a bit to:
 
@@ -741,13 +741,12 @@ If the raw speed is below 320, simply divide that numnber by 4 and display it as
 
 In other words, the displayed speed rises faster after hitting that 320 base speed. The raw speed value is capped at 433, and you hit 320 pretty quickly and stay above it pretty steadily in the game while holding the accelerator. So the World version (and presumably the Japanese version) is hand tuned to show a faster speed as it nears that ceiling.
 
-US (radmu)
-```
+<pre class="pdasm pdasm-arch-nec-v60" data-pdasm-caption="radmu (US)">
 0676CA:  movz.hw $74a0[R25]{raw_speed}, R0
-0676CF:  mulu.h  #$1e, RH0                   ; x 30
-0676D4:  divu.h  #$60, RH0                   ; / 96
+0676CF:  mulu.h  #$1e, RH0                   ; multiply by 30
+0676D4:  divu.h  #$60, RH0                   ; divide by 96
 0676D9:  jsr     $00070c46{gfx__draw_number}
-```
+</pre>
 
 The US version on the other hand is a simple `raw_speed` * 30 / 96. Much simpler but, ironically, more truthful about what you're actually seeing on screen.
 
@@ -764,6 +763,8 @@ Determining the meaning of 96 is less obvious. If we sample both the "strips per
 Another way to think of it is every 96 units of raw speed is equal to clearing one strip in one tick.
 
 So the formula scales the raw speed by 30 (number of ticks per second) and divides by 96 (speed units per frame), giving us **strips passed per second**.
+
+{{< diagram "img/radmu_speed_formula_web.svg" >}}
 
 In short: the World version uses a hand-tuned formula to display a number that ramps up faster once you reach a certain speed, while the US version gives a more technical read of what is going on on screen. And to reiterate: this is all for the number display only: the actual speed and the phyics that use that speed are identical in both versions.
 
@@ -893,9 +894,9 @@ Among the text, there is a menu or list with terms relating to the graphics plan
 
 My guess is these were in resource files, seperate from the actual demo code, and while the code was removed or skipped, the data files were missed and compiled in.
 
-THere's not much else we can really glean from this, unfortunately. The same text appears in Rad Rally (which makes sense as the Rad Mobile "sequel") and Hard Dunk, for whatever that is worth.
+There's not much else we can really glean from this, unfortunately. The same text appears in Rad Rally (which makes sense as the Rad Mobile "sequel") and Hard Dunk, for whatever that is worth.
 
-I'm burying the lede here... What actually makes this interesting and notable is that very first string in ths set:
+I'm burying the lede here... What actually makes this interesting and notable is the very first string in the list:
 
 ![](img/radmu_demo_joke.png)
 
@@ -903,9 +904,9 @@ I really, really wish there was some actual code leftover just so I could get an
 
 So, first of all, drugs are considered really *bad* in Japan. The kids in 1960's/70's Japan weren't having a drug revolution like the US; they were busy protesting [terrible university conditions](https://en.wikipedia.org/wiki/Assassination_of_Inejir%C5%8D_Asanuma), [the presence of US military bases](https://en.wikipedia.org/wiki/Anpo_protests) and [the construction of Narita airport](https://en.wikipedia.org/wiki/Sanrizuka_Struggle).
 
-As such, there has never been a societal acceptance of even "casual" drugs like marijuana. Even today, a miniscule amount of weed can effectively end your schooling, your career, your life.
+As such, there has never been a societal acceptance of even "casual" drugs like marijuana. Even today, a miniscule amount of weed can effectively end your schooling, your career, your prospects for a good life in Japan.
 
-So seeing something like this, a very direct and clear reference to drug use, in a Japanese corporate product, piques my interest. I don't think whoever wrote it was actually a drug user. It's very clearly a joke, and it's not like it was meant for consumers, but it's still an interesting choice to make...
+So seeing something like this, a very direct and clear reference to drug use, in a Japanese corporate product, piques my interest. I don't think whoever wrote it was actually a drug user. It's very clearly a joke, and it's not like it was meant to ever be visible by consumers, but it's still an interesting choice to make...
 
 So let's scrape the barrel for any context. The drug lines appear as two seperate strings, positioned sequentially in the lower-middle part of the screen. That positioning is familiar, right?
 
@@ -913,9 +914,17 @@ So let's scrape the barrel for any context. The drug lines appear as two seperat
 
 And with the Sega System 32 logo looking like this...
 
-![](img/system32_logo_final.jpg)
+![](img/system32_new.svg)
 
 I can imagine there being some kind of parody of the FBI screen on the demo's startup.
+
+Another, less interesting interpretation involves a string near it reading "128 Color banks."
+
+![](img/radmu_demo_joke_color_banks.png)
+
+Its positioning metadata puts it right in the center and right below where the drugs lines would be. It could be it was running some kind if flashing, cycling, "psychadelic" color demo...
+
+I wish I knew for sure.
 
 # A Rush Job
 
